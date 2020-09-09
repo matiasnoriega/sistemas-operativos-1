@@ -1636,8 +1636,8 @@ cat: dato2sb: No existe el fichero o el directorio
 Lo que se borra es, en la metadata que contiene el inodo, el enlace con el bloque físico del disco que tiene asignado el archivo. En sistemas de archivos como ext3 lo que se hace es poner estos punteros (directos, indirectos, doblemente indirectos y triplemente indirectos) en 0. Inmediatamente la información del disco no se borra, pero al "liberar" el inodo, estamos habilitando que se pueda sobreescribir ese bloque del disco.
 
 ##3. Mostrar el no de i-nodo de los archivos de /bin:
- -a. en una columna
- ```
+**a. en una columna**
+```
 matias@debian:/bin$ ls -li | more
 total 110344
 263779 -rwxr-xr-x 1 root root      60064 feb 28  2019 [
@@ -2871,10 +2871,9 @@ ll
 314931 -rwxr-xr-x 2 root root     183136 jul 30  2019  zipinfo
 264219 -rwxr-xr-x 1 root root       2205 ene  5  2019  zless
 264220 -rwxr-xr-x 1 root root       1841 ene  5  2019  zmore
-264221 -rwxr-xr-x 1 root root       4552 ene  5  2019  znew
- 
- ```
- -b. en varias columnas.
+264221 -rwxr-xr-x 1 root root       4552 ene  5  2019  znew 
+```
+**b. en varias columnas.**
 ```
 matias@debian:~$ ls -i /bin
 263779 '['                                  273530  ntfsinfo
@@ -3570,8 +3569,11 @@ matias@debian:~$ ls -l A*
 -rw-r--r-- 2 matias matias 438 sep  9 02:56 AA
 ```
 El número de enlaces aumento en 1
+
 ***b. Realice de nuevo la misma operación pero en este caso sobre un directorio. ¿Puede realizar un enlace simbólico sobre un directorio?***
+
 No se puede realizar enlaces duros sobre directorios, entre otras cosas porque rompería el patrón aciclicó del sistema de archivos (un directorio podria tener a su directorio padre como enlace, creando un bucle infinito para algunos comandos como ```du```, ya que el manejo se basa en el i-nodo). Sin embargo, los enlaces simbólicos a directorios si se permiten, ya que son un archivo más de enlace, con un i-nodo distinto del directorio original.
+
 ***c. Cree un enlace simbólico sobre el archivo original de la pregunta a) ¿Cuántos enlaces tiene ahora?***
 ```
 matias@debian:~$ ls -la A*
@@ -3615,5 +3617,2168 @@ en la Tierra de Mordor donde se extienden las Sombras
 ```
 ***e. Intente realizar un enlace duro sobre el archivo de contraseñas del sistema. ¿Qué ocurre? ¿Por qué? Realice un enlace simbólico. ¿Qué ocurre? ¿Por qué?***
 No se puede realizar un enlace duro sobre el archivo ```/etc/shadow``` ya que solo el usuario ```root``` del sistema tiene permisos de lecto-escritura sobre ese i-nodo. Sin embargo, podemos realizar un enlace simbólico al archivo, pero no podemos acceder a la información que tiene adentro ya que nuevamente los permisos de lecto-escritura son los del archivo origen, y están restringidos solo al usuario **root**
+
+# Capitulo 5
+## Actividad 1
+### 2.Cree el archivo lista_usu que contenga los usuarios activos del sistema. Verificar la existenciael contenido de los archivos creados.
+```
+matias@debian:~$ who > lista_usu
+matias@debian:~$ ls -l lista_usu lista_com 
+-rw-r--r-- 1 matias matias 74266 sep  9 16:22 lista_com
+-rw-r--r-- 1 matias matias    44 sep  9 16:44 lista_usu
+matias@debian:~$ more lista_usu 
+matias   tty7         2020-09-09 16:20 (:0)
+matias@debian:~$ more lista_com 
+total 110344
+-rwxr-xr-x 1 root root      60064 feb 28  2019 [
+-rwxr-xr-x 1 root root         96 oct 10  2019 2to3-2.7
+-rwxr-xr-x 1 root root         39 feb  5  2018 7z
+-rwxr-xr-x 1 root root         40 feb  5  2018 7za
+-rwxr-xr-x 1 root root         40 feb  5  2018 7zr
+-rwxr-xr-x 1 root root      30936 mar 30  2019 aa-enabled
+-rwxr-xr-x 1 root root      30936 mar 30  2019 aa-exec
+-rwxr-xr-x 1 root root      55480 oct 15  2019 ab
+-rwxr-xr-x 1 root root      22600 mar 30  2019 aconnect
+-rwxr-xr-x 1 root root      26704 ene 10  2019 addpart
+lrwxrwxrwx 1 root root         26 mar 21  2019 addr2line -> x86_64-linux-gnu-addr2line
+-rwxr-xr-x 1 root root      47240 mar 30  2019 alsabat
+-rwxr-xr-x 1 root root      80888 mar 30  2019 alsaloop
+-rwxr-xr-x 1 root root      68024 mar 30  2019 alsamixer
+-rwxr-xr-x 1 root root      14408 mar 30  2019 alsatplg
+-rwxr-xr-x 1 root root      18880 mar 30  2019 alsaucm
+-rwxr-xr-x 1 root root      26704 mar 30  2019 amidi
+-rwxr-xr-x 1 root root      59544 mar 30  2019 amixer
+-rwxr-xr-x 1 root root     432480 nov 10  2016 analog
+lrwxrwxrwx 1 root root         20 ago 27  2018 ant -> ../share/ant/bin/ant
+-rwxr-xr-x 1 root root      79992 mar 30  2019 aplay
+-rwxr-xr-x 1 root root      22608 mar 30  2019 aplaymidi
+-rwxr-xr-x 1 root root      10472 mar 18  2018 appres
+lrwxrwxrwx 1 root root          6 feb 10  2019 apropos -> whatis
+-rwxr-xr-x 1 root root      18520 may 12 06:57 apt
+-rwxr-xr-x 1 root root      84128 may 12 06:57 apt-cache
+-rwxr-xr-x 1 root root      26784 may 12 06:57 apt-cdrom
+-rwxr-xr-x 1 root root      26712 may 12 06:57 apt-config
+-rwxr-xr-x 1 root root      22688 may 12 06:57 apt-extracttemplates
+-rwxr-xr-x 1 root root     243872 may 12 06:57 apt-ftparchive
+-rwxr-xr-x 1 root root      47264 may 12 06:57 apt-get
+-rwxr-xr-x 1 root root      27730 may 12 06:57 apt-key
+-rwxr-xr-x 1 root root      10868 mar 17  2019 apt-listchanges
+-rwxr-xr-x 1 root root      55456 may 12 06:57 apt-mark
+-rwxr-xr-x 1 root root      47192 may 12 06:57 apt-sortpkgs
+lrwxrwxrwx 1 root root         19 mar 21  2019 ar -> x86_64-linux-gnu-ar
+-rwxr-xr-x 1 root root      39584 feb 28  2019 arch
+lrwxrwxrwx 1 root root          5 mar 30  2019 arecord -> aplay
+-rwxr-xr-x 1 root root      30808 mar 30  2019 arecordmidi
+lrwxrwxrwx 1 root root         19 mar 21  2019 as -> x86_64-linux-gnu-as
+-rwxr-xr-x 1 root root      26696 mar 30  2019 aseqdump
+-rwxr-xr-x 1 root root      26752 mar 30  2019 aseqnet
+-rwxr-xr-x 1 root root     153944 ene 31  2019 aspell
+--Más--(3%)
+```
+### 3. Realice una copia de seguridad de los archivos creados y llámela copia.tar. Verifique si los archivos originales todavía existen.
+```
+matias@debian:~$ tar cvf copia.tar lista_usu lista_com 
+lista_usu
+lista_com
+matias@debian:~$ ls -l lista_usu lista_com 
+-rw-r--r-- 1 matias matias 74266 sep  9 16:22 lista_com
+-rw-r--r-- 1 matias matias    44 sep  9 16:44 lista_usu
+```
+### 4. Muestre el contenido del archivo de respaldo creado.
+
+```
+matias@debian:~$ tar tvf copia.tar 
+-rw-r--r-- matias/matias    44 2020-09-09 16:44 lista_usu
+-rw-r--r-- matias/matias 74266 2020-09-09 16:22 lista_com
+```
+
+### 5. Extraiga los archivos originales del archivo de respaldo, en el sudirectorio backup creado en su directorio de login.
+```
+matias@debian:~$ mkdir backup && cd backup
+matias@debian:~/backup$ tar xvf ../copia.tar 
+lista_usu
+lista_com
+matias@debian:~/backup$ ls
+lista_com  lista_usu
+```
+### 6.Realice una copia de seguridad comprimida de los archivos de su directorio de conexión en un archivo llamado backup.tgz. Verifique si los archivos originales todavía existen.
+Efectivamente los archivos siguen existiendo, y también la ejecución del comando arroja un mensajde de advertencia de que el directorio sufrió modificaciones desde que se ejcutó el comando, ya que está teniendo en cuenta el archivo creado por él mismo *backup.tgz*, que quedó lógicamente fuera del backup.
+```
+matias@debian:~$ tar czvf backup.tgz ./
+./
+./Escritorio/
+./.xsession-errors.old
+./.vboxclient-seamless.pid
+./.xfce4-session.verbose-log
+./.xfce4-session.verbose-log.last
+./clave-link-carpeta
+./.bashrc
+./Música/
+./AA
+./lista_com
+./Plantillas/
+./.bash_logout
+./Público/
+./.vboxclient-display-svga-x11.pid
+./.profile
+./.gnupg/
+./.gnupg/private-keys-v1.d/
+./lista_usu
+./Descargas/
+./.bash_history
+./nuevo/
+./nuevo/dato1
+./nuevo/dato2sb
+./nuevo/dato2ln
+./.local/
+./.local/share/
+./.local/share/notes/
+./.local/share/notes/Notas/
+./.local/share/notes/Notas/Notas
+./.local/share/recently-used.xbel
+./.local/share/nano/
+./link-apache
+./.ICEauthority
+./AAA
+./.mozilla/
+./.mozilla/firefox/
+./.mozilla/firefox/Pending Pings/
+./.mozilla/firefox/gjah9rbv.default/
+./.mozilla/firefox/gjah9rbv.default/times.json
+./.mozilla/firefox/njcs43kl.default-esr/
+./.mozilla/firefox/njcs43kl.default-esr/handlers.json
+./.mozilla/firefox/njcs43kl.default-esr/containers.json
+./.mozilla/firefox/njcs43kl.default-esr/favicons.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/bookmarkbackups/
+./.mozilla/firefox/njcs43kl.default-esr/xulstore.json
+./.mozilla/firefox/njcs43kl.default-esr/AlternateServices.txt
+./.mozilla/firefox/njcs43kl.default-esr/addonStartup.json.lz4
+./.mozilla/firefox/njcs43kl.default-esr/crashes/
+./.mozilla/firefox/njcs43kl.default-esr/crashes/events/
+./.mozilla/firefox/njcs43kl.default-esr/prefs.js
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/session-state.json
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884913.4fffcdc1-aaf1-45e3-ba52-157a9e55d6dd.main.jsonlz4
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884904.b9b4d94d-7d97-4f51-9f32-74ecdfce26b5.new-profile.jsonlz4
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884909.a0d8e889-1c42-418c-98cc-00fc56301e05.event.jsonlz4
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884914.755a64cb-5eba-4efd-828e-35c1d629965a.first-shutdown.jsonlz4
+./.mozilla/firefox/njcs43kl.default-esr/datareporting/state.json
+./.mozilla/firefox/njcs43kl.default-esr/.parentlock
+./.mozilla/firefox/njcs43kl.default-esr/content-prefs.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/cookies.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/places.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/TRRBlacklist.txt
+./.mozilla/firefox/njcs43kl.default-esr/extension-preferences.json
+./.mozilla/firefox/njcs43kl.default-esr/cert9.db
+./.mozilla/firefox/njcs43kl.default-esr/SecurityPreloadState.txt
+./.mozilla/firefox/njcs43kl.default-esr/sessionCheckpoints.json
+./.mozilla/firefox/njcs43kl.default-esr/search.json.mozlz4
+./.mozilla/firefox/njcs43kl.default-esr/addons.json
+./.mozilla/firefox/njcs43kl.default-esr/SiteSecurityServiceState.txt
+./.mozilla/firefox/njcs43kl.default-esr/minidumps/
+./.mozilla/firefox/njcs43kl.default-esr/times.json
+./.mozilla/firefox/njcs43kl.default-esr/webappsstore.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/extensions.json
+./.mozilla/firefox/njcs43kl.default-esr/key4.db
+./.mozilla/firefox/njcs43kl.default-esr/pkcs11.txt
+./.mozilla/firefox/njcs43kl.default-esr/permissions.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/storage.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/sessionstore-backups/
+./.mozilla/firefox/njcs43kl.default-esr/sessionstore.jsonlz4
+./.mozilla/firefox/njcs43kl.default-esr/extensions/
+./.mozilla/firefox/njcs43kl.default-esr/compatibility.ini
+./.mozilla/firefox/njcs43kl.default-esr/storage/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/.metadata-v2
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1657114595AmcateirvtiSty.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1451318868ntouromlalnodry--epcr.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1451318868ntouromlalnodry--epcr.files/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3870112724rsegmnoittet-es.files/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3870112724rsegmnoittet-es.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3561288849sdhlie.files/
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3561288849sdhlie.sqlite
+./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1657114595AmcateirvtiSty.files/
+./.mozilla/firefox/installs.ini
+./.mozilla/firefox/profiles.ini
+./.mozilla/firefox/Crash Reports/
+./.mozilla/firefox/Crash Reports/InstallTime20200720181548
+./.mozilla/firefox/Crash Reports/events/
+./.mozilla/extensions/
+./.mozilla/systemextensionsdev/
+./.vboxclient-clipboard.pid
+./passwd-link
+./Vídeos/
+./A
+./backup/
+./backup/lista_com
+./backup/lista_usu
+./Documentos/
+./shadow-link
+./copia.tar
+./clave/
+./clave/passwd
+./.config/
+./.config/xfce4-session/
+./.config/xfce4/
+./.config/xfce4/panel/
+./.config/xfce4/panel/launcher-9/
+./.config/xfce4/panel/launcher-9/15977853891.desktop
+./.config/xfce4/panel/launcher-10/
+./.config/xfce4/panel/launcher-10/15977853892.desktop
+./.config/xfce4/panel/launcher-11/
+./.config/xfce4/panel/launcher-11/15977853893.desktop
+./.config/xfce4/panel/launcher-12/
+./.config/xfce4/panel/launcher-12/15977853894.desktop
+./.config/xfce4/terminal/
+./.config/xfce4/terminal/accels.scm
+./.config/xfce4/xfce4-taskmanager.rc
+./.config/xfce4/xfwm4/
+./.config/xfce4/help.rc
+./.config/xfce4/xfconf/
+./.config/xfce4/xfconf/xfce-perchannel-xml/
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-settings-manager.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-settings-editor.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-notifyd.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/keyboards.xml
+./.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+./.config/xfce4/desktop/
+./.config/xfce4/desktop/icons.screen0-934x902.rc
+./.config/xfce4/desktop/icons.screen0-1904x914.rc
+./.config/xfce4/desktop/icons.screen0-784x584.rc
+./.config/xfce4/desktop/icons.screen0-784x504.rc
+./.config/xfce4/xfce4-notes.gtkrc
+./.config/Mousepad/
+./.config/Mousepad/accels.scm
+./.config/user-dirs.locale
+./.config/Thunar/
+./.config/Thunar/uca.xml
+./.config/Thunar/accels.scm
+./.config/procps/
+./.config/user-dirs.dirs
+./.config/dconf/
+./.config/dconf/user
+./.config/pulse/
+./.config/pulse/cd44de520bd642e69488d5d8ef40864c-device-volumes.tdb
+./.config/pulse/cd44de520bd642e69488d5d8ef40864c-default-sink
+./.config/pulse/cookie
+./.config/pulse/cd44de520bd642e69488d5d8ef40864c-stream-volumes.tdb
+./.config/pulse/cd44de520bd642e69488d5d8ef40864c-card-database.tdb
+./.config/pulse/cd44de520bd642e69488d5d8ef40864c-default-source
+./.config/gtk-3.0/
+./.Xauthority
+./.xsession-errors
+./.cache/
+./.cache/sessions/
+./.cache/sessions/xfwm4-2b41916c3-d0e0-4737-b5a4-bb94db194521.state
+./.cache/sessions/xfwm4-2dfd72c32-9bc0-4d18-bf19-3f572afe5c77.state
+./.cache/sessions/xfce4-session-debian:0
+./.cache/sessions/xfce4-session-debian:0.bak
+./.cache/mozilla/
+./.cache/mozilla/firefox/
+./.cache/mozilla/firefox/gjah9rbv.default/
+./.cache/mozilla/firefox/njcs43kl.default-esr/
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-trackwhite-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flash-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-block-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashallow-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-malware-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozplugin-block-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/base-track-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flashsubdoc-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-phish-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-block-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-trackwhite-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashsubdoc-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flashsubdoc-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashsubdoc-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/ads-track-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-harmful-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/analytics-track-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flash-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-unwanted-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/base-track-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flash-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-malware-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/content-track-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-harmful-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/social-track-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-unwanted-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/analytics-track-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/allow-flashallow-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/social-track-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-track-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/ads-track-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashallow-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-phish-simple.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/allow-flashallow-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/content-track-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/google4/
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-track-simple.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozstd-trackwhite-digest256.sbstore
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flash-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozplugin-block-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozstd-trackwhite-digest256.pset
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/83ADE40216D6A370A78A28ECA2EB0805FBD73379
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/20FF2AC5583B0097CC109C426C2028BFFDB6F10D
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/CC272A84C437C06018182F241F266FFC52770F69
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/E7DE6A2E092398D6655100CA653A72C5A1819E3E
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/B6F8D2A797B257A0FA38E0B262ECF974330E267C
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/5D7EED656A360F7171932CAEA249E6C8F2F37AA5
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/996D20D018E4F7762222CD38EB107482289071F3
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/78DBE55782B7B81AF853B4884323B48C34429A53
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/FA9AB486396637268818DF116C977F8A81C62A80
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D68CAF7DF2821B6FF8FA7C896445E3FEDF710B49
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/03249B0B12F3E9B09D67FBA6461D0DC0231C8ACC
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0D288E5EFB5F6BD4D2FBED99FD460472CAB057B9
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0B1F93F56D27DAB33AE304F6CF4F6AEF68C31E0A
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/B9667D755101C1D21E786F253C654BD086964020
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/89DBE1DF558BB8439E2062ECC3272086F2E3FF1F
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/EF24CA4A4C9F65F851ACC2CDBDEFF0B7EB1A8BD0
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/9DF825CC78A660D81D571A4A46F060676D7CF4F3
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/DADD4F9B9A5498815F97C8458A170D119989A542
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/4903E7ABE348ED39D98D1C844FB81A906D5ECA16
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/C826F47B16117BA28458A47C4D3BA037A530889A
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0DDE7EBD8F3AD9D564DBF6AD91C37AB55D56D0AF
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/43234379F581348638A4940A6ADE08EFDE610BDB
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/4F7F8C85314AA6357D8FE326094823BCF481DAB0
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/DE946FEBDB6602261E439C36266EE3395B3D05B3
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/1761AD362311F7EAAC34E15A930400DDFE6299E0
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/103BE14A23A6DF77F47EFA85938B6926E6ECA347
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/6D730121FD763F5F1F5C0FA06E1E8AC73C97591D
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/BAEE5929C302B628351F8A770CA24F6C3585A52B
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/C3D12E2B603C194F2FE1E0DB12DB2A2BB4C4FE2A
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0EDDF8C091E2FED62E44BEDDDC1723F5BF38FE4F
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/23EA9B0B9F6AB1B521FD52A464FA54FD53C11217
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/6D263E36A5B08A3BCDF5793C6C843DAA81B083BB
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/340A10D652987DF5E54312E31F5C22F6E8DBA574
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0318830328E6C5A25F4128E85A844818A3EF4040
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/4B6ED8BCAD25D8524A2762D781ED6AFB47AA1BE5
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/F8B51D2EC10AE9A943F8F24B1B1561CF237EA4EA
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/66F684AF9CC570C6247262B47C769C601C2A338B
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/E910D1FCE8BF27F5536B88567A4DC32624377CC3
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/447E62EE439AC61BDFBDB92986DBA56D2E79ADD8
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/179977EC1B5CF43A769203F2E63E4D2CCB00C0BE
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D1FF650E4D89F0AF6D2D3412AE4EFA82EB6911AE
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0D0F64D1E6826ADE9123EFDCDC3E125423305620
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D2DB1CF83E7976F198B7B40E1C9CBEA4CF237C70
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/44BA9A5AAB74A795209F8B1E91F45308B9E2D97C
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D68DF503ED76B50297BF15F775A07FE8820C8200
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/ce_T151c2VyQ29udGV4dElkPTUsYSw=
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/doomed/
+./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/ce_T151c2VyQ29udGV4dElkPTUs
+./.cache/mozilla/firefox/njcs43kl.default-esr/thumbnails/
+./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/
+./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/scriptCache-child.bin
+./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/scriptCache.bin
+./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/webext.sc.lz4
+./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/urlCache.bin
+./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/startupCache.8.little
+./.cache/mozilla/firefox/njcs43kl.default-esr/OfflineCache/
+./.cache/mozilla/firefox/njcs43kl.default-esr/OfflineCache/index.sqlite
+./.cache/gstreamer-1.0/
+./.cache/gstreamer-1.0/registry.x86_64.bin
+./.cache/fontconfig/
+./.cache/fontconfig/CACHEDIR.TAG
+./.cache/fontconfig/e74d411252dea466295e020db15a86c6-le64.cache-7
+./.vboxclient-draganddrop.pid
+./Imágenes/
+./.dmrc
+tar: .: el fichero cambió mientras se estaba leyendo
+```
+### 7. Muestre el contenido del archivo de respaldo creado.
+```
+matias@debian:~$ tar tvf backup.tgz 
+drwxr-xr-x matias/matias     0 2020-09-09 16:53 ./
+drwxr-xr-x matias/matias     0 2020-08-18 18:16 ./Escritorio/
+-rw------- matias/matias  3599 2020-09-09 03:55 ./.xsession-errors.old
+-rw-r----- matias/matias     5 2020-09-09 16:20 ./.vboxclient-seamless.pid
+-rw-r--r-- matias/matias 19032 2020-09-09 16:20 ./.xfce4-session.verbose-log
+-rw-r--r-- matias/matias 19701 2020-09-08 23:43 ./.xfce4-session.verbose-log.last
+lrwxrwxrwx matias/matias     0 2020-09-09 03:27 ./clave-link-carpeta -> clave/
+-rw-r--r-- matias/matias  3526 2020-08-18 18:08 ./.bashrc
+drwxr-xr-x matias/matias     0 2020-08-18 18:16 ./Música/
+-rw-r--r-- matias/matias   438 2020-09-09 02:56 ./AA
+-rw-r--r-- matias/matias 74266 2020-09-09 16:22 ./lista_com
+drwxr-xr-x matias/matias     0 2020-08-18 18:16 ./Plantillas/
+-rw-r--r-- matias/matias   220 2020-08-18 18:08 ./.bash_logout
+drwxr-xr-x matias/matias     0 2020-08-18 18:16 ./Público/
+-rw-r----- matias/matias     5 2020-09-09 16:20 ./.vboxclient-display-svga-x11.pid
+-rw-r--r-- matias/matias   807 2020-08-18 18:08 ./.profile
+drwx------ matias/matias     0 2020-08-18 18:16 ./.gnupg/
+drwx------ matias/matias     0 2020-08-18 18:16 ./.gnupg/private-keys-v1.d/
+-rw-r--r-- matias/matias    44 2020-09-09 16:44 ./lista_usu
+drwxr-xr-x matias/matias     0 2020-08-18 18:16 ./Descargas/
+-rw------- matias/matias 20930 2020-09-09 03:55 ./.bash_history
+drwxr-xr-x matias/matias     0 2020-09-07 22:23 ./nuevo/
+-rw-r--r-- matias/matias   931 2020-09-07 21:50 ./nuevo/dato1
+lrwxrwxrwx matias/matias     0 2020-09-07 22:17 ./nuevo/dato2sb -> dato2
+-rw-r--r-- matias/matias   971 2020-09-07 21:56 ./nuevo/dato2ln
+drwxr-xr-x matias/matias     0 2020-08-18 18:16 ./.local/
+drwx------ matias/matias     0 2020-09-07 21:00 ./.local/share/
+drwx------ matias/matias     0 2020-08-24 18:31 ./.local/share/notes/
+drwx------ matias/matias     0 2020-08-24 18:32 ./.local/share/notes/Notas/
+-rw-r--r-- matias/matias   134 2020-08-24 18:32 ./.local/share/notes/Notas/Notas
+-rw------- matias/matias   218 2020-09-01 00:42 ./.local/share/recently-used.xbel
+drwx------ matias/matias     0 2020-09-07 21:00 ./.local/share/nano/
+lrwxrwxrwx matias/matias     0 2020-09-09 02:38 ./link-apache -> /etc/init.d/apache2
+-rw------- matias/matias  2214 2020-09-09 16:20 ./.ICEauthority
+lrwxrwxrwx matias/matias     0 2020-09-09 03:31 ./AAA -> A
+drwx------ matias/matias     0 2020-08-18 18:24 ./.mozilla/
+drwx------ matias/matias     0 2020-08-18 18:24 ./.mozilla/firefox/
+drwx------ matias/matias     0 2020-08-18 18:24 ./.mozilla/firefox/Pending Pings/
+drwx------ matias/matias     0 2020-08-18 18:24 ./.mozilla/firefox/gjah9rbv.default/
+-rwx------ matias/matias    47 2020-08-18 18:24 ./.mozilla/firefox/gjah9rbv.default/times.json
+drwx------ matias/matias     0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/
+-rw------- matias/matias   555 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/handlers.json
+-rw------- matias/matias   939 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/containers.json
+-rw-r--r-- matias/matias 5242880 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/favicons.sqlite
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/bookmarkbackups/
+-rw------- matias/matias     157 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/xulstore.json
+-rw-r--r-- matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/AlternateServices.txt
+-rw------- matias/matias    3591 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/addonStartup.json.lz4
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/crashes/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/crashes/events/
+-rw------- matias/matias    5632 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/prefs.js
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/
+-rw------- matias/matias     161 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/session-state.json
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/
+-rw------- matias/matias    8798 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884913.4fffcdc1-aaf1-45e3-ba52-157a9e55d6dd.main.jsonlz4
+-rw------- matias/matias    2602 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884904.b9b4d94d-7d97-4f51-9f32-74ecdfce26b5.new-profile.jsonlz4
+-rw------- matias/matias    2884 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884909.a0d8e889-1c42-418c-98cc-00fc56301e05.event.jsonlz4
+-rw------- matias/matias    8790 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/archived/2020-08/1597785884914.755a64cb-5eba-4efd-828e-35c1d629965a.first-shutdown.jsonlz4
+-rw------- matias/matias      51 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/datareporting/state.json
+-rw-r--r-- matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/.parentlock
+-rw-r--r-- matias/matias  229376 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/content-prefs.sqlite
+-rw-r--r-- matias/matias  131072 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/cookies.sqlite
+-rw-r--r-- matias/matias 5242880 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/places.sqlite
+-rw-r--r-- matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/TRRBlacklist.txt
+-rw------- matias/matias    1023 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/extension-preferences.json
+-rw------- matias/matias  229376 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/cert9.db
+-rw-r--r-- matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/SecurityPreloadState.txt
+-rw------- matias/matias     288 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/sessionCheckpoints.json
+-rw------- matias/matias    2884 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/search.json.mozlz4
+-rw------- matias/matias      45 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/addons.json
+-rw-r--r-- matias/matias     479 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/SiteSecurityServiceState.txt
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/minidumps/
+-rw------- matias/matias      50 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/times.json
+-rw-r--r-- matias/matias   98304 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/webappsstore.sqlite
+-rw------- matias/matias   79991 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/extensions.json
+-rw------- matias/matias  294912 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/key4.db
+-rw------- matias/matias     474 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/pkcs11.txt
+-rw-r--r-- matias/matias   98304 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/permissions.sqlite
+-rw-r--r-- matias/matias     512 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage.sqlite
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/sessionstore-backups/
+-rw------- matias/matias    4014 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/sessionstore.jsonlz4
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/extensions/
+-rw------- matias/matias     171 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/compatibility.ini
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/
+-rw-r--r-- matias/matias      42 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/.metadata-v2
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/
+-rw-r--r-- matias/matias   49152 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1657114595AmcateirvtiSty.sqlite
+-rw-r--r-- matias/matias   49152 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1451318868ntouromlalnodry--epcr.sqlite
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1451318868ntouromlalnodry--epcr.files/
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3870112724rsegmnoittet-es.files/
+-rw-r--r-- matias/matias  638976 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3870112724rsegmnoittet-es.sqlite
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3561288849sdhlie.files/
+-rw-r--r-- matias/matias   49152 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/3561288849sdhlie.sqlite
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb/1657114595AmcateirvtiSty.files/
+-rw-r--r-- matias/matias      58 2020-08-18 18:24 ./.mozilla/firefox/installs.ini
+-rw-r--r-- matias/matias     247 2020-08-18 18:24 ./.mozilla/firefox/profiles.ini
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/Crash Reports/
+-rw------- matias/matias      10 2020-08-18 18:24 ./.mozilla/firefox/Crash Reports/InstallTime20200720181548
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/firefox/Crash Reports/events/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/extensions/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.mozilla/systemextensionsdev/
+-rw-r----- matias/matias       5 2020-09-09 16:20 ./.vboxclient-clipboard.pid
+lrwxrwxrwx matias/matias       0 2020-09-09 03:45 ./passwd-link -> /etc/passwd
+drwxr-xr-x matias/matias       0 2020-08-18 18:16 ./Vídeos/
+-rw-r--r-- matias/matias       0 2020-09-09 03:34 ./A
+drwxr-xr-x matias/matias       0 2020-09-09 16:53 ./backup/
+-rw-r--r-- matias/matias   74266 2020-09-09 16:22 ./backup/lista_com
+-rw-r--r-- matias/matias      44 2020-09-09 16:44 ./backup/lista_usu
+drwxr-xr-x matias/matias       0 2020-08-18 18:16 ./Documentos/
+lrwxrwxrwx matias/matias       0 2020-09-09 03:47 ./shadow-link -> /etc/shadow
+-rw-r--r-- matias/matias   81920 2020-09-09 16:49 ./copia.tar
+drwxr-xr-x matias/matias       0 2020-09-09 03:12 ./clave/
+-rw-r--r-- matias/matias    2210 2020-09-09 03:12 ./clave/passwd
+drwxr-xr-x matias/matias       0 2020-09-01 02:36 ./.config/
+drwx------ matias/matias       0 2020-08-25 13:23 ./.config/xfce4-session/
+drwxr-xr-x matias/matias       0 2020-08-24 20:37 ./.config/xfce4/
+drwxr-xr-x matias/matias       0 2020-08-18 18:16 ./.config/xfce4/panel/
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/xfce4/panel/launcher-9/
+-rw-r--r-- matias/matias     423 2020-08-18 18:16 ./.config/xfce4/panel/launcher-9/15977853891.desktop
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/xfce4/panel/launcher-10/
+-rw-r--r-- matias/matias     483 2020-08-18 18:16 ./.config/xfce4/panel/launcher-10/15977853892.desktop
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/xfce4/panel/launcher-11/
+-rw-r--r-- matias/matias     442 2020-08-18 18:16 ./.config/xfce4/panel/launcher-11/15977853893.desktop
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/xfce4/panel/launcher-12/
+-rw-r--r-- matias/matias     400 2020-08-18 18:16 ./.config/xfce4/panel/launcher-12/15977853894.desktop
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/xfce4/terminal/
+-rw-r--r-- matias/matias    3680 2020-08-18 18:16 ./.config/xfce4/terminal/accels.scm
+-rw-r--r-- matias/matias     462 2020-08-24 20:36 ./.config/xfce4/xfce4-taskmanager.rc
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/xfce4/xfwm4/
+-rw-r--r-- matias/matias      19 2020-08-24 20:33 ./.config/xfce4/help.rc
+drwxr-xr-x matias/matias       0 2020-08-18 18:16 ./.config/xfce4/xfconf/
+drwx------ matias/matias       0 2020-09-09 16:20 ./.config/xfce4/xfconf/xfce-perchannel-xml/
+-rw-r--r-- matias/matias     276 2020-08-25 13:24 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-settings-manager.xml
+-rw-r--r-- matias/matias    4395 2020-08-18 18:16 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-desktop.xml
+-rw-r--r-- matias/matias    3501 2020-09-09 16:20 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+-rw-r--r-- matias/matias   10167 2020-08-18 18:16 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-keyboard-shortcuts.xml
+-rw-r--r-- matias/matias    1495 2020-08-18 18:32 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-session.xml
+-rw-r--r-- matias/matias     336 2020-08-25 13:24 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-settings-editor.xml
+-rw-r--r-- matias/matias     273 2020-08-18 18:32 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-notifyd.xml
+-rw-r--r-- matias/matias    5218 2020-08-18 18:16 ./.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml
+-rw-r--r-- matias/matias     203 2020-08-31 22:41 ./.config/xfce4/xfconf/xfce-perchannel-xml/keyboards.xml
+-rw-r--r-- matias/matias     337 2020-08-18 18:24 ./.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+drwx------ matias/matias       0 2020-09-09 03:51 ./.config/xfce4/desktop/
+-rw-r--r-- matias/matias     163 2020-09-08 19:44 ./.config/xfce4/desktop/icons.screen0-934x902.rc
+-rw-r--r-- matias/matias     163 2020-09-09 03:51 ./.config/xfce4/desktop/icons.screen0-1904x914.rc
+-rw-r--r-- matias/matias     125 2020-08-18 18:16 ./.config/xfce4/desktop/icons.screen0-784x584.rc
+-rw-r--r-- matias/matias     163 2020-09-01 00:00 ./.config/xfce4/desktop/icons.screen0-784x504.rc
+-rw-r--r-- matias/matias     281 2020-08-24 20:37 ./.config/xfce4/xfce4-notes.gtkrc
+drwx------ matias/matias       0 2020-08-24 20:35 ./.config/Mousepad/
+-rw-r--r-- matias/matias    5134 2020-08-24 20:35 ./.config/Mousepad/accels.scm
+-rw-r--r-- matias/matias       5 2020-08-18 18:16 ./.config/user-dirs.locale
+drwx------ matias/matias       0 2020-08-18 18:24 ./.config/Thunar/
+-rw------- matias/matias     395 2020-08-18 18:24 ./.config/Thunar/uca.xml
+-rw-r--r-- matias/matias    5273 2020-09-09 16:20 ./.config/Thunar/accels.scm
+drwx------ matias/matias       0 2020-09-01 02:36 ./.config/procps/
+-rw------- matias/matias     644 2020-08-18 18:16 ./.config/user-dirs.dirs
+drwx------ matias/matias       0 2020-09-09 16:20 ./.config/dconf/
+-rw-r--r-- matias/matias    2067 2020-09-09 16:20 ./.config/dconf/user
+drwx------ matias/matias       0 2020-08-18 18:16 ./.config/pulse/
+-rw------- matias/matias   12288 2020-09-08 19:47 ./.config/pulse/cd44de520bd642e69488d5d8ef40864c-device-volumes.tdb
+-rw------- matias/matias       1 2020-09-09 16:20 ./.config/pulse/cd44de520bd642e69488d5d8ef40864c-default-sink
+-rw------- matias/matias     256 2020-08-18 18:16 ./.config/pulse/cookie
+-rw------- matias/matias     696 2020-08-18 18:16 ./.config/pulse/cd44de520bd642e69488d5d8ef40864c-stream-volumes.tdb
+-rw------- matias/matias   45056 2020-08-18 18:16 ./.config/pulse/cd44de520bd642e69488d5d8ef40864c-card-database.tdb
+-rw------- matias/matias       1 2020-09-09 16:20 ./.config/pulse/cd44de520bd642e69488d5d8ef40864c-default-source
+drwx------ matias/matias       0 2020-09-01 00:42 ./.config/gtk-3.0/
+-rw------- matias/matias      51 2020-09-09 16:20 ./.Xauthority
+-rw------- matias/matias    2752 2020-09-09 16:20 ./.xsession-errors
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.cache/
+drwx------ matias/matias       0 2020-09-07 23:37 ./.cache/sessions/
+-rw-r--r-- matias/matias     230 2020-09-07 23:37 ./.cache/sessions/xfwm4-2b41916c3-d0e0-4737-b5a4-bb94db194521.state
+-rw-r--r-- matias/matias     263 2020-08-18 18:31 ./.cache/sessions/xfwm4-2dfd72c32-9bc0-4d18-bf19-3f572afe5c77.state
+-rw-r--r-- matias/matias    2475 2020-09-07 23:37 ./.cache/sessions/xfce4-session-debian:0
+-rw-r--r-- matias/matias    3060 2020-09-01 19:18 ./.cache/sessions/xfce4-session-debian:0.bak
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/gjah9rbv.default/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-trackwhite-simple.pset
+-rw-r--r-- matias/matias    7648 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flash-digest256.sbstore
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-block-simple.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashallow-digest256.pset
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-malware-simple.sbstore
+-rw-r--r-- matias/matias    3580 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozplugin-block-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/base-track-digest256.pset
+-rw-r--r-- matias/matias   82744 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flashsubdoc-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-phish-simple.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-block-simple.pset
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-trackwhite-simple.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashsubdoc-digest256.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flashsubdoc-digest256.pset
+-rw-r--r-- matias/matias     304 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashsubdoc-digest256.sbstore
+-rw-r--r-- matias/matias   59272 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/ads-track-digest256.sbstore
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-harmful-simple.sbstore
+-rw-r--r-- matias/matias   11104 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/analytics-track-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flash-digest256.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-unwanted-simple.pset
+-rw-r--r-- matias/matias   72340 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/base-track-digest256.sbstore
+-rw-r--r-- matias/matias     268 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flash-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-malware-simple.pset
+-rw-r--r-- matias/matias   18700 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/content-track-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-harmful-simple.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/social-track-digest256.pset
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-unwanted-simple.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/analytics-track-digest256.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/allow-flashallow-digest256.pset
+-rw-r--r-- matias/matias    2572 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/social-track-digest256.sbstore
+-rw-r--r-- matias/matias     272 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-track-simple.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/ads-track-digest256.pset
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/except-flashallow-digest256.sbstore
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-phish-simple.sbstore
+-rw-r--r-- matias/matias     232 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/allow-flashallow-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/content-track-digest256.pset
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/google4/
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/test-track-simple.pset
+-rw-r--r-- matias/matias  458296 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozstd-trackwhite-digest256.sbstore
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/block-flash-digest256.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozplugin-block-digest256.pset
+-rw-r--r-- matias/matias      16 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/safebrowsing/mozstd-trackwhite-digest256.pset
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/
+-rw------- matias/matias   13461 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/83ADE40216D6A370A78A28ECA2EB0805FBD73379
+-rw------- matias/matias    1276 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/20FF2AC5583B0097CC109C426C2028BFFDB6F10D
+-rw------- matias/matias   10014 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/CC272A84C437C06018182F241F266FFC52770F69
+-rw------- matias/matias    9352 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/E7DE6A2E092398D6655100CA653A72C5A1819E3E
+-rw------- matias/matias    9900 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/B6F8D2A797B257A0FA38E0B262ECF974330E267C
+-rw------- matias/matias    1276 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/5D7EED656A360F7171932CAEA249E6C8F2F37AA5
+-rw------- matias/matias   26117 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/996D20D018E4F7762222CD38EB107482289071F3
+-rw------- matias/matias    9691 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/78DBE55782B7B81AF853B4884323B48C34429A53
+-rw------- matias/matias    1276 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/FA9AB486396637268818DF116C977F8A81C62A80
+-rw------- matias/matias  105656 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D68CAF7DF2821B6FF8FA7C896445E3FEDF710B49
+-rw------- matias/matias    9180 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/03249B0B12F3E9B09D67FBA6461D0DC0231C8ACC
+-rw------- matias/matias   11568 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0D288E5EFB5F6BD4D2FBED99FD460472CAB057B9
+-rw------- matias/matias   18197 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0B1F93F56D27DAB33AE304F6CF4F6AEF68C31E0A
+-rw------- matias/matias  105542 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/B9667D755101C1D21E786F253C654BD086964020
+-rw------- matias/matias    8622 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/89DBE1DF558BB8439E2062ECC3272086F2E3FF1F
+-rw------- matias/matias   12038 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/EF24CA4A4C9F65F851ACC2CDBDEFF0B7EB1A8BD0
+-rw------- matias/matias   26347 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/9DF825CC78A660D81D571A4A46F060676D7CF4F3
+-rw------- matias/matias   12457 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/DADD4F9B9A5498815F97C8458A170D119989A542
+-rw------- matias/matias   10022 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/4903E7ABE348ED39D98D1C844FB81A906D5ECA16
+-rw------- matias/matias   13470 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/C826F47B16117BA28458A47C4D3BA037A530889A
+-rw------- matias/matias   11247 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0DDE7EBD8F3AD9D564DBF6AD91C37AB55D56D0AF
+-rw------- matias/matias    8503 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/43234379F581348638A4940A6ADE08EFDE610BDB
+-rw------- matias/matias  153800 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/4F7F8C85314AA6357D8FE326094823BCF481DAB0
+-rw------- matias/matias   10102 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/DE946FEBDB6602261E439C36266EE3395B3D05B3
+-rw------- matias/matias   10727 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/1761AD362311F7EAAC34E15A930400DDFE6299E0
+-rw------- matias/matias   14235 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/103BE14A23A6DF77F47EFA85938B6926E6ECA347
+-rw------- matias/matias   10413 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/6D730121FD763F5F1F5C0FA06E1E8AC73C97591D
+-rw------- matias/matias   12346 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/BAEE5929C302B628351F8A770CA24F6C3585A52B
+-rw------- matias/matias    9785 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/C3D12E2B603C194F2FE1E0DB12DB2A2BB4C4FE2A
+-rw------- matias/matias     238 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0EDDF8C091E2FED62E44BEDDDC1723F5BF38FE4F
+-rw------- matias/matias   10646 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/23EA9B0B9F6AB1B521FD52A464FA54FD53C11217
+-rw------- matias/matias    9986 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/6D263E36A5B08A3BCDF5793C6C843DAA81B083BB
+-rw------- matias/matias   10042 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/340A10D652987DF5E54312E31F5C22F6E8DBA574
+-rw------- matias/matias   10850 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0318830328E6C5A25F4128E85A844818A3EF4040
+-rw------- matias/matias   41411 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/4B6ED8BCAD25D8524A2762D781ED6AFB47AA1BE5
+-rw------- matias/matias   10294 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/F8B51D2EC10AE9A943F8F24B1B1561CF237EA4EA
+-rw------- matias/matias    9276 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/66F684AF9CC570C6247262B47C769C601C2A338B
+-rw------- matias/matias   32872 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/E910D1FCE8BF27F5536B88567A4DC32624377CC3
+-rw------- matias/matias   12464 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/447E62EE439AC61BDFBDB92986DBA56D2E79ADD8
+-rw------- matias/matias   98434 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/179977EC1B5CF43A769203F2E63E4D2CCB00C0BE
+-rw------- matias/matias    9455 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D1FF650E4D89F0AF6D2D3412AE4EFA82EB6911AE
+-rw------- matias/matias    1276 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/0D0F64D1E6826ADE9123EFDCDC3E125423305620
+-rw------- matias/matias   48015 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D2DB1CF83E7976F198B7B40E1C9CBEA4CF237C70
+-rw------- matias/matias   12586 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/44BA9A5AAB74A795209F8B1E91F45308B9E2D97C
+-rw------- matias/matias    1276 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/entries/D68DF503ED76B50297BF15F775A07FE8820C8200
+-rw------- matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/ce_T151c2VyQ29udGV4dElkPTUsYSw=
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/doomed/
+-rw------- matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/cache2/ce_T151c2VyQ29udGV4dElkPTUs
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/thumbnails/
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/
+-rw-r--r-- matias/matias  764271 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/scriptCache-child.bin
+-rw-r--r-- matias/matias 7262443 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/scriptCache.bin
+-rw------- matias/matias   98199 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/webext.sc.lz4
+-rw-r--r-- matias/matias    1816 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/urlCache.bin
+-rw-r--r-- matias/matias 4830187 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/startupCache/startupCache.8.little
+drwx------ matias/matias       0 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/OfflineCache/
+-rw-r--r-- matias/matias  262144 2020-08-18 18:24 ./.cache/mozilla/firefox/njcs43kl.default-esr/OfflineCache/index.sqlite
+drwxr-xr-x matias/matias       0 2020-08-18 18:16 ./.cache/gstreamer-1.0/
+-rw------- matias/matias  978536 2020-08-18 18:16 ./.cache/gstreamer-1.0/registry.x86_64.bin
+drwxr-xr-x matias/matias       0 2020-08-18 18:24 ./.cache/fontconfig/
+-rw-r--r-- matias/matias     200 2020-08-18 18:24 ./.cache/fontconfig/CACHEDIR.TAG
+-rw-r--r-- matias/matias    2552 2020-08-18 18:24 ./.cache/fontconfig/e74d411252dea466295e020db15a86c6-le64.cache-7
+-rw-r----- matias/matias       5 2020-09-09 16:20 ./.vboxclient-draganddrop.pid
+drwxr-xr-x matias/matias       0 2020-08-18 18:16 ./Imágenes/
+-rw-r--r-- matias/matias      23 2020-08-18 18:32 ./.dmrc
+```
+### 8. Extraiga del archivo backup.tgz los archivos comprimidos, en el subdirectorio COPIAS creado en su directorio de conexión.
+```
+matias@debian:~$ mkdir COPIAS && cd COPIAS
+matias@debian:~/COPIAS$ tar xzvf ../backup.tgz 
+```
+### 9. Comprima solamente el archivo lista_com como lista_com.gz. Luego verifique si el archivo
+original todavía existe.
+```
+matias@debian:~$ gzip lista_com 
+matias@debian:~$ ls -l lista_com
+ls: no se puede acceder a 'lista_com': No existe el fichero o el directorio
+```
+El comando gzip reemplazo el archivo original lista_com por lista_com.gz
+### 10. Muestre el contenido del archivo comprimido lista_com.gz y luego descomprímalo.
+```
+matias@debian:~$ zcat lista_com.gz
+-rwxr-xr-x 1 root root      34976 ene 10  2019 flock
+-rwxr-xr-x 1 root root      14328 ene 22  2019 fls
+-rwxr-xr-x 1 root root      43680 feb 28  2019 fmt
+-rwxr-xr-x 1 root root      39584 feb 28  2019 fold
+-rwxr-xr-x 1 root root      35240 mar 18  2018 fonttosfnt
+-rwxr-xr-x 1 root root      18512 may 31  2018 free
+lrwxrwxrwx 1 root root         22 ago 18 17:54 from -> /etc/alternatives/from
+-rwxr-xr-x 1 root root      14328 ene 22  2019 fsstat
+-rwxr-xr-x 1 root root      22792 jul 30  2019 funzip
+-rwsr-xr-x 1 root root      34896 abr 22 16:38 fusermount
+lrwxrwxrwx 1 root root          5 feb 25  2019 g++ -> g++-8
+lrwxrwxrwx 1 root root         22 abr  6  2019 g++-8 -> x86_64-linux-gnu-g++-8
+-rwxr-xr-x 1 root root      14328 mar 23  2019 gamma4scanimage
+-rwxr-xr-x 1 root root      22600 nov  6  2019 gapplication
+-rwxr-xr-x 1 root root     731560 feb  8  2019 gbak
+lrwxrwxrwx 1 root root          5 feb 25  2019 gcc -> gcc-8
+lrwxrwxrwx 1 root root         22 abr  6  2019 gcc-8 -> x86_64-linux-gnu-gcc-8
+lrwxrwxrwx 1 root root          8 feb 25  2019 gcc-ar -> gcc-ar-8
+lrwxrwxrwx 1 root root         25 abr  6  2019 gcc-ar-8 -> x86_64-linux-gnu-gcc-ar-8
+lrwxrwxrwx 1 root root          8 feb 25  2019 gcc-nm -> gcc-nm-8
+lrwxrwxrwx 1 root root         25 abr  6  2019 gcc-nm-8 -> x86_64-linux-gnu-gcc-nm-8
+lrwxrwxrwx 1 root root         12 feb 25  2019 gcc-ranlib -> gcc-ranlib-8
+lrwxrwxrwx 1 root root         29 abr  6  2019 gcc-ranlib-8 -> x86_64-linux-gnu-gcc-ranlib-8
+lrwxrwxrwx 1 root root          6 feb 25  2019 gcov -> gcov-8
+lrwxrwxrwx 1 root root         23 abr  6  2019 gcov-8 -> x86_64-linux-gnu-gcov-8
+lrwxrwxrwx 1 root root         11 feb 25  2019 gcov-dump -> gcov-dump-8
+lrwxrwxrwx 1 root root         28 abr  6  2019 gcov-dump-8 -> x86_64-linux-gnu-gcov-dump-8
+lrwxrwxrwx 1 root root         11 feb 25  2019 gcov-tool -> gcov-tool-8
+lrwxrwxrwx 1 root root         28 abr  6  2019 gcov-tool-8 -> x86_64-linux-gnu-gcov-tool-8
+-rwxr-xr-x 1 root root      14408 ene 22  2019 gcr-viewer
+-rwxr-xr-x 1 root root      51280 nov  6  2019 gdbus
+-rwxr-xr-x 1 root root       9228 dic 27  2018 gdialog
+-rwxr-xr-x 1 root root      14344 mar  4  2019 gdk-pixbuf-csource
+-rwxr-xr-x 1 root root      14328 mar  4  2019 gdk-pixbuf-pixdata
+-rwxr-xr-x 1 root root      18512 mar  4  2019 gdk-pixbuf-thumbnailer
+-rwxr-xr-x 1 root root      27240 may  1  2019 gencat
+lrwxrwxrwx 1 root root          3 feb 28  2019 geqn -> eqn
+lrwxrwxrwx 1 root root         11 may 14  2019 GET -> lwp-request
+-rwxr-xr-x 1 root root      35192 may  1  2019 getconf
+-rwxr-xr-x 1 root root      36192 may  1  2019 getent
+-rwxr-xr-x 1 root root      31352 mar  1  2019 getfacl
+-rwxr-xr-x 1 root root      14648 jul 28  2018 getkeycodes
+-rwxr-xr-x 1 root root      22600 ene 10  2019 getopt
+-rwxr-xr-x 1 root root      43640 nov 10  2018 gettext
+-rwxr-xr-x 1 root root       4629 nov 10  2018 gettext.sh
+-rwxr-xr-x 1 root root     182592 feb  8  2019 gfix
+-rwxr-xr-x 1 root root      88152 nov  6  2019 gio
+lrwxrwxrwx 1 root root         49 nov  6  2019 gio-querymodules -> ../lib/x86_64-linux-gnu/glib-2.0/gio-querymodules
+lrwxrwxrwx 1 root root         53 nov  6  2019 glib-compile-schemas -> ../lib/x86_64-linux-gnu/glib-2.0/glib-compile-schemas
+lrwxrwxrwx 1 root root         15 mar 10  2019 gnome-keyring -> gnome-keyring-3
+-rwxr-xr-x 1 root root      22744 mar 10  2019 gnome-keyring-3
+-rwxr-xr-x 1 root root    1106848 mar 10  2019 gnome-keyring-daemon
+lrwxrwxrwx 1 root root         35 ago 18 18:07 gnome-www-browser -> /etc/alternatives/gnome-www-browser
+lrwxrwxrwx 1 root root         21 mar 21  2019 gold -> x86_64-linux-gnu-gold
+-rwsr-xr-x 1 root root      84016 jul 27  2018 gpasswd
+-rwxr-xr-x 1 root root    1046256 ago 22  2019 gpg
+-rwxr-xr-x 1 root root     406256 ago 22  2019 gpg-agent
+-rwxr-xr-x 1 root root     874480 ago 22  2019 gpgcompose
+-rwxr-xr-x 1 root root     170312 ago 22  2019 gpgconf
+-rwxr-xr-x 1 root root     162664 ago 22  2019 gpg-connect-agent
+-rwxr-xr-x 1 root root      30792 ago 22  2019 gpgparsemail
+-rwxr-xr-x 1 root root     506976 ago 22  2019 gpgsm
+-rwxr-xr-x 1 root root      84432 ago 22  2019 gpgsplit
+-rwxr-xr-x 1 root root     154952 ago 22  2019 gpgtar
+-rwxr-xr-x 1 root root     445432 ago 22  2019 gpgv
+-rwxr-xr-x 1 root root     203824 ago 22  2019 gpg-wks-server
+-rwxr-xr-x 1 root root       3516 ago 22  2019 gpg-zip
+lrwxrwxrwx 1 root root          3 feb 28  2019 gpic -> pic
+-rwxr-xr-x 1 root root     668208 feb  8  2019 gpre
+lrwxrwxrwx 1 root root         22 mar 21  2019 gprof -> x86_64-linux-gnu-gprof
+-rwxr-xr-x 1 root root     198976 ene  7  2019 grep
+-rwxr-xr-x 1 root root      22520 nov  6  2019 gresource
+-rwxr-xr-x 1 root root     124128 feb 28  2019 groff
+-rwxr-xr-x 1 root root       2776 feb 28  2019 grog
+-rwxr-xr-x 1 root root     181888 feb 28  2019 grops
+-rwxr-xr-x 1 root root     132352 feb 28  2019 grotty
+-rwxr-xr-x 1 root root      39584 feb 28  2019 groups
+-rwxr-xr-x 1 root root     246680 jul 30 16:19 grub-editenv
+-rwxr-xr-x 1 root root     676424 jul 30 16:19 grub-file
+-rwxr-xr-x 1 root root     817848 jul 30 16:19 grub-fstest
+-rwxr-xr-x 1 root root     246520 jul 30 16:19 grub-glue-efi
+-rwxr-xr-x 1 root root       1681 jul 30 16:19 grub-kbdcomp
+-rwxr-xr-x 1 root root     226088 jul 30 16:19 grub-menulst2cfg
+-rwxr-xr-x 1 root root     267672 jul 30 16:19 grub-mkfont
+-rwxr-xr-x 1 root root     341816 jul 30 16:19 grub-mkimage
+-rwxr-xr-x 1 root root     246808 jul 30 16:19 grub-mklayout
+-rwxr-xr-x 1 root root     391720 jul 30 16:19 grub-mknetdir
+-rwxr-xr-x 1 root root     250968 jul 30 16:19 grub-mkpasswd-pbkdf2
+-rwxr-xr-x 1 root root     242104 jul 30 16:19 grub-mkrelpath
+-rwxr-xr-x 1 root root     851144 jul 30 16:19 grub-mkrescue
+-rwxr-xr-x 1 root root     469880 jul 30 16:19 grub-mkstandalone
+-rwxr-xr-x 1 root root     623832 jul 30 16:19 grub-mount
+lrwxrwxrwx 1 root root         34 jul 30 16:19 grub-ntldr-img -> ../lib/grub/i386-pc/grub-ntldr-img
+-rwxr-xr-x 1 root root     693416 jul 30 16:19 grub-render-label
+-rwxr-xr-x 1 root root     262712 jul 30 16:19 grub-script-check
+-rwxr-xr-x 1 root root     640696 jul 30 16:19 grub-syslinux2cfg
+-rwxr-xr-x 1 root root     379256 feb  8  2019 gsec
+-rwxr-xr-x 1 root root      30792 nov  6  2019 gsettings
+lrwxrwxrwx 1 root root          3 feb 28  2019 gtbl -> tbl
+-rwxr-xr-x 1 root root      18632 mar  5  2019 gtf
+-rwxr-xr-x 1 root root      35248 feb  5  2019 gtk-builder-tool
+-rwxr-xr-x 1 root root      18584 feb  5  2019 gtk-launch
+-rwxr-xr-x 1 root root      14328 feb  5  2019 gtk-query-settings
+-rwxr-xr-x 1 root root      39392 feb  5  2019 gtk-update-icon-cache
+-rwxr-xr-x 2 root root       2345 ene  5  2019 gunzip
+-rwxr-xr-x 1 root root       6375 ene  5  2019 gzexe
+-rwxr-xr-x 1 root root      98048 ene  5  2019 gzip
+-rwxr-xr-x 1 root root      29224 jul 21 16:27 h2ph
+-rwxr-xr-x 1 root root      60866 jul 21 16:27 h2xs
+lrwxrwxrwx 1 root root          7 may  4  2018 hd -> hexdump
+-rwxr-xr-x 1 root root      47840 feb 28  2019 head
+lrwxrwxrwx 1 root root         11 may 14  2019 HEAD -> lwp-request
+-rwxr-xr-x 1 root root       2514 jun 15  2019 helpztags
+-rwxr-xr-x 1 root root      27184 may  4  2018 hexdump
+-rwxr-xr-x 1 root root      14328 ene 22  2019 hfind
+-rwxr-xr-x 1 root root     129672 may 18 05:02 host
+-rwxr-xr-x 1 root root      35424 feb 28  2019 hostid
+-rwxr-xr-x 1 root root      26696 sep 27  2018 hostname
+-rwxr-xr-x 1 root root      26696 abr 27 14:02 hostnamectl
+-rwxr-xr-x 1 root root      34816 oct 15  2019 htcacheclean
+-rwxr-xr-x 1 root root      26616 oct 15  2019 htdbm
+-rwxr-xr-x 1 root root      14328 oct 15  2019 htdigest
+-rwxr-xr-x 1 root root      26616 oct 15  2019 htpasswd
+-rwxr-xr-x 1 root root         52 ene  8  2019 hv3
+lrwxrwxrwx 1 root root          7 ene 10  2019 i386 -> setarch
+-rwxr-xr-x 1 root root      14328 ene 22  2019 icat
+-rwxr-xr-x 1 root root      39472 mar 18  2018 iceauth
+-rwxr-xr-x 1 root root      47824 mar 18  2018 ico
+-rwxr-xr-x 1 root root      35200 may  5  2018 icombine
+-rwxr-xr-x 1 root root      60424 may  1  2019 iconv
+-rwxr-xr-x 1 root root      43808 feb 28  2019 id
+-rwxr-xr-x 1 root root      26696 mar 30  2019 iecset
+-rwxr-xr-x 1 root root      14328 ene 22  2019 ifind
+-rwxr-xr-x 1 root root      14368 may  5  2018 ijoin
+-rwxr-xr-x 1 root root      14328 ene 22  2019 ils
+-rwxr-xr-x 1 root root      14328 ene 22  2019 img_cat
+-rwxr-xr-x 1 root root      14328 ene 22  2019 img_stat
+-rwxr-xr-x 1 root root      63560 nov  2  2019 infocmp
+lrwxrwxrwx 1 root root          3 nov  2  2019 infotocap -> tic
+-rwxr-xr-x 1 root root     155240 feb 28  2019 install
+-rwxr-xr-x 1 root root         95 dic 27  2018 install-printerdriver
+-rwxr-xr-x 1 root root       4370 jul 21 16:27 instmodsh
+-rwxr-xr-x 1 root root      68848 oct  9  2018 intel-virtual-output
+-rwxr-xr-x 1 root root      30800 ene 10  2019 ionice
+-rwxr-xr-x 1 root root     584392 ene 10  2019 ip
+-rwxr-xr-x 1 root root      30864 ene 10  2019 ipcmk
+-rwxr-xr-x 1 root root      30800 ene 10  2019 ipcrm
+-rwxr-xr-x 1 root root      67664 ene 10  2019 ipcs
+lrwxrwxrwx 1 root root         28 mar  1  2019 iptables-xml -> ../sbin/xtables-legacy-multi
+-rwxr-xr-x 1 root root      14576 ene 21  2019 ischroot
+-rwxr-xr-x 1 root root      19024 jun 26  2017 isdv4-serial-debugger
+-rwxr-xr-x 1 root root      19088 jun 26  2017 isdv4-serial-inputattach
+-rwxr-xr-x 1 root root      96728 may  5  2018 ispell
+-rwxr-xr-x 1 root root       7222 nov 15  2018 ispell-wrapper
+-rwxr-xr-x 1 root root     551424 feb  8  2019 isql-fb
+-rwxr-xr-x 1 root root      14328 ene 22  2019 istat
+lrwxrwxrwx 1 root root         22 ago 18 18:07 java -> /etc/alternatives/java
+-rwxr-xr-x 1 root root      14328 ene 22  2019 jcat
+lrwxrwxrwx 1 root root         23 ago 18 18:07 jexec -> /etc/alternatives/jexec
+lrwxrwxrwx 1 root root         21 ago 18 18:07 jfr -> /etc/alternatives/jfr
+lrwxrwxrwx 1 root root         21 ago 18 18:07 jjs -> /etc/alternatives/jjs
+-rwxr-xr-x 1 root root      14328 ene 22  2019 jls
+-rwxr-xr-x 1 root root      51968 feb 28  2019 join
+-rwxr-xr-x 1 root root      67672 abr 27 14:02 journalctl
+-rwxr-xr-x 1 root root      14328 ene 22  2019 jpeg_extract
+-rwxr-xr-x 1 root root       4379 jul 21 16:27 json_pp
+-rwxr-xr-x 1 root root      14656 jul 28  2018 kbdinfo
+-rwxr-xr-x 1 root root      14648 jul 28  2018 kbd_mode
+-rwxr-xr-x 1 root root     166568 ago 22  2019 kbxutil
+-rwxr-xr-x 1 root root       4639 feb 14  2019 kernel-install
+lrwxrwxrwx 1 root root         25 ago 18 18:07 keytool -> /etc/alternatives/keytool
+-rwxr-xr-x 1 root root      26704 may 31  2018 kill
+-rwxr-xr-x 1 root root     166072 feb  9  2019 kmod
+-rwxr-xr-x 1 root root       3759 feb 14  2019 koi8rxterm
+-rwxr-xr-x 1 root root       3820 ago 12  2017 laptop-detect
+-rwxr-xr-x 1 root root      47184 ene 10  2019 last
+lrwxrwxrwx 1 root root          4 ene 10  2019 lastb -> last
+-rwxr-xr-x 1 root root      22600 jul 27  2018 lastlog
+-rwxr-xr-x 1 root root       7786 dic 14  2018 lcf
+lrwxrwxrwx 1 root root         19 mar 21  2019 ld -> x86_64-linux-gnu-ld
+lrwxrwxrwx 1 root root         23 mar 21  2019 ld.bfd -> x86_64-linux-gnu-ld.bfd
+-rwxr-xr-x 1 root root       5388 may  1  2019 ldd
+lrwxrwxrwx 1 root root         24 mar 21  2019 ld.gold -> x86_64-linux-gnu-ld.gold
+-rwxr-xr-x 1 root root     166664 may  7  2018 less
+-rwxr-xr-x 1 root root      10256 may  7  2018 lessecho
+lrwxrwxrwx 1 root root          8 may  7  2018 lessfile -> lesspipe
+-rwxr-xr-x 1 root root      19856 may  7  2018 lesskey
+-rwxr-xr-x 1 root root       8564 may  7  2018 lesspipe
+-rwxr-xr-x 1 root root      96840 feb 10  2019 lexgrog
+lrwxrwxrwx 1 root root         21 ago 18 18:04 lft -> /etc/alternatives/lft
+-rwxr-xr-x 1 root root       2493 ago 29  2016 lft.db
+-rwxr-xr-x 1 root root      15775 jul 21 16:27 libnetcfg
+lrwxrwxrwx 1 root root         34 feb  1  2020 libreoffice -> ../lib/libreoffice/program/soffice
+-rwxr-xr-x 1 root root      14712 feb 28  2019 libwacom-list-local-devices
+-rwxr-xr-x 1 root root     109176 ene 28  2019 light-locker
+-rwxr-xr-x 1 root root      23064 ene 28  2019 light-locker-command
+-rwxr-xr-x 1 root root      35424 feb 28  2019 link
+lrwxrwxrwx 1 root root          7 ene 10  2019 linux32 -> setarch
+lrwxrwxrwx 1 root root          7 ene 10  2019 linux64 -> setarch
+-rwxr-xr-x 1 root root       1577 ago 10  2018 linux-boot-prober
+-rwxr-xr-x 1 root root       4674 sep  5  2018 linux-check-removal
+-rwxr-xr-x 1 root root       6320 jun  4  2016 linux-update-symlinks
+-rwxr-xr-x 1 root root       2696 ago 11  2015 linux-version
+-rwxr-xr-x 1 root root      10872 mar 18  2018 listres
+-rwxr-xr-x 1 root root      68552 feb 28  2019 ln
+-rwxr-xr-x 1 root root      23288 ene 10  2019 lnstat
+-rwxr-xr-x 1 root root     212112 jul 28  2018 loadkeys
+-rwxr-xr-x 1 root root      35440 jul 28  2018 loadunimap
+-rwxr-xr-x 1 root root         59 feb  1  2020 lobase
+-rwxr-xr-x 1 root root         59 feb  1  2020 localc
+-rwxr-xr-x 1 root root      55336 may  1  2019 locale
+-rwxr-xr-x 1 root root      26696 abr 27 14:02 localectl
+-rwxr-xr-x 1 root root     306944 may  1  2019 localedef
+-rwxr-xr-x 1 root root         59 feb  1  2020 lodraw
+-rwxr-xr-x 1 root root         53 feb  1  2020 loffice
+-rwxr-xr-x 1 root root         64 feb  1  2020 lofromtemplate
+-rwxr-xr-x 1 root root      47792 ene 10  2019 logger
+-rwxr-xr-x 1 root root      56760 jul 27  2018 login
+-rwxr-xr-x 1 root root      55480 abr 27 14:02 loginctl
+-rwxr-xr-x 1 root root      35424 feb 28  2019 logname
+-rwxr-xr-x 1 root root      14336 oct 15  2019 logresolve
+-rwxr-xr-x 1 root root         62 feb  1  2020 loimpress
+-rwxr-xr-x 1 root root         59 feb  1  2020 lomath
+-rwxr-xr-x 1 root root      10744 may  4  2018 look
+-rwxr-xr-x 1 root root       2885 may  4  2018 lorder
+-rwxr-xr-x 1 root root         58 feb  1  2020 loweb
+-rwxr-xr-x 1 root root     117456 mar 21  2019 lowntfs-3g
+-rwxr-xr-x 1 root root         61 feb  1  2020 lowriter
+-rwxr-xr-x 1 root root      18424 abr 25 11:27 lp
+-rwxr-xr-x 1 root root      22600 abr 25 11:27 lpoptions
+-rwxr-xr-x 1 root root      51192 may 23  2016 lp_solve
+-rwxr-xr-x 1 root root      39200 abr 25 11:27 lpstat
+-rwxr-xr-x 1 root root     138856 feb 28  2019 ls
+-rwxr-xr-x 1 root root      14336 ene  9  2020 lsattr
+-rwxr-xr-x 1 root root     108624 ene 10  2019 lsblk
+-rwxr-xr-x 1 root root       3638 may 14  2019 lsb_release
+-rwxr-xr-x 1 root root      88144 ene 10  2019 lscpu
+-rwxr-xr-x 1 root root        706 feb  6  2019 lsinitramfs
+-rwxr-xr-x 1 root root      92240 ene 10  2019 lsipc
+-rwxr-xr-x 1 root root      35232 ene 10  2019 lslocks
+-rwxr-xr-x 1 root root      67664 ene 10  2019 lslogins
+-rwxr-xr-x 1 root root      63568 ene 10  2019 lsmem
+lrwxrwxrwx 1 root root          4 feb  9  2019 lsmod -> kmod
+-rwxr-xr-x 1 root root      51280 ene 10  2019 lsns
+-rwxr-xr-x 1 root root     175584 ene 12  2019 lsof
+-rwxr-xr-x 1 root root      82240 nov 30  2016 lspci
+-rwxr-xr-x 1 root root       1081 ago 28  2017 lspgpot
+-rwxr-xr-x 1 root root     240408 feb 24  2019 lsusb
+-rwxr-xr-x 1 root root      49888 mar 18  2018 luit
+-rwxr-xr-x 1 root root      10292 may 14  2019 lwp-download
+-rwxr-xr-x 1 root root       2711 may 14  2019 lwp-dump
+-rwxr-xr-x 1 root root       2413 may 14  2019 lwp-mirror
+-rwxr-xr-x 1 root root      16200 may 14  2019 lwp-request
+-rwxr-xr-x 1 root root        419 feb 14  2019 lxterm
+lrwxrwxrwx 1 root root         23 ago 18 17:55 lzcat -> /etc/alternatives/lzcat
+lrwxrwxrwx 1 root root         23 ago 18 17:55 lzcmp -> /etc/alternatives/lzcmp
+lrwxrwxrwx 1 root root         24 ago 18 17:55 lzdiff -> /etc/alternatives/lzdiff
+lrwxrwxrwx 1 root root         25 ago 18 17:55 lzegrep -> /etc/alternatives/lzegrep
+lrwxrwxrwx 1 root root         25 ago 18 17:55 lzfgrep -> /etc/alternatives/lzfgrep
+lrwxrwxrwx 1 root root         24 ago 18 17:55 lzgrep -> /etc/alternatives/lzgrep
+lrwxrwxrwx 1 root root         24 ago 18 17:55 lzless -> /etc/alternatives/lzless
+lrwxrwxrwx 1 root root         22 ago 18 17:55 lzma -> /etc/alternatives/lzma
+-rwxr-xr-x 1 root root      14656 ene 27  2019 lzmainfo
+lrwxrwxrwx 1 root root         24 ago 18 17:55 lzmore -> /etc/alternatives/lzmore
+-rwxr-xr-x 1 root root      27267 ene 22  2019 mactime
+-rwxr-xr-x 1 root root     232032 jul 28  2018 make
+-rwxr-xr-x 1 root root       4905 jul 28  2018 make-first-existing-target
+-rwxr-xr-x 1 root root     115200 feb 10  2019 man
+-rwxr-xr-x 1 root root     137952 feb 10  2019 mandb
+-rwxr-xr-x 1 root root      35296 feb 10  2019 manpath
+-rwxr-xr-x 1 root root      27216 jul 28  2018 mapscrn
+-rwxr-xr-x 1 root root     121976 mar 23  2012 mawk
+-rwxr-xr-x 1 root root      34960 ene 10  2019 mcookie
+-rwxr-xr-x 1 root root      47840 feb 28  2019 md5sum
+lrwxrwxrwx 1 root root          6 feb 28  2019 md5sum.textutils -> md5sum
+-rwxr-xr-x 1 root root      14408 ene 10  2019 mesg
+-rwxr-xr-x 1 root root       3060 ago 21  2019 migrate-pubring-from-classic-gpg
+-rwxr-xr-x 1 root root       8626 ago  6  2018 mimeopen
+-rwxr-xr-x 1 root root      12060 ago  6  2018 mimetype
+-rwxr-xr-x 1 root root      89088 feb 28  2019 mkdir
+-rwxr-xr-x 1 root root      64416 feb 28  2019 mkfifo
+-rwxr-xr-x 1 root root         65 mar 18  2018 mkfontdir
+-rwxr-xr-x 1 root root      39992 mar 18  2018 mkfontscale
+-rwxr-xr-x 1 root root      16163 jul 28  2018 mk_modmap
+-rwxr-xr-x 1 root root      68544 feb 28  2019 mknod
+-rwxr-xr-x 1 root root      43808 feb 28  2019 mktemp
+-rwxr-xr-x 1 root root      14328 ene 22  2019 mmcat
+-rwxr-xr-x 1 root root     208944 feb  5  2019 mmcli
+-rwxr-xr-x 1 root root      14328 ene 22  2019 mmls
+-rwxr-xr-x 1 root root      14328 ene 22  2019 mmstat
+-rwxr-xr-x 1 root root      43008 ene 10  2019 more
+-rwsr-xr-x 1 root root      51280 ene 10  2019 mount
+-rwxr-xr-x 1 root root      14408 ene 10  2019 mountpoint
+-rwxr-xr-x 1 root root     276632 nov 10  2018 mousepad
+-rwxr-xr-x 1 root root       3210 ago  7  2017 mpexpand
+lrwxrwxrwx 1 root root         20 ago 18 17:54 mt -> /etc/alternatives/mt
+-rwxr-xr-x 1 root root      85320 abr 23  2019 mt-gnu
+-rwxr-xr-x 1 root root       6462 may  1  2019 mtrace
+-rwxr-xr-x 1 root root      31982 may  5  2018 munchlist
+-rwxr-xr-x 1 root root     138728 feb 28  2019 mv
+-rwxr-xr-x 1 root root      34896 ene 10  2019 namei
+-rwxr-xr-x 1 root root     246160 jun 11  2019 nano
+lrwxrwxrwx 1 root root         22 ago 18 17:52 nawk -> /etc/alternatives/nawk
+-rwxr-xr-x 1 root root     309608 feb  8  2019 nbackup
+lrwxrwxrwx 1 root root         20 ago 18 18:04 nc -> /etc/alternatives/nc
+-rwxr-xr-x 1 root root      29848 may  4  2018 ncal
+-rwxr-xr-x 1 root root      27400 abr 13  2017 nc.traditional
+-rwxr-xr-x 1 root root        913 feb 28  2019 neqn
+lrwxrwxrwx 1 root root         24 ago 18 18:04 netcat -> /etc/alternatives/netcat
+-rwxr-xr-x 1 root root      47176 abr 27 14:02 networkctl
+-rwsr-xr-x 1 root root      44440 jul 27  2018 newgrp
+-rwxr-xr-x 1 root root      43656 nov 10  2018 ngettext
+-rwxr-xr-x 1 root root      39552 feb 28  2019 nice
+lrwxrwxrwx 1 root root          8 sep 27  2018 nisdomainname -> hostname
+-rwxr-xr-x 1 root root      43808 feb 28  2019 nl
+lrwxrwxrwx 1 root root         19 mar 21  2019 nm -> x86_64-linux-gnu-nm
+-rwxr-xr-x 1 root root     308320 abr 19  2019 nm-applet
+-rwxr-xr-x 1 root root     762392 oct  4  2019 nmcli
+-rwxr-xr-x 1 root root     824768 abr 19  2019 nm-connection-editor
+-rwxr-xr-x 1 root root      18992 oct  4  2019 nm-online
+-rwxr-xr-x 1 root root     257328 oct  4  2019 nmtui
+lrwxrwxrwx 1 root root          5 oct  4  2019 nmtui-connect -> nmtui
+lrwxrwxrwx 1 root root          5 oct  4  2019 nmtui-edit -> nmtui
+lrwxrwxrwx 1 root root          5 oct  4  2019 nmtui-hostname -> nmtui
+-rwxr-xr-x 1 root root       7234 ago  7  2017 nns
+-rwxr-xr-x 1 root root       3373 ago  7  2017 nnsd
+-rwxr-xr-x 1 root root       4485 ago  7  2017 nnslog
+-rwxr-xr-x 1 root root      39584 feb 28  2019 nohup
+-rwxr-xr-x 1 root root      18520 dic 28  2018 notify-send
+-rwxr-xr-x 1 root root      39584 feb 28  2019 nproc
+-rwxr-xr-x 1 root root       3293 feb 28  2019 nroff
+-rwxr-xr-x 1 root root      35104 ene 10  2019 nsenter
+-rwxr-xr-x 1 root root      81040 ene 10  2019 nstat
+-rwsr-xr-x 1 root root     154352 mar 21  2019 ntfs-3g
+-rwxr-xr-x 1 root root      14408 mar 21  2019 ntfs-3g.probe
+-rwxr-xr-x 1 root root      34920 mar 21  2019 ntfscat
+-rwxr-xr-x 1 root root      39016 mar 21  2019 ntfscluster
+-rwxr-xr-x 1 root root      39016 mar 21  2019 ntfscmp
+-rwxr-xr-x 1 root root      51320 mar 21  2019 ntfsdecrypt
+-rwxr-xr-x 1 root root      39024 mar 21  2019 ntfsfallocate
+-rwxr-xr-x 1 root root      43120 mar 21  2019 ntfsfix
+-rwxr-xr-x 1 root root      59512 mar 21  2019 ntfsinfo
+-rwxr-xr-x 1 root root      36024 mar 21  2019 ntfsls
+-rwxr-xr-x 1 root root      39016 mar 21  2019 ntfsmove
+-rwxr-xr-x 1 root root     120936 mar 21  2019 ntfsrecover
+-rwxr-xr-x 1 root root      96864 mar 21  2019 ntfssecaudit
+-rwxr-xr-x 1 root root      43040 mar 21  2019 ntfstruncate
+-rwxr-xr-x 1 root root      38936 mar 21  2019 ntfsusermap
+-rwxr-xr-x 1 root root      47752 mar 21  2019 ntfswipe
+-rwxr-xr-x 1 root root      64320 feb 28  2019 numfmt
+lrwxrwxrwx 1 root root         24 mar 21  2019 objcopy -> x86_64-linux-gnu-objcopy
+lrwxrwxrwx 1 root root         24 mar 21  2019 objdump -> x86_64-linux-gnu-objdump
+-rwxr-xr-x 1 root root      24432 mar 18  2018 oclock
+-rwxr-xr-x 1 root root      72480 feb 28  2019 od
+lrwxrwxrwx 1 root root         17 abr 20  2019 on_ac_power -> /sbin/on_ac_power
+-rwxr-xr-x 1 root root     736776 abr 20 17:23 openssl
+-rwxr-xr-x 1 root root      23424 jul 28  2018 openvt
+-rwxr-xr-x 1 root root        429 ene 18  2019 operon
+-rwxr-xr-x 1 root root       8719 oct 20  2018 orca
+-rwxr-xr-x 1 root root         70 jul  8  2018 orca-dm-wrapper
+-rwxr-xr-x 1 root root       4551 ago 10  2018 os-prober
+-rwxr-xr-x 1 root root      34904 feb 16  2019 p11-kit
+-rwxr-xr-x 1 root root       4754 feb  5  2018 p7zip
+-rwxr-xr-x 1 root root      51312 ago 15  2019 pacat
+lrwxrwxrwx 1 root root         25 ago 18 18:07 pack200 -> /etc/alternatives/pack200
+-rwxr-xr-x 1 root root      18504 ago 15  2019 pacmd
+-rwxr-xr-x 1 root root      63576 ago 15  2019 pactl
+-rwxr-xr-x 1 root root       2259 ago 15  2019 padsp
+-rwxr-xr-x 1 root root      19490 ago  7  2017 page
+lrwxrwxrwx 1 root root         23 ago 18 17:53 pager -> /etc/alternatives/pager
+lrwxrwxrwx 1 root root          5 ago 15  2019 pamon -> pacat
+-rwxr-xr-x 1 root root      14632 jun 25  2019 paperconf
+lrwxrwxrwx 1 root root          5 ago 15  2019 paplay -> pacat
+lrwxrwxrwx 1 root root          5 ago 15  2019 parec -> pacat
+lrwxrwxrwx 1 root root          5 ago 15  2019 parecord -> pacat
+-rwxr-xr-x 1 root root     398120 abr 13  2018 parole
+-rwxr-xr-x 1 root root     108624 ene 10  2019 partx
+-rwsr-xr-x 1 root root      63736 jul 27  2018 passwd
+-rwxr-xr-x 1 root root      39584 feb 28  2019 paste
+-rwxr-xr-x 1 root root      18512 ago 15  2019 pasuspender
+-rwxr-xr-x 1 root root     187840 jul 26  2019 patch
+-rwxr-xr-x 1 root root      39552 feb 28  2019 pathchk
+-rwxr-xr-x 1 root root     448712 dic 24  2017 pavucontrol
+-rwxr-xr-x 1 root root      14328 ago 15  2019 pax11publish
+-rwxr-xr-x 1 root root      14936 nov 30  2016 pcimodules
+lrwxrwxrwx 1 root root          4 mar  4  2019 pdb -> pdb2
+lrwxrwxrwx 1 root root          6 mar  4  2019 pdb2 -> pdb2.7
+lrwxrwxrwx 1 root root         23 oct 10  2019 pdb2.7 -> ../lib/python2.7/pdb.py
+lrwxrwxrwx 1 root root          6 mar 26  2019 pdb3 -> pdb3.7
+lrwxrwxrwx 1 root root         23 jul 25 10:03 pdb3.7 -> ../lib/python3.7/pdb.py
+-rwxr-xr-x 1 root root        528 jul 19  2018 perf
+-rwxr-xr-x 2 root root    3201864 jul 21 16:27 perl
+-rwxr-xr-x 2 root root    3201864 jul 21 16:27 perl5.28.1
+-rwxr-xr-x 1 root root      14512 jul 21 16:27 perl5.28-x86_64-linux-gnu
+-rwxr-xr-x 2 root root      46366 jul 21 16:27 perlbug
+-rwxr-xr-x 1 root root        125 jul 21 16:27 perldoc
+-rwxr-xr-x 1 root root      10864 jul 21 16:27 perlivp
+-rwxr-xr-x 2 root root      46366 jul 21 16:27 perlthanks
+-rwxr-xr-x 1 root root      26712 may 31  2018 pgrep
+-rwxr-xr-x 1 root root     213024 feb 28  2019 pic
+lrwxrwxrwx 1 root root         22 ago 18 17:54 pico -> /etc/alternatives/pico
+-rwxr-xr-x 1 root root       8357 jul 21 16:27 piconv
+lrwxrwxrwx 1 root root         14 feb 14  2019 pidof -> /sbin/killall5
+lrwxrwxrwx 1 root root         26 ago 18 18:04 pinentry -> /etc/alternatives/pinentry
+-rwxr-xr-x 1 root root      63992 abr 17  2019 pinentry-curses
+-rwxr-xr-x 1 root root      76280 abr 17  2019 pinentry-gnome3
+lrwxrwxrwx 1 root root         30 ago 18 18:07 pinentry-x11 -> /etc/alternatives/pinentry-x11
+-rwxr-xr-x 1 root root      69368 ene 13  2020 ping
+lrwxrwxrwx 1 root root          4 ene 13  2020 ping4 -> ping
+lrwxrwxrwx 1 root root          4 ene 13  2020 ping6 -> ping
+-rwxr-xr-x 1 root root      43840 feb 28  2019 pinky
+-rwxr-xr-x 1 root root      14656 ene 15  2019 pkaction
+-rwxr-xr-x 1 root root      23192 ene 15  2019 pkcheck
+-rwxr-xr-x 1 root root      73432 mar  2  2019 pkcon
+-rwsr-xr-x 1 root root      23288 ene 15  2019 pkexec
+lrwxrwxrwx 1 root root          5 may 31  2018 pkill -> pgrep
+-rwxr-xr-x 1 root root      23032 mar  2  2019 pkmon
+-rwxr-xr-x 1 root root      18808 ene 15  2019 pkttyagent
+-rwxr-xr-x 1 root root       4533 jul 21 16:27 pl2pm
+-rwxr-xr-x 1 root root      23112 may  1  2019 pldd
+-rwxr-xr-x 1 root root        146 feb 20  2020 plog
+-rwxr-xr-x 1 root root      39512 abr  8  2019 plymouth
+-rwxr-xr-x 1 root root      30808 may 31  2018 pmap
+-rwxr-xr-x 1 root root       4134 jul 21 16:27 pod2html
+-rwxr-xr-x 1 root root      15213 jul 21 16:27 pod2man
+-rwxr-xr-x 1 root root      11110 jul 21 16:27 pod2text
+-rwxr-xr-x 1 root root       3948 jul 21 16:27 pod2usage
+-rwxr-xr-x 1 root root       3658 jul 21 16:27 podchecker
+-rwxr-xr-x 1 root root       2527 jul 21 16:27 podselect
+-rwxr-xr-x 1 root root       2837 feb 20  2020 poff
+-rwxr-xr-x 1 root root       1362 feb 20  2020 pon
+lrwxrwxrwx 1 root root         11 may 14  2019 POST -> lwp-request
+-rwxr-xr-x 1 root root      76736 feb 28  2019 pr
+-rwxr-xr-x 1 root root       5656 ene 31  2019 precat
+-rwxr-xr-x 1 root root      67784 feb 28  2019 preconv
+-rwxr-xr-x 1 root root       5656 ene 31  2019 preunzip
+-rwxr-xr-x 1 root root       5656 ene 31  2019 prezip
+-rwxr-xr-x 1 root root      14328 ene 31  2019 prezip-bin
+lrwxrwxrwx 1 root root         11 feb  9  2019 print -> run-mailcap
+-rwxr-xr-x 1 root root      35424 feb 28  2019 printenv
+-rwxr-xr-x 1 root root      22760 may  4  2018 printerbanner
+-rwxr-xr-x 1 root root      56000 feb 28  2019 printf
+-rwxr-xr-x 1 root root      39520 ene 10  2019 prlimit
+-rwxr-xr-x 1 root root      13655 jul 21 16:27 prove
+-rwxr-xr-x 1 root root     133432 may 31  2018 ps
+lrwxrwxrwx 1 root root          9 jul 28  2018 psfaddtable -> psfxtable
+lrwxrwxrwx 1 root root          9 jul 28  2018 psfgettable -> psfxtable
+lrwxrwxrwx 1 root root          9 jul 28  2018 psfstriptable -> psfxtable
+-rwxr-xr-x 1 root root      22848 jul 28  2018 psfxtable
+-rwxr-xr-x 1 root root       4168 ago  7  2017 pt
+-rwxr-xr-x 1 root root       3549 jul 21 16:27 ptar
+-rwxr-xr-x 1 root root       2628 jul 21 16:27 ptardiff
+-rwxr-xr-x 1 root root       4392 jul 21 16:27 ptargrep
+-rwxr-xr-x 1 root root      76704 feb 28  2019 ptx
+-rwxr-xr-x 1 root root      92328 ago 15  2019 pulseaudio
+-rwxr-xr-x 1 root root      39616 feb 28  2019 pwd
+-rwxr-xr-x 1 root root      10312 may 31  2018 pwdx
+-rwxr-xr-x 1 root root       7806 mar 26  2019 py3clean
+-rwxr-xr-x 1 root root      12113 mar 26  2019 py3compile
+lrwxrwxrwx 1 root root         31 mar 26  2019 py3versions -> ../share/python3/py3versions.py
+-rwxr-xr-x 1 root root       4124 mar  4  2019 pyclean
+-rwxr-xr-x 1 root root      11895 mar  4  2019 pycompile
+lrwxrwxrwx 1 root root          6 mar  4  2019 pydoc -> pydoc2
+lrwxrwxrwx 1 root root          8 mar  4  2019 pydoc2 -> pydoc2.7
+-rwxr-xr-x 1 root root         79 oct 10  2019 pydoc2.7
+lrwxrwxrwx 1 root root          8 mar 26  2019 pydoc3 -> pydoc3.7
+-rwxr-xr-x 1 root root         79 jul 25 10:03 pydoc3.7
+lrwxrwxrwx 1 root root         10 mar  4  2019 pygettext -> pygettext2
+lrwxrwxrwx 1 root root         12 mar  4  2019 pygettext2 -> pygettext2.7
+-rwxr-xr-x 1 root root      22082 oct 10  2019 pygettext2.7
+lrwxrwxrwx 1 root root         12 mar 26  2019 pygettext3 -> pygettext3.7
+-rwxr-xr-x 1 root root      21547 jul 25 10:03 pygettext3.7
+lrwxrwxrwx 1 root root          7 mar  4  2019 python -> python2
+lrwxrwxrwx 1 root root          9 mar  4  2019 python2 -> python2.7
+-rwxr-xr-x 1 root root    3689352 oct 10  2019 python2.7
+lrwxrwxrwx 1 root root          9 mar 26  2019 python3 -> python3.7
+-rwxr-xr-x 2 root root    4861504 jul 25 10:03 python3.7
+-rwxr-xr-x 2 root root    4861504 jul 25 10:03 python3.7m
+lrwxrwxrwx 1 root root         10 mar 26  2019 python3m -> python3.7m
+lrwxrwxrwx 1 root root         29 mar  4  2019 pyversions -> ../share/python/pyversions.py
+-rwxr-xr-x 1 root root      11003 ago 30  2019 querybts
+-rwxr-xr-x 1 root root        421 ene 18  2019 quodlibet
+lrwxrwxrwx 1 root root         23 mar 21  2019 ranlib -> x86_64-linux-gnu-ranlib
+lrwxrwxrwx 1 root root          4 abr 18  2019 rbash -> bash
+lrwxrwxrwx 1 root root         21 ago 18 18:05 rcp -> /etc/alternatives/rcp
+-rwxr-xr-x 1 root root     109728 ene 10  2019 rdma
+lrwxrwxrwx 1 root root         24 mar 21  2019 readelf -> x86_64-linux-gnu-readelf
+-rwxr-xr-x 1 root root      47776 feb 28  2019 readlink
+-rwxr-xr-x 1 root root      47808 feb 28  2019 realpath
+-rwxr-xr-x 1 root root      22600 ene 10  2019 rename.ul
+-rwxr-xr-x 1 root root      57608 mar 18  2018 rendercheck
+-rwxr-xr-x 1 root root      14408 ene 10  2019 renice
+-rwxr-xr-x 1 root root     107666 ago 30  2019 reportbug
+-rwxr-xr-x 1 root root       2099 ago 10  2018 report-hw
+lrwxrwxrwx 1 root root          4 nov  2  2019 reset -> tset
+-rwxr-xr-x 1 root root      18504 feb 14  2019 resize
+-rwxr-xr-x 1 root root      23120 jul 28  2018 resizecons
+-rwxr-xr-x 1 root root      63568 ene 10  2019 resizepart
+-rwxr-xr-x 1 root root     116960 abr 27 14:02 resolvectl
+-rwxr-xr-x 1 root root      14408 ene 10  2019 rev
+-rwxr-xr-x 1 root root         30 ago  4  2017 rgrep
+-rwxr-xr-x 1 root root     262472 ago 21  2018 ristretto
+lrwxrwxrwx 1 root root         24 ago 18 18:05 rlogin -> /etc/alternatives/rlogin
+-rwxr-xr-x 1 root root      68416 feb 28  2019 rm
+-rwxr-xr-x 1 root root      47776 feb 28  2019 rmdir
+lrwxrwxrwx 1 root root         22 ago 18 18:07 rmid -> /etc/alternatives/rmid
+lrwxrwxrwx 1 root root         29 ago 18 18:07 rmiregistry -> /etc/alternatives/rmiregistry
+lrwxrwxrwx 1 root root          4 jun 11  2019 rnano -> nano
+-rwxr-xr-x 1 root root      26696 oct 15  2019 rotatelogs
+-rwxr-xr-x 1 root root        208 ene 10  2019 routef
+-rwxr-xr-x 1 root root       1656 ene 10  2019 routel
+-rwxr-xr-x 1 root root      93160 may  1  2019 rpcgen
+lrwxrwxrwx 1 root root         21 ago 18 18:05 rsh -> /etc/alternatives/rsh
+-rwxr-xr-x 1 root root       2610 mar 18  2018 rstart
+-rwxr-xr-x 1 root root       1469 mar 18  2018 rstartd
+lrwxrwxrwx 1 root root          6 ene 10  2019 rtstat -> lnstat
+-rwxr-xr-x 1 root root      39648 feb 28  2019 runcon
+-rwxr-xr-x 1 root root      18161 feb  9  2019 run-mailcap
+-rwxr-xr-x 1 root root      23312 ene 21  2019 run-parts
+-rwxr-xr-x 1 root root         57 ene 31  2019 run-with-aspell
+lrwxrwxrwx 1 root root         23 ago 18 17:54 rview -> /etc/alternatives/rview
+-rwxr-xr-x 1 root root     117456 mar 23  2019 sane-find-scanner
+-rwxr-xr-x 1 root root      10469 ene 21  2019 savelog
+-rwxr-xr-x 1 root root      51992 mar 23  2019 scanimage
+-rwxr-xr-x 1 root root     100496 ene 31  2020 scp
+-rwxr-xr-x 1 root root         90 dic 27  2018 scp-dbus-service
+-rwxr-xr-x 1 root root      14632 jul 28  2018 screendump
+-rwxr-xr-x 1 root root      51280 ene 10  2019 script
+-rwxr-xr-x 1 root root      30800 ene 10  2019 scriptreplay
+-rwxr-xr-x 1 root root      51984 abr  8  2019 sdiff
+-rwxr-xr-x 1 root root     122224 dic 22  2018 sed
+lrwxrwxrwx 1 root root         11 feb  9  2019 see -> run-mailcap
+-rwxr-xr-x 1 root root        474 nov 15  2018 select-default-iwrap
+-rwxr-xr-x 1 root root       2442 mar 12  2018 select-editor
+-rwxr-xr-x 1 root root       1209 mar 12  2018 sensible-browser
+-rwxr-xr-x 1 root root       1109 mar 12  2018 sensible-editor
+-rwxr-xr-x 1 root root        433 mar 12  2018 sensible-pager
+-rwxr-xr-x 1 root root      31312 dic 19  2018 sensors
+-rwxr-xr-x 1 root root      14027 dic 19  2018 sensors-conf-convert
+-rwxr-xr-x 1 root root      51904 feb 28  2019 seq
+-rwxr-xr-x 1 root root      14624 mar 18  2018 sessreg
+-rwxr-xr-x 1 root root      22880 ene 10  2019 setarch
+-rwxr-xr-x 1 root root      39608 mar  1  2019 setfacl
+-rwxr-xr-x 1 root root      47792 jul 28  2018 setfont
+-rwxr-xr-x 1 root root      14648 jul 28  2018 setkeycodes
+-rwxr-xr-x 1 root root      14632 jul 28  2018 setleds
+-rwxr-xr-x 1 root root      14640 jul 28  2018 setlogcons
+-rwxr-xr-x 1 root root      14680 jul 28  2018 setmetamode
+-rwxr-xr-x 1 root root      23080 nov 30  2016 setpci
+-rwxr-xr-x 1 root root      43088 ene 10  2019 setpriv
+-rwxr-xr-x 1 root root      14408 ene 10  2019 setsid
+-rwxr-xr-x 1 root root      43088 ene 10  2019 setterm
+-rwxr-xr-x 1 root root      38267 ago 15  2019 setupcon
+-rwxr-xr-x 1 root root      14768 jul 28  2018 setvtrgb
+-rwxr-xr-x 1 root root      23288 abr 30  2018 setxkbmap
+-rwxr-xr-x 1 root root     153960 ene 31  2020 sftp
+lrwxrwxrwx 1 root root          6 jul 27  2018 sg -> newgrp
+lrwxrwxrwx 1 root root          4 ago 18 17:53 sh -> dash
+-rwxr-xr-x 1 root root      51936 feb 28  2019 sha1sum
+-rwxr-xr-x 1 root root      56032 feb 28  2019 sha224sum
+-rwxr-xr-x 1 root root      56032 feb 28  2019 sha256sum
+-rwxr-xr-x 1 root root      64224 feb 28  2019 sha384sum
+-rwxr-xr-x 1 root root      64224 feb 28  2019 sha512sum
+-rwxr-xr-x 1 root root       9976 jul 21 16:27 shasum
+-rwxr-xr-x 1 root root      18824 jul 28  2018 showconsolefont
+-rwxr-xr-x 1 root root      18784 jul 28  2018 showkey
+-rwxr-xr-x 1 root root      10424 mar 18  2018 showrgb
+-rwxr-xr-x 1 root root      60352 feb 28  2019 shred
+-rwxr-xr-x 1 root root      60224 feb 28  2019 shuf
+-rwxr-xr-x 1 root root      14328 ene 22  2019 sigfind
+lrwxrwxrwx 1 root root         21 mar 21  2019 size -> x86_64-linux-gnu-size
+-rwxr-xr-x 1 root root      26704 may 31  2018 skill
+-rwxr-xr-x 1 root root      18512 may 31  2018 slabtop
+-rwxr-xr-x 1 root root      39552 feb 28  2019 sleep
+lrwxrwxrwx 1 root root          3 ene 31  2020 slogin -> ssh
+-rwxr-xr-x 1 root root      23072 mar 18  2018 smproxy
+lrwxrwxrwx 1 root root          5 may 31  2018 snice -> skill
+-rwxr-xr-x 1 root root      43208 feb 28  2019 soelim
+lrwxrwxrwx 1 root root         34 feb  1  2020 soffice -> ../lib/libreoffice/program/soffice
+-rwxr-xr-x 1 root root     114120 feb 28  2019 sort
+-rwxr-xr-x 1 root root      50400 ene 22  2019 sorter
+-rwxr-xr-x 1 root root       4274 may  1  2019 sotruss
+-rwxr-xr-x 1 root root       1003 may  2 07:05 spd-conf
+-rwxr-xr-x 1 root root      27400 may  2 07:05 spd-say
+-rwxr-xr-x 1 root root      30848 mar 30  2019 speaker-test
+-rwxr-xr-x 1 root root     161880 may  2 07:05 speech-dispatcher
+-rwxr-xr-x 1 root root      19150 jul 21 16:27 splain
+-rwxr-xr-x 1 root root      60744 feb 28  2019 split
+-rwxr-xr-x 1 root root      14528 jul 28  2018 splitfont
+-rwxr-xr-x 1 root root      27328 may  1  2019 sprof
+-rwxr-xr-x 1 root root       6136 may  5  2018 sq
+-rwxr-xr-x 1 root root      14328 ene 22  2019 srch_strings
+-rwxr-xr-x 1 root root     161488 ene 10  2019 ss
+-rwxr-xr-x 1 root root     727848 ene 31  2020 ssh
+-rwxr-xr-x 1 root root     338048 ene 31  2020 ssh-add
+-rwxr-sr-x 1 root ssh      321672 ene 31  2020 ssh-agent
+-rwxr-xr-x 1 root root       1456 ene 31  2020 ssh-argv0
+-rwxr-xr-x 1 root root      10658 oct 16  2018 ssh-copy-id
+-rwxr-xr-x 1 root root     415896 ene 31  2020 ssh-keygen
+-rwxr-xr-x 1 root root     419992 ene 31  2020 ssh-keyscan
+-rwxr-xr-x 1 root root       1197 ago 15  2019 start-pulseaudio-x11
+-rwxr-xr-x 1 root root       5519 mar 19  2018 startx
+-rwxr-xr-x 1 root root       2966 oct 21  2017 startxfce4
+-rwxr-xr-x 1 root root      80928 feb 28  2019 stat
+-rwxr-xr-x 1 root root      51904 feb 28  2019 stdbuf
+lrwxrwxrwx 1 root root         24 mar 21  2019 strings -> x86_64-linux-gnu-strings
+lrwxrwxrwx 1 root root         22 mar 21  2019 strip -> x86_64-linux-gnu-strip
+-rwxr-xr-x 1 root root      80672 feb 28  2019 stty
+-rwsr-xr-x 1 root root      63568 ene 10  2019 su
+-rwsr-xr-x 1 root root     157192 feb  2  2020 sudo
+lrwxrwxrwx 1 root root          4 feb  2  2020 sudoedit -> sudo
+-rwxr-xr-x 1 root root      60256 feb  2  2020 sudoreplay
+-rwxr-xr-x 1 root root      43752 feb 28  2019 sum
+-rwxr-xr-x 1 root root     121576 ago 22  2019 symcryptrun
+-rwxr-xr-x 1 root root        568 abr 15  2019 synaptic-pkexec
+-rwxr-xr-x 1 root root      35488 feb 28  2019 sync
+-rwxr-xr-x 1 root root         95 dic 27  2018 system-config-printer
+-rwxr-xr-x 1 root root         80 dic 27  2018 system-config-printer-applet
+-rwxr-xr-x 1 root root     868696 abr 27 14:02 systemctl
+lrwxrwxrwx 1 root root         20 abr 27 14:02 systemd -> /lib/systemd/systemd
+-rwxr-xr-x 1 root root    1448248 abr 27 14:02 systemd-analyze
+-rwxr-xr-x 1 root root      14520 abr 27 14:02 systemd-ask-password
+-rwxr-xr-x 1 root root      14416 abr 27 14:02 systemd-cat
+-rwxr-xr-x 1 root root      18608 abr 27 14:02 systemd-cgls
+-rwxr-xr-x 1 root root      39008 abr 27 14:02 systemd-cgtop
+-rwxr-xr-x 1 root root      26696 abr 27 14:02 systemd-delta
+-rwxr-xr-x 1 root root      14400 abr 27 14:02 systemd-detect-virt
+-rwxr-xr-x 1 root root      18496 abr 27 14:02 systemd-escape
+-rwxr-xr-x 1 root root     100720 abr 27 14:02 systemd-hwdb
+-rwxr-xr-x 1 root root      14400 abr 27 14:02 systemd-id128
+-rwxr-xr-x 1 root root      18520 abr 27 14:02 systemd-inhibit
+-rwxr-xr-x 1 root root      26792 abr 27 14:02 systemd-machine-id-setup
+-rwxr-xr-x 1 root root      47400 abr 27 14:02 systemd-mount
+-rwxr-xr-x 1 root root      18504 abr 27 14:02 systemd-notify
+-rwxr-xr-x 1 root root      18496 abr 27 14:02 systemd-path
+lrwxrwxrwx 1 root root         10 abr 27 14:02 systemd-resolve -> resolvectl
+-rwxr-xr-x 1 root root      51472 abr 27 14:02 systemd-run
+-rwxr-xr-x 1 root root      26696 abr 27 14:02 systemd-socket-activate
+-rwxr-xr-x 1 root root      18504 abr 27 14:02 systemd-stdio-bridge
+-rwxr-xr-x 1 root root      55664 abr 27 14:02 systemd-sysusers
+-rwxr-xr-x 1 root root      80128 abr 27 14:02 systemd-tmpfiles
+-rwxr-xr-x 1 root root      30792 abr 27 14:02 systemd-tty-ask-password-agent
+lrwxrwxrwx 1 root root         13 abr 27 14:02 systemd-umount -> systemd-mount
+-rwxr-xr-x 1 root root      18424 nov  2  2019 tabs
+-rwxr-xr-x 1 root root      43744 feb 28  2019 tac
+-rwxr-xr-x 1 root root      72608 feb 28  2019 tail
+-rwxr-xr-x 1 root root     445560 abr 23  2019 tar
+-rwxr-xr-x 1 root root      16489 may 23  2019 tasksel
+-rwxr-xr-x 1 root root      34896 ene 10  2019 taskset
+-rwxr-xr-x 1 root root     141512 feb 28  2019 tbl
+-rwxr-xr-x 1 root root      13695 ago  7  2017 tcldocstrip
+lrwxrwxrwx 1 root root          8 feb 23  2019 tclsh -> tclsh8.6
+-rwxr-xr-x 1 root root      14472 feb 23  2019 tclsh8.6
+-rwxr-xr-x 1 root root      39648 feb 28  2019 tee
+lrwxrwxrwx 1 root root         24 ago 18 18:04 telnet -> /etc/alternatives/telnet
+-rwxr-xr-x 1 root root     116088 feb 24  2019 telnet.netkit
+-rwxr-xr-x 1 root root      14440 ene 21  2019 tempfile
+-rwxr-xr-x 1 root root      51872 feb 28  2019 test
+-rwxr-xr-x 1 root root     860008 ene 28  2019 thunar
+lrwxrwxrwx 1 root root          6 ene 28  2019 Thunar -> thunar
+-rwxr-xr-x 1 root root        333 ene 28  2019 thunar-settings
+-rwxr-xr-x 1 root root      47464 dic 27  2018 thunar-volman
+-rwxr-xr-x 1 root root      43144 dic 27  2018 thunar-volman-settings
+-rwxr-xr-x 1 root root      88176 nov  2  2019 tic
+-rwxr-xr-x 1 root root      38984 abr 27 14:02 timedatectl
+-rwxr-xr-x 1 root root      44296 feb 28  2019 timeout
+-rwxr-xr-x 1 root root      14424 may 31  2018 tload
+-rwxr-xr-x 1 root root      22520 nov  2  2019 toe
+-rwxr-xr-x 1 root root     116624 may 31  2018 top
+-rwxr-xr-x 1 root root      97152 feb 28  2019 touch
+-rwxr-xr-x 1 root root      22552 nov  2  2019 tput
+-rwxr-xr-x 1 root root      51904 feb 28  2019 tr
+lrwxrwxrwx 1 root root         28 ago 18 18:04 traceproto -> /etc/alternatives/traceproto
+-rwxr-xr-x 1 root root       2885 ago 29  2016 traceproto.db
+lrwxrwxrwx 1 root root         28 ago 18 18:04 traceroute -> /etc/alternatives/traceroute
+lrwxrwxrwx 1 root root         29 ago 18 18:04 traceroute6 -> /etc/alternatives/traceroute6
+lrwxrwxrwx 1 root root         13 ago 29  2016 traceroute6.db -> traceroute.db
+-rwxr-xr-x 1 root root      68768 ago 29  2016 traceroute.db
+-rwxr-xr-x 1 root root       1618 ago 29  2016 traceroute-nanog
+-rwxr-xr-x 1 root root      19360 mar 18  2018 transset
+-rwxr-xr-x 1 root root     740960 feb 28  2019 troff
+-rwxr-xr-x 1 root root      35424 feb 28  2019 true
+-rwxr-xr-x 1 root root      43680 feb 28  2019 truncate
+-rwxr-xr-x 1 root root     223608 feb 16  2019 trust
+-rwxr-xr-x 1 root root       4919 may  5  2018 tryaffix
+-rwxr-xr-x 1 root root      30720 nov  2  2019 tset
+-rwxr-xr-x 1 root root     101000 ene 22  2019 tsk_comparedir
+-rwxr-xr-x 1 root root     101000 ene 22  2019 tsk_gettimes
+-rwxr-xr-x 1 root root      96904 ene 22  2019 tsk_loaddb
+-rwxr-xr-x 1 root root     101000 ene 22  2019 tsk_recover
+-rwxr-xr-x 1 root root      43680 feb 28  2019 tsort
+-rwxr-xr-x 1 root root      35456 feb 28  2019 tty
+-rwxr-xr-x 1 root root      15363 may  1  2019 tzselect
+-rwxr-xr-x 1 root root      40685 dic 14  2018 ucf
+-rwxr-xr-x 1 root root      19367 dic 14  2018 ucfq
+-rwxr-xr-x 1 root root      10722 dic 14  2018 ucfr
+-rwxr-xr-x 1 root root      18760 mar 18  2018 ucs2any
+-rwxr-xr-x 1 root root     674312 abr 27 14:02 udevadm
+-rwxr-xr-x 1 root root      59464 feb 21  2019 udisksctl
+-rwxr-xr-x 1 root root      14640 may  4  2018 ul
+-rwxr-xr-x 1 root root      14328 abr 22 16:38 ulockmgr_server
+-rwxr-xr-x 1 root root     183368 mar 23  2019 umax_pp
+-rwsr-xr-x 1 root root      34888 ene 10  2019 umount
+-rwxr-xr-x 1 root root      39584 feb 28  2019 uname
+-rwxr-xr-x 2 root root       2345 ene  5  2019 uncompress
+-rwxr-xr-x 1 root root      43712 feb 28  2019 unexpand
+-rwxr-xr-x 1 root root       2762 jul 28  2018 unicode_start
+-rwxr-xr-x 1 root root        530 jul 28  2018 unicode_stop
+-rwxr-xr-x 1 root root      51968 feb 28  2019 uniq
+-rwxr-xr-x 1 root root      35424 feb 28  2019 unlink
+lrwxrwxrwx 1 root root         24 ago 18 17:55 unlzma -> /etc/alternatives/unlzma
+-rwxr-xr-x 1 root root       3595 jul 31  2019 unmkinitramfs
+-rwxr-xr-x 1 root root         52 feb  1  2020 unopkg
+lrwxrwxrwx 1 root root         27 ago 18 18:07 unpack200 -> /etc/alternatives/unpack200
+-rwxr-xr-x 1 root root      26904 ene 10  2019 unshare
+-rwxr-xr-x 1 root root       6136 may  5  2018 unsq
+lrwxrwxrwx 1 root root          2 ene 27  2019 unxz -> xz
+-rwxr-xr-x 2 root root     183136 jul 30  2019 unzip
+-rwxr-xr-x 1 root root      84664 jul 30  2019 unzipsfx
+-rwxr-xr-x 1 root root      55552 jun  3  2019 update-alternatives
+-rwxr-xr-x 1 root root      26696 oct  8  2018 update-desktop-database
+-rwxr-xr-x 1 root root      56512 sep 25  2018 update-mime-database
+-rwxr-xr-x 1 root root      18848 feb 24  2019 upower
+-rwxr-xr-x 1 root root      10312 may 31  2018 uptime
+-rwxr-xr-x 1 root root       4102 feb 24  2019 usb-devices
+-rwxr-xr-x 1 root root      31280 feb 24  2019 usbhid-dump
+-rwxr-xr-x 1 root root      14592 feb 24  2019 usbreset
+-rwxr-xr-x 1 root root      35488 feb 28  2019 users
+-rwxr-xr-x 1 root root      14328 ene 22  2019 usnjls
+-rwxr-xr-x 1 root root      30792 ene 10  2019 utmpdump
+-rwxr-xr-x 1 root root       3674 feb 14  2019 uxterm
+lrwxrwxrwx 1 root root         45 ago 31 23:57 VBoxClient -> /opt/VBoxGuestAdditions-6.1.10/bin/VBoxClient
+lrwxrwxrwx 1 root root         54 ago 31 23:58 VBoxClient-all -> /opt/VBoxGuestAdditions-6.1.10/other/98vboxadd-xclient
+lrwxrwxrwx 1 root root         46 ago 31 23:57 VBoxControl -> /opt/VBoxGuestAdditions-6.1.10/bin/VBoxControl
+lrwxrwxrwx 1 root root         48 ago 31 23:57 VBoxDRMClient -> /opt/VBoxGuestAdditions-6.1.10/bin/VBoxDRMClient
+-rwxr-xr-x 1 root root     138856 feb 28  2019 vdir
+lrwxrwxrwx 1 root root         20 ago 18 17:54 vi -> /etc/alternatives/vi
+lrwxrwxrwx 1 root root         22 ago 18 17:54 view -> /etc/alternatives/view
+-rwxr-xr-x 1 root root      28032 mar 18  2018 viewres
+-rwxr-xr-x 1 root root    1200696 jun 15  2019 vim.tiny
+-rwxr-xr-x 1 root root      34912 may 31  2018 vmstat
+-rwxr-xr-x 1 root root      10584 may 26  2018 vmwarectrl
+-rwxr-xr-x 1 root root       6136 mar 28  2017 volname
+lrwxrwxrwx 1 root root         19 ago 18 17:54 w -> /etc/alternatives/w
+-rwxr-sr-x 1 root tty       34896 ene 10  2019 wall
+-rwxr-xr-x 1 root root      27048 may 31  2018 watch
+-rwxr-xr-x 1 root root      18424 ago 22  2019 watchgnupg
+-rwxr-xr-x 1 root root      47880 feb 28  2019 wc
+-rwxr-xr-x 1 root root      34896 ene 10  2019 wdctl
+-rwxr-xr-x 1 root root     466496 abr  5  2019 wget
+-rwxr-xr-x 1 root root      56296 feb 10  2019 whatis
+-rwxr-xr-x 1 root root      31240 ene 10  2019 whereis
+-rwxr-xr-x 1 root root        946 ene 21  2019 which
+-rwxr-xr-x 1 root root      27344 sep 27  2018 whiptail
+-rwxr-xr-x 1 root root      56128 feb 28  2019 who
+-rwxr-xr-x 1 root root      35456 feb 28  2019 whoami
+lrwxrwxrwx 1 root root          7 feb 23  2019 wish -> wish8.6
+-rwxr-xr-x 1 root root      14488 feb 23  2019 wish8.6
+-rwxr-xr-x 1 root root      14328 ene 31  2019 word-list-compress
+-rwxr-xr-x 1 root root      75944 mar 24 07:26 wpa_passphrase
+-rwxr-xr-x 1 root root      18504 may 31  2018 w.procps
+lrwxrwxrwx 1 root root         23 ago 18 17:54 write -> /etc/alternatives/write
+lrwxrwxrwx 1 root root          4 mar  5  2019 X -> Xorg
+lrwxrwxrwx 1 root root          1 may  3  2017 X11 -> .
+-rwxr-xr-x 1 root root     194856 mar 18  2018 x11perf
+-rwxr-xr-x 1 root root       2807 mar 18  2018 x11perfcomp
+lrwxrwxrwx 1 root root          7 ene 10  2019 x86_64 -> setarch
+-rwxr-xr-x 1 root root      31840 mar 21  2019 x86_64-linux-gnu-addr2line
+-rwxr-xr-x 1 root root      64584 mar 21  2019 x86_64-linux-gnu-ar
+-rwxr-xr-x 1 root root     893880 mar 21  2019 x86_64-linux-gnu-as
+-rwxr-xr-x 1 root root      31424 mar 21  2019 x86_64-linux-gnu-c++filt
+lrwxrwxrwx 1 root root          5 feb 25  2019 x86_64-linux-gnu-cpp -> cpp-8
+-rwxr-xr-x 1 root root    1104760 abr  6  2019 x86_64-linux-gnu-cpp-8
+-rwxr-xr-x 1 root root    2876160 mar 21  2019 x86_64-linux-gnu-dwp
+-rwxr-xr-x 1 root root      39768 mar 21  2019 x86_64-linux-gnu-elfedit
+lrwxrwxrwx 1 root root          5 feb 25  2019 x86_64-linux-gnu-g++ -> g++-8
+-rwxr-xr-x 1 root root    1104760 abr  6  2019 x86_64-linux-gnu-g++-8
+lrwxrwxrwx 1 root root          5 feb 25  2019 x86_64-linux-gnu-gcc -> gcc-8
+-rwxr-xr-x 1 root root    1100664 abr  6  2019 x86_64-linux-gnu-gcc-8
+lrwxrwxrwx 1 root root          8 feb 25  2019 x86_64-linux-gnu-gcc-ar -> gcc-ar-8
+-rwxr-xr-x 1 root root      35296 abr  6  2019 x86_64-linux-gnu-gcc-ar-8
+lrwxrwxrwx 1 root root          8 feb 25  2019 x86_64-linux-gnu-gcc-nm -> gcc-nm-8
+-rwxr-xr-x 1 root root      35296 abr  6  2019 x86_64-linux-gnu-gcc-nm-8
+lrwxrwxrwx 1 root root         12 feb 25  2019 x86_64-linux-gnu-gcc-ranlib -> gcc-ranlib-8
+-rwxr-xr-x 1 root root      35296 abr  6  2019 x86_64-linux-gnu-gcc-ranlib-8
+lrwxrwxrwx 1 root root          6 feb 25  2019 x86_64-linux-gnu-gcov -> gcov-8
+-rwxr-xr-x 1 root root     688216 abr  6  2019 x86_64-linux-gnu-gcov-8
+lrwxrwxrwx 1 root root         11 feb 25  2019 x86_64-linux-gnu-gcov-dump -> gcov-dump-8
+-rwxr-xr-x 1 root root     524240 abr  6  2019 x86_64-linux-gnu-gcov-dump-8
+lrwxrwxrwx 1 root root         11 feb 25  2019 x86_64-linux-gnu-gcov-tool -> gcov-tool-8
+-rwxr-xr-x 1 root root     561168 abr  6  2019 x86_64-linux-gnu-gcov-tool-8
+lrwxrwxrwx 1 root root         24 mar 21  2019 x86_64-linux-gnu-gold -> x86_64-linux-gnu-ld.gold
+-rwxr-xr-x 1 root root      98704 mar 21  2019 x86_64-linux-gnu-gprof
+lrwxrwxrwx 1 root root         23 mar 21  2019 x86_64-linux-gnu-ld -> x86_64-linux-gnu-ld.bfd
+-rwxr-xr-x 1 root root    1785032 mar 21  2019 x86_64-linux-gnu-ld.bfd
+-rwxr-xr-x 1 root root    3113472 mar 21  2019 x86_64-linux-gnu-ld.gold
+-rwxr-xr-x 1 root root      49056 mar 21  2019 x86_64-linux-gnu-nm
+-rwxr-xr-x 1 root root     179632 mar 21  2019 x86_64-linux-gnu-objcopy
+-rwxr-xr-x 1 root root     353848 mar 21  2019 x86_64-linux-gnu-objdump
+-rwxr-xr-x 1 root root      64616 mar 21  2019 x86_64-linux-gnu-ranlib
+-rwxr-xr-x 1 root root     597056 mar 21  2019 x86_64-linux-gnu-readelf
+-rwxr-xr-x 1 root root      35808 mar 21  2019 x86_64-linux-gnu-size
+-rwxr-xr-x 1 root root      31880 mar 21  2019 x86_64-linux-gnu-strings
+-rwxr-xr-x 1 root root     179640 mar 21  2019 x86_64-linux-gnu-strip
+-rwxr-xr-x 1 root root     293848 ene  6  2019 xarchiver
+-rwxr-xr-x 1 root root      71896 feb 16  2019 xargs
+-rwxr-xr-x 1 root root      48584 nov 21  2017 xauth
+-rwxr-xr-x 1 root root      20824 mar 18  2018 xbiff
+-rwxr-xr-x 1 root root     162128 feb  3  2019 xbrlapi
+-rwxr-xr-x 1 root root      40544 mar 18  2018 xcalc
+-rwxr-xr-x 1 root root      23376 mar 18  2018 xclipboard
+-rwxr-xr-x 1 root root      54976 mar 18  2018 xclock
+-rwxr-xr-x 1 root root      31808 mar 18  2018 xcmsdb
+-rwxr-xr-x 1 root root      24080 mar 18  2018 xconsole
+-rwxr-xr-x 1 root root      14760 mar 18  2018 xcursorgen
+-rwxr-xr-x 1 root root      15040 mar 18  2018 xcutsel
+-rwxr-xr-x 1 root root      51200 ene 20  2019 xdg-dbus-proxy
+-rwxr-xr-x 1 root root      20674 abr 18 16:57 xdg-desktop-icon
+-rwxr-xr-x 1 root root      43312 abr 18 16:57 xdg-desktop-menu
+-rwxr-xr-x 1 root root      26959 abr 18 16:57 xdg-email
+-rwxr-xr-x 1 root root      30064 abr 18 16:57 xdg-icon-resource
+-rwxr-xr-x 1 root root      42158 abr 18 16:57 xdg-mime
+-rwxr-xr-x 1 root root      25648 abr 18 16:57 xdg-open
+-rwxr-xr-x 1 root root      37775 abr 18 16:57 xdg-screensaver
+-rwxr-xr-x 1 root root      38429 abr 18 16:57 xdg-settings
+-rwxr-xr-x 1 root root        234 dic 27  2018 xdg-user-dir
+-rwxr-xr-x 1 root root      26696 dic 27  2018 xdg-user-dirs-update
+-rwxr-xr-x 1 root root     107040 mar 18  2018 xditview
+-rwxr-xr-x 1 root root      32248 mar 18  2018 xdpyinfo
+-rwxr-xr-x 1 root root      10432 mar 18  2018 xdriinfo
+-rwxr-xr-x 1 root root     674488 mar 18  2018 xedit
+-rwxr-xr-x 1 root root      31704 mar 18  2018 xev
+-rwxr-xr-x 1 root root      28672 mar 18  2018 xeyes
+-rwxr-xr-x 1 root root     257064 dic 15  2018 xfburn
+-rwxr-xr-x 1 root root     125304 ene 18  2018 xfce4-about
+-rwxr-xr-x 1 root root      51352 jul  9  2018 xfce4-accessibility-settings
+-rwxr-xr-x 1 root root      72704 jul  9  2018 xfce4-appearance-settings
+-rwxr-xr-x 1 root root     129560 may  6  2015 xfce4-appfinder
+-rwxr-xr-x 1 root root      67632 nov 30  2018 xfce4-clipman
+-rwxr-xr-x 1 root root      92208 nov 30  2018 xfce4-clipman-settings
+-rwxr-xr-x 1 root root     133776 dic 27  2018 xfce4-dict
+-rwxr-xr-x 1 root root     309528 jul  9  2018 xfce4-display-settings
+-rwxr-xr-x 1 root root      18440 jul  9  2018 xfce4-find-cursor
+-rwxr-xr-x 1 root root      96408 jul  9  2018 xfce4-keyboard-settings
+-rwxr-xr-x 1 root root      51304 jul  9  2018 xfce4-mime-settings
+-rwxr-xr-x 1 root root      88344 jul  9  2018 xfce4-mouse-settings
+-rwxr-xr-x 1 root root     141384 dic 17  2018 xfce4-notes
+-rwxr-xr-x 1 root root      22520 dic 17  2018 xfce4-notes-settings
+-rwxr-xr-x 1 root root      96248 dic 28  2018 xfce4-notifyd-config
+-rwxr-xr-x 1 root root     309920 dic 17  2017 xfce4-panel
+-rwxr-xr-x 1 root root       1568 dic 17  2017 xfce4-popup-applicationsmenu
+-rwxr-xr-x 1 root root      14328 nov 30  2018 xfce4-popup-clipman
+lrwxrwxrwx 1 root root         19 nov 30  2018 xfce4-popup-clipman-actions -> xfce4-popup-clipman
+-rwxr-xr-x 1 root root       1496 dic 17  2017 xfce4-popup-directorymenu
+-rwxr-xr-x 1 root root      14328 dic 17  2018 xfce4-popup-notes
+-rwxr-xr-x 1 root root       1539 dic  8  2018 xfce4-popup-places
+-rwxr-xr-x 1 root root       1540 feb  8  2019 xfce4-popup-whiskermenu
+-rwxr-xr-x 1 root root       1493 dic 17  2017 xfce4-popup-windowmenu
+-rwxr-xr-x 1 root root     223352 mar 28  2018 xfce4-power-manager
+-rwxr-xr-x 1 root root     149624 mar 28  2018 xfce4-power-manager-settings
+-rwxr-xr-x 1 root root      88600 ago 22  2018 xfce4-screenshooter
+-rwxr-xr-x 1 root root      30792 dic 21  2018 xfce4-sensors
+-rwxr-xr-x 1 root root     178416 oct 21  2017 xfce4-session
+-rwxr-xr-x 1 root root      10632 oct 21  2017 xfce4-session-logout
+-rwxr-xr-x 1 root root     108776 oct 21  2017 xfce4-session-settings
+-rwxr-xr-x 1 root root      76008 jul  9  2018 xfce4-settings-editor
+-rwxr-xr-x 1 root root      51352 jul  9  2018 xfce4-settings-manager
+-rwxr-xr-x 1 root root     141496 dic 28  2018 xfce4-taskmanager
+-rwxr-xr-x 1 root root     231968 oct  7  2018 xfce4-terminal
+-rwxr-xr-x 1 root root       1124 oct  7  2018 xfce4-terminal.wrapper
+-rwxr-xr-x 1 root root      27304 nov 12  2016 xfconf-query
+-rwxr-xr-x 1 root root      33104 mar 18  2018 xfd
+-rwxr-xr-x 1 root root     378984 sep 23  2018 xfdesktop
+-rwxr-xr-x 1 root root     146008 sep 23  2018 xfdesktop-settings
+-rwxr-xr-x 1 root root       1931 jun 23  2013 xfhelp4
+-rwxr-xr-x 1 root root       1589 oct 21  2017 xflock4
+-rwxr-xr-x 1 root root      41296 mar 18  2018 xfontsel
+lrwxrwxrwx 1 root root         15 may  6  2015 xfrun4 -> xfce4-appfinder
+-rwxr-xr-x 1 root root     108824 jul  9  2018 xfsettingsd
+-rwxr-xr-x 1 root root     391432 ago 14  2018 xfwm4
+-rwxr-xr-x 1 root root     108776 ago 14  2018 xfwm4-settings
+-rwxr-xr-x 1 root root      71912 ago 14  2018 xfwm4-tweaks-settings
+-rwxr-xr-x 1 root root     137368 ago 14  2018 xfwm4-workspace-settings
+-rwxr-xr-x 1 root root      10464 mar 18  2018 xgamma
+-rwxr-xr-x 1 root root      76768 mar 18  2018 xgc
+-rwxr-xr-x 1 root root      14752 mar 18  2018 xhost
+-rwxr-xr-x 1 root root      19064 mar 19  2018 xinit
+-rwxr-xr-x 1 root root      14600 abr 30  2018 xkbbell
+-rwxr-xr-x 1 root root     213640 abr 30  2018 xkbcomp
+-rwxr-xr-x 1 root root      35384 abr 30  2018 xkbevd
+-rwxr-xr-x 1 root root      88616 abr 30  2018 xkbprint
+-rwxr-xr-x 1 root root      19624 abr 30  2018 xkbvleds
+-rwxr-xr-x 1 root root      19656 abr 30  2018 xkbwatch
+-rwxr-xr-x 1 root root      16982 mar 18  2018 xkeystone
+-rwxr-xr-x 1 root root      14664 mar 18  2018 xkill
+-rwxr-xr-x 1 root root      19664 mar 18  2018 xload
+-rwxr-xr-x 1 root root      24000 mar 18  2018 xlogo
+-rwxr-xr-x 1 root root      10504 mar 18  2018 xlsatoms
+-rwxr-xr-x 1 root root      14680 mar 18  2018 xlsclients
+-rwxr-xr-x 1 root root      18880 mar 18  2018 xlsfonts
+-rwxr-xr-x 1 root root      45984 mar 18  2018 xmag
+-rwxr-xr-x 1 root root      71584 mar 18  2018 xman
+-rwxr-xr-x 1 root root      23888 mar 18  2018 xmessage
+-rwxr-xr-x 1 root root      35656 mar 18  2018 xmodmap
+-rwxr-xr-x 1 root root      14848 mar 18  2018 xmore
+-rwxr-xr-x 1 root root        274 mar  5  2019 Xorg
+-rwxr-xr-x 1 root root      41880 mar 18  2018 xprop
+-rwxr-xr-x 1 root root      64336 mar 18  2018 xrandr
+-rwxr-xr-x 1 root root      27320 mar 18  2018 xrdb
+-rwxr-xr-x 1 root root      10544 mar 18  2018 xrefresh
+-rwxr-xr-x 1 root root     777848 nov  5  2018 xsane
+lrwxrwxrwx 1 root root         35 ago 18 18:07 x-session-manager -> /etc/alternatives/x-session-manager
+-rwxr-xr-x 1 root root      31360 mar 18  2018 xset
+-rwxr-xr-x 1 root root      10448 mar 18  2018 xsetmode
+-rwxr-xr-x 1 root root      10464 mar 18  2018 xsetpointer
+-rwxr-xr-x 1 root root      18824 mar 18  2018 xsetroot
+-rwxr-xr-x 1 root root      57384 jun 26  2017 xsetwacom
+-rwxr-xr-x 1 root root      98040 mar 18  2018 xsm
+-rwxr-xr-x 1 root root      15192 mar 18  2018 xstdcmap
+-rwxr-xr-x 1 root root       5164 jul 21 16:27 xsubpp
+-rwxr-xr-x 1 root root     787448 feb 14  2019 xterm
+lrwxrwxrwx 1 root root         37 ago 18 18:06 x-terminal-emulator -> /etc/alternatives/x-terminal-emulator
+-rwxr-xr-x 1 root root      41008 mar 18  2018 xvidtune
+-rwxr-xr-x 1 root root      14600 mar 18  2018 xvinfo
+-rwxr-xr-x 1 root root      31216 mar 18  2018 xwd
+lrwxrwxrwx 1 root root         34 ago 18 18:07 x-window-manager -> /etc/alternatives/x-window-manager
+-rwxr-xr-x 1 root root      43808 mar 18  2018 xwininfo
+-rwxr-xr-x 1 root root      27080 mar 18  2018 xwud
+lrwxrwxrwx 1 root root         31 ago 18 18:07 x-www-browser -> /etc/alternatives/x-www-browser
+-rwxr-xr-x 1 root root      18552 jun 15  2019 xxd
+-rwxr-xr-x 1 root root      81192 ene 27  2019 xz
+lrwxrwxrwx 1 root root          2 ene 27  2019 xzcat -> xz
+lrwxrwxrwx 1 root root          6 ene 27  2019 xzcmp -> xzdiff
+-rwxr-xr-x 1 root root       6632 ene 27  2019 xzdiff
+lrwxrwxrwx 1 root root          6 ene 27  2019 xzegrep -> xzgrep
+lrwxrwxrwx 1 root root          6 ene 27  2019 xzfgrep -> xzgrep
+-rwxr-xr-x 1 root root       5628 ene 27  2019 xzgrep
+-rwxr-xr-x 1 root root       1802 ene 27  2019 xzless
+-rwxr-xr-x 1 root root       2161 ene 27  2019 xzmore
+-rwxr-xr-x 1 root root      35424 feb 28  2019 yes
+lrwxrwxrwx 1 root root          8 sep 27  2018 ypdomainname -> hostname
+-rwxr-xr-x 1 root root       1983 ene  5  2019 zcat
+-rwxr-xr-x 1 root root       1677 ene  5  2019 zcmp
+-rwxr-xr-x 1 root root       5879 ene  5  2019 zdiff
+-rwxr-xr-x 1 root root      18840 may  1  2019 zdump
+-rwxr-xr-x 1 root root         29 ene  5  2019 zegrep
+-rwxr-xr-x 1 root root     119384 dic 27  2018 zenity
+-rwxr-xr-x 1 root root         29 ene  5  2019 zfgrep
+-rwxr-xr-x 1 root root       2080 ene  5  2019 zforce
+-rwxr-xr-x 1 root root       7584 ene  5  2019 zgrep
+-rwxr-xr-x 1 root root      48497 jul 21 16:27 zipdetails
+-rwxr-xr-x 1 root root       2953 jul 30  2019 zipgrep
+-rwxr-xr-x 2 root root     183136 jul 30  2019 zipinfo
+-rwxr-xr-x 1 root root       2205 ene  5  2019 zless
+-rwxr-xr-x 1 root root       1841 ene  5  2019 zmore
+-rwxr-xr-x 1 root root       4552 ene  5  2019 znew
+matias@debian:~$ gunzip lista_com.gz 
+matias@debian:~$ ls -l lista_com
+-rw-r--r-- 1 matias matias 74266 sep  9 16:22 lista_com
+```
+### 11. Divida el archivo lista_com en archivos de 15 líneas cada uno. Verifique los archivos existentes
+```
+atias@debian:~$ split -15 lista_com 
+matias@debian:~$ ls -l
+total 9344
+-rw-r--r--  1 matias matias       0 sep  9 03:34 A
+-rw-r--r--  1 matias matias     438 sep  9 02:56 AA
+lrwxrwxrwx  1 matias matias       1 sep  9 03:31 AAA -> A
+drwxr-xr-x  2 matias matias    4096 sep  9 16:53 backup
+-rw-r--r--  1 matias matias 9007549 sep  9 16:55 backup.tgz
+drwxr-xr-x  2 matias matias    4096 sep  9 03:12 clave
+lrwxrwxrwx  1 matias matias       6 sep  9 03:27 clave-link-carpeta -> clave/
+drwxr-xr-x 18 matias matias    4096 sep  9 16:53 COPIAS
+-rw-r--r--  1 matias matias   81920 sep  9 16:49 copia.tar
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Descargas
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Documentos
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Escritorio
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Imágenes
+lrwxrwxrwx  1 matias matias      19 sep  9 02:38 link-apache -> /etc/init.d/apache2
+-rw-r--r--  1 matias matias   74266 sep  9 16:22 lista_com
+-rw-r--r--  1 matias matias      44 sep  9 16:44 lista_usu
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Música
+drwxr-xr-x  2 matias matias    4096 sep  7 22:23 nuevo
+lrwxrwxrwx  1 matias matias      11 sep  9 03:45 passwd-link -> /etc/passwd
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Plantillas
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Público
+lrwxrwxrwx  1 matias matias      11 sep  9 03:47 shadow-link -> /etc/shadow
+drwxr-xr-x  2 matias matias    4096 ago 18 18:16 Vídeos
+-rw-r--r--  1 matias matias     799 sep  9 17:11 xaa
+-rw-r--r--  1 matias matias     867 sep  9 17:11 xab
+-rw-r--r--  1 matias matias     898 sep  9 17:11 xac
+-rw-r--r--  1 matias matias     856 sep  9 17:11 xad
+-rw-r--r--  1 matias matias     824 sep  9 17:11 xae
+-rw-r--r--  1 matias matias     921 sep  9 17:11 xaf
+-rw-r--r--  1 matias matias     897 sep  9 17:11 xag
+-rw-r--r--  1 matias matias     802 sep  9 17:11 xah
+-rw-r--r--  1 matias matias     868 sep  9 17:11 xai
+-rw-r--r--  1 matias matias     877 sep  9 17:11 xaj
+-rw-r--r--  1 matias matias     935 sep  9 17:11 xak
+-rw-r--r--  1 matias matias     921 sep  9 17:11 xal
+-rw-r--r--  1 matias matias     898 sep  9 17:11 xam
+-rw-r--r--  1 matias matias     950 sep  9 17:11 xan
+-rw-r--r--  1 matias matias     908 sep  9 17:11 xao
+-rw-r--r--  1 matias matias     907 sep  9 17:11 xap
+-rw-r--r--  1 matias matias     863 sep  9 17:11 xaq
+-rw-r--r--  1 matias matias     837 sep  9 17:11 xar
+-rw-r--r--  1 matias matias     869 sep  9 17:11 xas
+-rw-r--r--  1 matias matias    1042 sep  9 17:11 xat
+-rw-r--r--  1 matias matias    1009 sep  9 17:11 xau
+-rw-r--r--  1 matias matias    1072 sep  9 17:11 xav
+-rw-r--r--  1 matias matias     844 sep  9 17:11 xaw
+-rw-r--r--  1 matias matias     874 sep  9 17:11 xax
+-rw-r--r--  1 matias matias     959 sep  9 17:11 xay
+-rw-r--r--  1 matias matias     863 sep  9 17:11 xaz
+-rw-r--r--  1 matias matias     827 sep  9 17:11 xba
+-rw-r--r--  1 matias matias     847 sep  9 17:11 xbb
+-rw-r--r--  1 matias matias     931 sep  9 17:11 xbc
+-rw-r--r--  1 matias matias     902 sep  9 17:11 xbd
+-rw-r--r--  1 matias matias     910 sep  9 17:11 xbe
+-rw-r--r--  1 matias matias     988 sep  9 17:11 xbf
+-rw-r--r--  1 matias matias     828 sep  9 17:11 xbg
+-rw-r--r--  1 matias matias     818 sep  9 17:11 xbh
+-rw-r--r--  1 matias matias     819 sep  9 17:11 xbi
+-rw-r--r--  1 matias matias    1077 sep  9 17:11 xbj
+-rw-r--r--  1 matias matias     874 sep  9 17:11 xbk
+-rw-r--r--  1 matias matias     818 sep  9 17:11 xbl
+-rw-r--r--  1 matias matias     905 sep  9 17:11 xbm
+-rw-r--r--  1 matias matias     912 sep  9 17:11 xbn
+-rw-r--r--  1 matias matias     827 sep  9 17:11 xbo
+-rw-r--r--  1 matias matias     900 sep  9 17:11 xbp
+-rw-r--r--  1 matias matias     871 sep  9 17:11 xbq
+-rw-r--r--  1 matias matias     889 sep  9 17:11 xbr
+-rw-r--r--  1 matias matias     914 sep  9 17:11 xbs
+-rw-r--r--  1 matias matias     951 sep  9 17:11 xbt
+-rw-r--r--  1 matias matias     831 sep  9 17:11 xbu
+-rw-r--r--  1 matias matias     844 sep  9 17:11 xbv
+-rw-r--r--  1 matias matias     865 sep  9 17:11 xbw
+-rw-r--r--  1 matias matias     985 sep  9 17:11 xbx
+-rw-r--r--  1 matias matias     979 sep  9 17:11 xby
+-rw-r--r--  1 matias matias     866 sep  9 17:11 xbz
+-rw-r--r--  1 matias matias     923 sep  9 17:11 xca
+-rw-r--r--  1 matias matias     906 sep  9 17:11 xcb
+-rw-r--r--  1 matias matias     868 sep  9 17:11 xcc
+-rw-r--r--  1 matias matias     840 sep  9 17:11 xcd
+-rw-r--r--  1 matias matias     896 sep  9 17:11 xce
+-rw-r--r--  1 matias matias     825 sep  9 17:11 xcf
+-rw-r--r--  1 matias matias     895 sep  9 17:11 xcg
+-rw-r--r--  1 matias matias     930 sep  9 17:11 xch
+-rw-r--r--  1 matias matias     965 sep  9 17:11 xci
+-rw-r--r--  1 matias matias     883 sep  9 17:11 xcj
+-rw-r--r--  1 matias matias     883 sep  9 17:11 xck
+-rw-r--r--  1 matias matias     962 sep  9 17:11 xcl
+-rw-r--r--  1 matias matias     829 sep  9 17:11 xcm
+-rw-r--r--  1 matias matias     901 sep  9 17:11 xcn
+-rw-r--r--  1 matias matias     869 sep  9 17:11 xco
+-rw-r--r--  1 matias matias    1113 sep  9 17:11 xcp
+-rw-r--r--  1 matias matias     825 sep  9 17:11 xcq
+-rw-r--r--  1 matias matias     985 sep  9 17:11 xcr
+-rw-r--r--  1 matias matias    1161 sep  9 17:11 xcs
+-rw-r--r--  1 matias matias    1134 sep  9 17:11 xct
+-rw-r--r--  1 matias matias     849 sep  9 17:11 xcu
+-rw-r--r--  1 matias matias     864 sep  9 17:11 xcv
+-rw-r--r--  1 matias matias     996 sep  9 17:11 xcw
+-rw-r--r--  1 matias matias    1045 sep  9 17:11 xcx
+-rw-r--r--  1 matias matias     938 sep  9 17:11 xcy
+-rw-r--r--  1 matias matias     856 sep  9 17:11 xcz
+-rw-r--r--  1 matias matias     808 sep  9 17:11 xda
+-rw-r--r--  1 matias matias     925 sep  9 17:11 xdb
+-rw-r--r--  1 matias matias     926 sep  9 17:11 xdc
+-rw-r--r--  1 matias matias     823 sep  9 17:11 xdd
+-rw-r--r--  1 matias matias     105 sep  9 17:11 xde
+```
+### 12. Cree el archivo coman_dos que contenga los nombres de los comandos que pueden ejecutar los usuarios del sistema Linux y luego agregue al mismo archivo el número de i-nodo del archivo creado.
+```
+matias@debian:~$ ls /bin/ > coman_dos
+matias@debian:~$ ls -i coman_dos >> coman_dos 
+matias@debian:~$ tail coman_dos 
+zfgrep
+zforce
+zgrep
+zipdetails
+zipgrep
+zipinfo
+zless
+zmore
+znew
+17773 coman_dos
+```
+### 13. Realice la misma operación pero creando un archivo llamado coman_tres
+```
+matias@debian:~$ ls /bin/ > coman_tres
+matias@debian:~$ ls -i coman_tres >> coman_tres
+matias@debian:~$ tail coman_tres 
+zfgrep
+zforce
+zgrep
+zipdetails
+zipgrep
+zipinfo
+zless
+zmore
+znew
+17774 coman_tres
+```
+### 14. Verifique si hay diferencias entre el archivo coman_dos y el archivo coman_tres
+Efectivamente la diferencia está en la linea 1232 que es la que contiene el i-nodo y nombre de cada archivo.
+```
+matias@debian:~$ diff coman_dos coman_tres 
+1232c1232
+< 17773 coman_dos
+---
+> 17774 coman_tres
+```
+### 15. Compare los archivos anteriores y describa la salida obtenida.
+```
+matias@debian:~$ cmp coman_dos coman_tres 
+coman_dos coman_tres son distintos: byte 12158, línea 1232
+```
+El output de ```cmp``` lo unico que arroja (en el caso de que haya una diferencia) es el byte donde se encuentra la diferencia.
+### 16. Copie el archivo coman_tres al archivo copia3, verifique que la copia exista y luego compárelos. ¿Qué salida obtiene?
+```
+matias@debian:~$ cp coman_tres copia3
+matias@debian:~$ ls -l copia*
+-rw-r--r-- 1 matias matias 12170 sep  9 17:23 copia3
+-rw-r--r-- 1 matias matias 81920 sep  9 16:49 copia.tar
+matias@debian:~$ cmp coman_tres copia3 
+matias@debian:~$ 
+```
+cmp no arroja ningún mensaje al promt ya que los archivos son identicos (no se hallaron diferencias)
+
+## Actividad 2
+### 2. Dividir el archivo dispositivos en archivos que comiencen con el prefijo “device” de 150 líneas cada uno. Verificar los archivos creados.
+```
+matias@debian:~$ ls -l device*
+-rw-r--r-- 1 matias matias 8821 sep  9 17:26 device-aa
+-rw-r--r-- 1 matias matias  825 sep  9 17:26 device-ab
+```
+### 3. Realice una copia de seguridad de los archivos creados (dispositivos y device*) en backup2.tar. Verifique si los archivos originales todavía existen.
+```
+matias@debian:~$ tar cvf backup2.tar dispositivos device-*
+dispositivos
+device-aa
+device-ab
+matias@debian:~$ ls -l dispositivos device-*
+-rw-r--r-- 1 matias matias 8821 sep  9 17:26 device-aa
+-rw-r--r-- 1 matias matias  825 sep  9 17:26 device-ab
+-rw-r--r-- 1 matias matias 9646 sep  9 17:26 dispositivos
+```
+### 4. Muestre el contenido del archivo de respaldo creado.
+```
+matias@debian:~$ tar tvf backup2.tar 
+-rw-r--r-- matias/matias  9646 2020-09-09 17:26 dispositivos
+-rw-r--r-- matias/matias  8821 2020-09-09 17:26 device-aa
+-rw-r--r-- matias/matias   825 2020-09-09 17:26 device-ab
+```
+### 5. Comprima el archivo backup2.tar como un archivo .gz con la mayor velocidad de compresión. Verifique el archivo creado
+```
+matias@debian:~$ gzip -1 backup2.tar 
+matias@debian:~$ ls -l backup*
+-rw-r--r-- 1 matias matias    2221 sep  9 17:28 backup2.tar.gz
+-rw-r--r-- 1 matias matias 9007549 sep  9 16:55 backup.tgz
+```
+### 6. Descomprima el archivo creado anteriormente.
+```
+matias@debian:~$ gunzip backup2.tar.gz 
+matias@debian:~$ ls -l backup2.tar 
+-rw-r--r-- 1 matias matias 30720 sep  9 17:28 backup2.tar
+```
+### 7. Extraiga los archivos originales del archivo de respaldo, en el subdirectorio recupero de su directorio de login.
+```
+matias@debian:~$ mkdir recupero && cd recupero
+matias@debian:~/recupero$ tar xvf ../backup2.tar 
+dispositivos
+device-aa
+device-ab
+matias@debian:~/recupero$ ls -li
+total 28
+17782 -rw-r--r-- 1 matias matias 8821 sep  9 17:26 device-aa
+17783 -rw-r--r-- 1 matias matias  825 sep  9 17:26 device-ab
+17781 -rw-r--r-- 1 matias matias 9646 sep  9 17:26 dispositivos
+```
+## Actividad 3
+### 1. Cree un archivo de respaldo de los archivos del directorio /etc
+```
+matias@debian:~/actividad_03$ tar cvf backup_etc.tar /etc/
+...
+/etc/pam.d/polkit-1
+/etc/pam.d/systemd-user
+/etc/pam.d/login
+/etc/pam.d/chfn
+/etc/pam.d/chpasswd
+/etc/pam.d/common-account
+/etc/pam.d/common-session-noninteractive
+/etc/pam.d/common-password
+tar: Se sale con estado de fallo debido a errores anteriores
+matias@debian:~/actividad_03$ ls
+backup_etc.tar
+```
+### 2. Comprima los archivos de /bin que comiencen con la letra m
+Se tuvo que usar la cuenta de administrador para poder realizar este punto, ya que por temas de permisos no podían utilizarse los binarios con una cuenta normal.
+```
+root@debian:/home/matias/actividad_03# gzip -k /bin/m*
+gzip: /bin/md5sum.textutils: Too many levels of symbolic links
+gzip: /bin/mount is set-user-ID on execution - ignored
+gzip: /bin/mt: Too many levels of symbolic links
+root@debian:/home/matias/actividad_03# exit
+exit
+matias@debian:~/actividad_03$ ls -l /bin/m*.gz
+-rwxr-xr-x 1 root root   7575 ene 22  2019 /bin/mactime.gz
+-rwxr-xr-x 1 root root   2148 jul 28  2018 /bin/make-first-existing-target.gz
+-rwxr-xr-x 1 root root 112085 jul 28  2018 /bin/make.gz
+-rwxr-xr-x 1 root root  57929 feb 10  2019 /bin/mandb.gz
+-rwxr-xr-x 1 root root  50012 feb 10  2019 /bin/man.gz
+-rwxr-xr-x 1 root root  14106 feb 10  2019 /bin/manpath.gz
+-rwxr-xr-x 1 root root   8544 jul 28  2018 /bin/mapscrn.gz
+-rwxr-xr-x 1 root root  58593 mar 23  2012 /bin/mawk.gz
+-rwxr-xr-x 1 root root  13573 ene 10  2019 /bin/mcookie.gz
+-rwxr-xr-x 1 root root  20328 feb 28  2019 /bin/md5sum.gz
+-rwxr-xr-x 1 root root   4007 ene 10  2019 /bin/mesg.gz
+-rwxr-xr-x 1 root root   1400 ago 21  2019 /bin/migrate-pubring-from-classic-gpg.gz
+-rwxr-xr-x 1 root root   3485 ago  6  2018 /bin/mimeopen.gz
+-rwxr-xr-x 1 root root   4900 ago  6  2018 /bin/mimetype.gz
+-rwxr-xr-x 1 root root  38443 feb 28  2019 /bin/mkdir.gz
+-rwxr-xr-x 1 root root  30208 feb 28  2019 /bin/mkfifo.gz
+-rwxr-xr-x 1 root root     90 mar 18  2018 /bin/mkfontdir.gz
+-rwxr-xr-x 1 root root  16840 mar 18  2018 /bin/mkfontscale.gz
+-rwxr-xr-x 1 root root   3360 jul 28  2018 /bin/mk_modmap.gz
+-rwxr-xr-x 1 root root  32023 feb 28  2019 /bin/mknod.gz
+-rwxr-xr-x 1 root root  18664 feb 28  2019 /bin/mktemp.gz
+-rwxr-xr-x 1 root root   3806 ene 22  2019 /bin/mmcat.gz
+-rwxr-xr-x 1 root root  66609 feb  5  2019 /bin/mmcli.gz
+-rwxr-xr-x 1 root root   4633 ene 22  2019 /bin/mmls.gz
+-rwxr-xr-x 1 root root   3489 ene 22  2019 /bin/mmstat.gz
+-rwxr-xr-x 1 root root  17448 ene 10  2019 /bin/more.gz
+-rwxr-xr-x 1 root root   4667 ene 10  2019 /bin/mountpoint.gz
+-rwxr-xr-x 1 root root  92213 nov 10  2018 /bin/mousepad.gz
+-rwxr-xr-x 1 root root   1099 ago  7  2017 /bin/mpexpand.gz
+-rwxr-xr-x 1 root root  37876 abr 23  2019 /bin/mt-gnu.gz
+-rwxr-xr-x 1 root root   2237 may  1  2019 /bin/mtrace.gz
+-rwxr-xr-x 1 root root  11101 may  5  2018 /bin/munchlist.gz
+-rwxr-xr-x 1 root root  65791 feb 28  2019 /bin/mv.gz
+```
+### 3. Realice una copia de seguridad de los archivos creados en seguridad.tar. Muestre el contenido del archivo de respaldo creado.
+```
+matias@debian:~/actividad_03$ tar cvf seguridad.tar /bin/m*.gz
+tar: Eliminando la `/' inicial de los nombres
+/bin/mactime.gz
+tar: Eliminando la `/' inicial de los objetivos de los enlaces
+/bin/make-first-existing-target.gz
+/bin/make.gz
+/bin/mandb.gz
+/bin/man.gz
+/bin/manpath.gz
+/bin/mapscrn.gz
+/bin/mawk.gz
+/bin/mcookie.gz
+/bin/md5sum.gz
+/bin/mesg.gz
+/bin/migrate-pubring-from-classic-gpg.gz
+/bin/mimeopen.gz
+/bin/mimetype.gz
+/bin/mkdir.gz
+/bin/mkfifo.gz
+/bin/mkfontdir.gz
+/bin/mkfontscale.gz
+/bin/mk_modmap.gz
+/bin/mknod.gz
+/bin/mktemp.gz
+/bin/mmcat.gz
+/bin/mmcli.gz
+/bin/mmls.gz
+/bin/mmstat.gz
+/bin/more.gz
+/bin/mountpoint.gz
+/bin/mousepad.gz
+/bin/mpexpand.gz
+/bin/mt-gnu.gz
+/bin/mtrace.gz
+/bin/munchlist.gz
+/bin/mv.gz
+matias@debian:~/actividad_03$ tar tvf seguridad.tar 
+-rwxr-xr-x root/root      7575 2019-01-22 08:53 bin/mactime.gz
+-rwxr-xr-x root/root      2148 2018-07-28 07:07 bin/make-first-existing-target.gz
+-rwxr-xr-x root/root    112085 2018-07-28 07:07 bin/make.gz
+-rwxr-xr-x root/root     57929 2019-02-10 09:14 bin/mandb.gz
+-rwxr-xr-x root/root     50012 2019-02-10 09:14 bin/man.gz
+-rwxr-xr-x root/root     14106 2019-02-10 09:14 bin/manpath.gz
+-rwxr-xr-x root/root      8544 2018-07-28 12:58 bin/mapscrn.gz
+-rwxr-xr-x root/root     58593 2012-03-23 17:15 bin/mawk.gz
+-rwxr-xr-x root/root     13573 2019-01-10 05:30 bin/mcookie.gz
+-rwxr-xr-x root/root     20328 2019-02-28 12:30 bin/md5sum.gz
+-rwxr-xr-x root/root      4007 2019-01-10 05:30 bin/mesg.gz
+-rwxr-xr-x root/root      1400 2019-08-21 15:53 bin/migrate-pubring-from-classic-gpg.gz
+-rwxr-xr-x root/root      3485 2018-08-06 12:21 bin/mimeopen.gz
+-rwxr-xr-x root/root      4900 2018-08-06 12:21 bin/mimetype.gz
+-rwxr-xr-x root/root     38443 2019-02-28 12:30 bin/mkdir.gz
+-rwxr-xr-x root/root     30208 2019-02-28 12:30 bin/mkfifo.gz
+-rwxr-xr-x root/root        90 2018-03-18 14:01 bin/mkfontdir.gz
+-rwxr-xr-x root/root     16840 2018-03-18 14:01 bin/mkfontscale.gz
+-rwxr-xr-x root/root      3360 2018-07-28 12:58 bin/mk_modmap.gz
+-rwxr-xr-x root/root     32023 2019-02-28 12:30 bin/mknod.gz
+-rwxr-xr-x root/root     18664 2019-02-28 12:30 bin/mktemp.gz
+-rwxr-xr-x root/root      3806 2019-01-22 08:53 bin/mmcat.gz
+-rwxr-xr-x root/root     66609 2019-02-05 19:40 bin/mmcli.gz
+-rwxr-xr-x root/root      4633 2019-01-22 08:53 bin/mmls.gz
+-rwxr-xr-x root/root      3489 2019-01-22 08:53 bin/mmstat.gz
+-rwxr-xr-x root/root     17448 2019-01-10 05:30 bin/more.gz
+-rwxr-xr-x root/root      4667 2019-01-10 05:30 bin/mountpoint.gz
+-rwxr-xr-x root/root     92213 2018-11-10 16:56 bin/mousepad.gz
+-rwxr-xr-x root/root      1099 2017-08-07 20:35 bin/mpexpand.gz
+-rwxr-xr-x root/root     37876 2019-04-23 12:29 bin/mt-gnu.gz
+-rwxr-xr-x root/root      2237 2019-05-01 14:24 bin/mtrace.gz
+-rwxr-xr-x root/root     11101 2018-05-05 07:28 bin/munchlist.gz
+-rwxr-xr-x root/root     65791 2019-02-28 12:30 bin/mv.gz
+```
+### 4. Divida el archivo de respaldo creado en archivos de 20 líneas cada uno. Verifique los archivos existentes.
+```
+matias@debian:~/actividad_03$ split --lines=20 seguridad.tar 
+matias@debian:~/actividad_03$ ls -l
+total 6128
+-rw-r--r-- 1 matias matias 4259840 sep  9 17:35 backup_etc.tar
+-rw-r--r-- 1 matias matias  839680 sep  9 17:52 seguridad.tar
+-rw-r--r-- 1 matias matias    4647 sep  9 17:54 xaa
+-rw-r--r-- 1 matias matias    6032 sep  9 17:54 xab
+-rw-r--r-- 1 matias matias    6813 sep  9 17:54 xac
+-rw-r--r-- 1 matias matias    3634 sep  9 17:54 xad
+-rw-r--r-- 1 matias matias    8982 sep  9 17:54 xae
+-rw-r--r-- 1 matias matias    4630 sep  9 17:54 xaf
+-rw-r--r-- 1 matias matias    3013 sep  9 17:54 xag
+-rw-r--r-- 1 matias matias    5793 sep  9 17:54 xah
+-rw-r--r-- 1 matias matias    4906 sep  9 17:54 xai
+-rw-r--r-- 1 matias matias    5331 sep  9 17:54 xaj
+-rw-r--r-- 1 matias matias    3839 sep  9 17:54 xak
+-rw-r--r-- 1 matias matias    4221 sep  9 17:54 xal
+-rw-r--r-- 1 matias matias    3992 sep  9 17:54 xam
+-rw-r--r-- 1 matias matias    6670 sep  9 17:54 xan
+-rw-r--r-- 1 matias matias    6026 sep  9 17:54 xao
+-rw-r--r-- 1 matias matias    5366 sep  9 17:54 xap
+-rw-r--r-- 1 matias matias    5318 sep  9 17:54 xaq
+-rw-r--r-- 1 matias matias    5572 sep  9 17:54 xar
+-rw-r--r-- 1 matias matias    5151 sep  9 17:54 xas
+-rw-r--r-- 1 matias matias    5001 sep  9 17:54 xat
+-rw-r--r-- 1 matias matias    3814 sep  9 17:54 xau
+-rw-r--r-- 1 matias matias    3964 sep  9 17:54 xav
+-rw-r--r-- 1 matias matias    5974 sep  9 17:54 xaw
+-rw-r--r-- 1 matias matias    3727 sep  9 17:54 xax
+-rw-r--r-- 1 matias matias    6706 sep  9 17:54 xay
+-rw-r--r-- 1 matias matias    5269 sep  9 17:54 xaz
+-rw-r--r-- 1 matias matias    6947 sep  9 17:54 xba
+-rw-r--r-- 1 matias matias    4010 sep  9 17:54 xbb
+-rw-r--r-- 1 matias matias    4544 sep  9 17:54 xbc
+-rw-r--r-- 1 matias matias    5996 sep  9 17:54 xbd
+-rw-r--r-- 1 matias matias    6242 sep  9 17:54 xbe
+-rw-r--r-- 1 matias matias    5279 sep  9 17:54 xbf
+-rw-r--r-- 1 matias matias    2155 sep  9 17:54 xbg
+-rw-r--r-- 1 matias matias    6477 sep  9 17:54 xbh
+-rw-r--r-- 1 matias matias    9379 sep  9 17:54 xbi
+-rw-r--r-- 1 matias matias    3436 sep  9 17:54 xbj
+-rw-r--r-- 1 matias matias    4930 sep  9 17:54 xbk
+-rw-r--r-- 1 matias matias    5055 sep  9 17:54 xbl
+-rw-r--r-- 1 matias matias    5963 sep  9 17:54 xbm
+-rw-r--r-- 1 matias matias    4983 sep  9 17:54 xbn
+-rw-r--r-- 1 matias matias    5077 sep  9 17:54 xbo
+-rw-r--r-- 1 matias matias    4523 sep  9 17:54 xbp
+-rw-r--r-- 1 matias matias    3384 sep  9 17:54 xbq
+-rw-r--r-- 1 matias matias    2928 sep  9 17:54 xbr
+-rw-r--r-- 1 matias matias    2144 sep  9 17:54 xbs
+-rw-r--r-- 1 matias matias    2798 sep  9 17:54 xbt
+-rw-r--r-- 1 matias matias    5959 sep  9 17:54 xbu
+-rw-r--r-- 1 matias matias    4873 sep  9 17:54 xbv
+-rw-r--r-- 1 matias matias    4165 sep  9 17:54 xbw
+-rw-r--r-- 1 matias matias    6902 sep  9 17:54 xbx
+-rw-r--r-- 1 matias matias    4756 sep  9 17:54 xby
+-rw-r--r-- 1 matias matias    6207 sep  9 17:54 xbz
+-rw-r--r-- 1 matias matias    2830 sep  9 17:54 xca
+-rw-r--r-- 1 matias matias    4723 sep  9 17:54 xcb
+-rw-r--r-- 1 matias matias    4177 sep  9 17:54 xcc
+-rw-r--r-- 1 matias matias    4445 sep  9 17:54 xcd
+-rw-r--r-- 1 matias matias    7264 sep  9 17:54 xce
+-rw-r--r-- 1 matias matias    5726 sep  9 17:54 xcf
+-rw-r--r-- 1 matias matias    4991 sep  9 17:54 xcg
+-rw-r--r-- 1 matias matias    8770 sep  9 17:54 xch
+-rw-r--r-- 1 matias matias    5664 sep  9 17:54 xci
+-rw-r--r-- 1 matias matias    9456 sep  9 17:54 xcj
+-rw-r--r-- 1 matias matias    4198 sep  9 17:54 xck
+-rw-r--r-- 1 matias matias    4145 sep  9 17:54 xcl
+-rw-r--r-- 1 matias matias    4630 sep  9 17:54 xcm
+-rw-r--r-- 1 matias matias    3066 sep  9 17:54 xcn
+-rw-r--r-- 1 matias matias    5922 sep  9 17:54 xco
+-rw-r--r-- 1 matias matias    4295 sep  9 17:54 xcp
+-rw-r--r-- 1 matias matias    5131 sep  9 17:54 xcq
+-rw-r--r-- 1 matias matias    5185 sep  9 17:54 xcr
+-rw-r--r-- 1 matias matias    8615 sep  9 17:54 xcs
+-rw-r--r-- 1 matias matias    6540 sep  9 17:54 xct
+-rw-r--r-- 1 matias matias    2771 sep  9 17:54 xcu
+-rw-r--r-- 1 matias matias    6603 sep  9 17:54 xcv
+-rw-r--r-- 1 matias matias    5961 sep  9 17:54 xcw
+-rw-r--r-- 1 matias matias    4994 sep  9 17:54 xcx
+-rw-r--r-- 1 matias matias    5848 sep  9 17:54 xcy
+-rw-r--r-- 1 matias matias    3554 sep  9 17:54 xcz
+-rw-r--r-- 1 matias matias    3612 sep  9 17:54 xda
+-rw-r--r-- 1 matias matias    6071 sep  9 17:54 xdb
+-rw-r--r-- 1 matias matias    5492 sep  9 17:54 xdc
+-rw-r--r-- 1 matias matias    4036 sep  9 17:54 xdd
+-rw-r--r-- 1 matias matias    6704 sep  9 17:54 xde
+-rw-r--r-- 1 matias matias    5140 sep  9 17:54 xdf
+-rw-r--r-- 1 matias matias    5304 sep  9 17:54 xdg
+-rw-r--r-- 1 matias matias    6138 sep  9 17:54 xdh
+-rw-r--r-- 1 matias matias    6147 sep  9 17:54 xdi
+-rw-r--r-- 1 matias matias    7521 sep  9 17:54 xdj
+-rw-r--r-- 1 matias matias    4423 sep  9 17:54 xdk
+-rw-r--r-- 1 matias matias    8078 sep  9 17:54 xdl
+-rw-r--r-- 1 matias matias    6791 sep  9 17:54 xdm
+-rw-r--r-- 1 matias matias    8711 sep  9 17:54 xdn
+-rw-r--r-- 1 matias matias    5359 sep  9 17:54 xdo
+-rw-r--r-- 1 matias matias    8124 sep  9 17:54 xdp
+-rw-r--r-- 1 matias matias    7571 sep  9 17:54 xdq
+-rw-r--r-- 1 matias matias    6035 sep  9 17:54 xdr
+-rw-r--r-- 1 matias matias    8173 sep  9 17:54 xds
+-rw-r--r-- 1 matias matias    4127 sep  9 17:54 xdt
+-rw-r--r-- 1 matias matias    5643 sep  9 17:54 xdu
+-rw-r--r-- 1 matias matias    4444 sep  9 17:54 xdv
+-rw-r--r-- 1 matias matias    6446 sep  9 17:54 xdw
+-rw-r--r-- 1 matias matias    6407 sep  9 17:54 xdx
+-rw-r--r-- 1 matias matias    7241 sep  9 17:54 xdy
+-rw-r--r-- 1 matias matias    4834 sep  9 17:54 xdz
+-rw-r--r-- 1 matias matias    4616 sep  9 17:54 xea
+-rw-r--r-- 1 matias matias    5846 sep  9 17:54 xeb
+-rw-r--r-- 1 matias matias    5882 sep  9 17:54 xec
+-rw-r--r-- 1 matias matias    8632 sep  9 17:54 xed
+-rw-r--r-- 1 matias matias    5971 sep  9 17:54 xee
+-rw-r--r-- 1 matias matias    4604 sep  9 17:54 xef
+-rw-r--r-- 1 matias matias    5030 sep  9 17:54 xeg
+-rw-r--r-- 1 matias matias    4406 sep  9 17:54 xeh
+-rw-r--r-- 1 matias matias    9131 sep  9 17:54 xei
+-rw-r--r-- 1 matias matias   11346 sep  9 17:54 xej
+-rw-r--r-- 1 matias matias    9021 sep  9 17:54 xek
+-rw-r--r-- 1 matias matias    6296 sep  9 17:54 xel
+-rw-r--r-- 1 matias matias    6652 sep  9 17:54 xem
+-rw-r--r-- 1 matias matias    5464 sep  9 17:54 xen
+-rw-r--r-- 1 matias matias    6653 sep  9 17:54 xeo
+-rw-r--r-- 1 matias matias    5114 sep  9 17:54 xep
+-rw-r--r-- 1 matias matias    5601 sep  9 17:54 xeq
+-rw-r--r-- 1 matias matias    7220 sep  9 17:54 xer
+-rw-r--r-- 1 matias matias    8088 sep  9 17:54 xes
+-rw-r--r-- 1 matias matias    5916 sep  9 17:54 xet
+-rw-r--r-- 1 matias matias    5702 sep  9 17:54 xeu
+-rw-r--r-- 1 matias matias    6232 sep  9 17:54 xev
+-rw-r--r-- 1 matias matias    5953 sep  9 17:54 xew
+-rw-r--r-- 1 matias matias    5581 sep  9 17:54 xex
+-rw-r--r-- 1 matias matias    5444 sep  9 17:54 xey
+-rw-r--r-- 1 matias matias    7014 sep  9 17:54 xez
+-rw-r--r-- 1 matias matias    5640 sep  9 17:54 xfa
+-rw-r--r-- 1 matias matias    7251 sep  9 17:54 xfb
+-rw-r--r-- 1 matias matias    6777 sep  9 17:54 xfc
+-rw-r--r-- 1 matias matias    4180 sep  9 17:54 xfd
+-rw-r--r-- 1 matias matias    5655 sep  9 17:54 xfe
+-rw-r--r-- 1 matias matias    3674 sep  9 17:54 xff
+-rw-r--r-- 1 matias matias    7816 sep  9 17:54 xfg
+-rw-r--r-- 1 matias matias    5181 sep  9 17:54 xfh
+-rw-r--r-- 1 matias matias    4837 sep  9 17:54 xfi
+-rw-r--r-- 1 matias matias    3470 sep  9 17:54 xfj
+-rw-r--r-- 1 matias matias    5138 sep  9 17:54 xfk
+-rw-r--r-- 1 matias matias    5763 sep  9 17:54 xfl
+-rw-r--r-- 1 matias matias    8980 sep  9 17:54 xfm
+-rw-r--r-- 1 matias matias    5131 sep  9 17:54 xfn
+-rw-r--r-- 1 matias matias    5754 sep  9 17:54 xfo
+-rw-r--r-- 1 matias matias    6755 sep  9 17:54 xfp
+-rw-r--r-- 1 matias matias    3782 sep  9 17:54 xfq
+-rw-r--r-- 1 matias matias    6708 sep  9 17:54 xfr
+-rw-r--r-- 1 matias matias    8194 sep  9 17:54 xfs
+```
+
 
 

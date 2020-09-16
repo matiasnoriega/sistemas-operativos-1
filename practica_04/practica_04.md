@@ -385,7 +385,70 @@ matias_001 tty2         2020-09-15 21:07
 matias_002 tty1         2020-09-15 21:06
 ```
 ### 3.Generar un listado de los archivos cuyo número de enlaces sea superior a 3, considere todos los archivo de /home.
-
+```
+matias@debian:~$ find /home -links +3 > listado_archivos
+matias@debian:~$ cat listado_archivos
+/home
+/home/matias
+/home/matias/COPIAS
+/home/matias/COPIAS/.local/share
+/home/matias/COPIAS/.mozilla
+/home/matias/COPIAS/.mozilla/firefox
+/home/matias/COPIAS/.mozilla/firefox/njcs43kl.default-esr
+/home/matias/COPIAS/.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb
+/home/matias/COPIAS/.config
+/home/matias/COPIAS/.config/xfce4
+/home/matias/COPIAS/.config/xfce4/panel
+/home/matias/COPIAS/.cache
+/home/matias/COPIAS/.cache/mozilla/firefox
+/home/matias/COPIAS/.cache/mozilla/firefox/njcs43kl.default-esr
+/home/matias/COPIAS/.cache/mozilla/firefox/njcs43kl.default-esr/cache2
+/home/matias/.local/share
+/home/matias/.mozilla
+/home/matias/.mozilla/firefox
+/home/matias/.mozilla/firefox/njcs43kl.default-esr
+/home/matias/.mozilla/firefox/njcs43kl.default-esr/storage/permanent/chrome/idb
+/home/matias/.config
+/home/matias/.config/xfce4
+/home/matias/.config/xfce4/panel
+/home/matias/.cache
+/home/matias/.cache/mozilla/firefox
+/home/matias/.cache/mozilla/firefox/njcs43kl.default-esr
+/home/matias/.cache/mozilla/firefox/njcs43kl.default-esr/cache2
+```
 ### 4. Generar un listado ordenado de menor a mayor del campo tamaño de archivo y nombre de archivo. Trabaje sobre el contenido del directorio de conexión.
+```
+matias@debian:~/tareas$ ls -l $HOME | tr -s ' ' '|' | cut -d '|' -f5,9 | sort -n > listado_ordenado
+matias@debian:~/tareas$ more listado_ordenado
 
-
+0|A
+1|AAA
+6|clave-link-carpeta
+11|passwd-link
+11|shadow-link
+19|link-apache
+44|lista_usu
+105|xde
+438|AA
+799|xaa
+802|xah
+808|xda
+818|xbh
+818|xbl
+819|xbi
+823|xdd
+824|xae
+825|device-ab
+825|xcf
+825|xcq
+827|xba
+827|xbo
+828|xbg
+829|xcm
+831|xbu
+837|xar
+840|xcd
+844|xaw
+844|xbv
+...
+```

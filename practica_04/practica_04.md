@@ -417,6 +417,7 @@ matias@debian:~$ cat listado_archivos
 /home/matias/.cache/mozilla/firefox/njcs43kl.default-esr/cache2
 ```
 ### 4. Generar un listado ordenado de menor a mayor del campo tamaño de archivo y nombre de archivo. Trabaje sobre el contenido del directorio de conexión.
+
 ```
 matias@debian:~/tareas$ ls -l $HOME | tr -s ' ' '|' | cut -d '|' -f5,9 | sort -n > listado_ordenado
 matias@debian:~/tareas$ more listado_ordenado
@@ -452,3 +453,244 @@ matias@debian:~/tareas$ more listado_ordenado
 844|xbv
 ...
 ```
+# Capitulo 7
+## Actividad 1
+### 1. El comando login verifica el username y la clave de acceso. ¿En qué archivo hace esta verificación?
+El username lo verifica en el archivo `/etc/passwd`, y la clave de acceso la verifica en el archivo `/etc/shadow`.
+
+### 2. ¿Un usuario puede cambiar su clave de acceso? ¿Qué comando usaría?
+Si, puede hacerlo usando el comando `passwd`.
+
+### 3. ¿Qué tamaño mínimo debe tener una clave?
+Por defecto en la mayoría de los sistemas GNU/Linux las claves deben tener un mínimo de 6 caracteres.
+
+### 4. ¿Qué usuario puede cambiar la clave de otros usuarios? ¿Con qué comando?
+El usuario administrador (root) tiene el poder para cambiar la clave de otros usuarios, usando el comando `passwd` seguido del username del usuario que quieren modificar.
+
+### 5. ¿Cuáles son las operaciones que puede realizar un usuario sobre un archivo si los permisos de este son: –r-x-w---x?
+El dueño del archivo puede leer y ejecutar el mismo, los usuarios pertenecientes al mismo grupo pueden escribirlo, y el resto de los usuarios solo pueden ejecutarlos.
+
+### 6. ¿Qué usuarios tienen autorización para modificar los permisos de un determinado archivo?
+Solo el propietario tiene el poder de modificar los permisos de un archivo. El usuario administrador (root) solo puede hacerlo con sus archivos o los del sistema.
+
+### 7. ¿Qué operación/es podemos realizar sobre un directorio si éste tiene el permiso de ejecución asignado?
+Permite al usuario explorar el directorio.
+
+## Actividad 2
+### 2.Cambie su clave de acceso actual y coloque una clave autorizada
+```
+matias@debian:~$ passwd
+Cambiando la contraseña de matias.
+Current password:
+Nueva contraseña:
+Vuelva a escribir la nueva contraseña:
+passwd: contraseña actualizada correctamente
+```
+### 3.Luego abra una sesión en otra consola virtual en modo texto
+```
+Debian GNU/Linux 10 debian tty2
+
+debian login: matias
+Password:
+Last Login: Mon Aug 31 22:31:32 -03 2020 on tty2
+Linux debian 4.19.0-10-amd64 #1 SMP Debian 4.19.132-1 (2020-07-24) x86_64
+
+The programs included with the Debian GNU/Linux system are free software:
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+matias@debian:~$
+```
+### 4.Visualice los permisos otorgados a los siguientes archivos y explíquelos.
+
+- **/etc/passwd :** El usuario root (el propietario del archivo) solo tiene permiso de lectura y escritura, los usuarios en el grupo root y el resto de los usuarios del sistema tienen permisos de lectura solanmente.
+- **/etc/shadow :** El usuario root solo tiene permisos de lectura y escritura, mientras que los usuarios dentro del grupo shadow tienen permisos de lectura y el resto de los usuarios del sistema no tienen ningún tipo de acceso a este archivo.
+- **/bin/login :** El usuario root puede leer, escribir y ejecutar este archivo, mientras que el resto de los usuarios pueden leerlo y ejecutarlo
+- **/bin/ls :** Idem `/bin/login`
+- **/etc/hosts :** El usuario root puede leer y escribir el archivo, mientras que el resto de los usuarios solamente pueden leerlo. 
+
+### 5. Cree un archivo llamado copiaclave que contenga el archivo /etc/shadow y verifique los permisos que posee y compare.
+```
+matias@debian:~$ su -
+Contraseña:
+root@debian:~# cat /etc/shadow > /home/matias/copiaclave
+root@debian:~# ls -l /home/matias/copiaclave
+-rw-r--r-- 1 root root 1534 sep 16 18:04 /home/matias/copiaclave
+root@debian:~# ls -l /etc/shadow
+-rw-r----- 1 root shadow 1534 sep 16 18:00 /etc/shadow
+```
+Un usuario común no puede realizar esta operación, así que se tuvo que utilizar el usuario `root`. El nuevo archivo, a diferencia del original, agrega permisos de lectura para los demas usuarios (los que no son `root` ni pertenecen al grupo `shadow`) y pertenece al grupo `root` en lugar de `shadow`.
+
+### 6. Cambie los permisos del archivo creado (copiaclave) usando el modo simbólico, otorgándole permisos de lectura solamente al propietario, al grupo y a los demás usuarios. Verifique los cambios realizados.
+``` 
+root@debian:/home/matias# chmod a-wx+r copiaclave
+root@debian:/home/matias# ls -l copiaclave
+-r--r--r-- 1 root root 1534 sep 16 18:04 copiaclave
+```
+### 7.Haga una copia del archivo copiaclave llamado copiaclave2 y usando el modo absoluto modifique los permisos del nuevo archivo otorgándole derechos de lectura y ejecución al propietario, solamente de lectura al grupo y ningún derecho al resto. Muestre los permisos modificados.
+```
+root@debian:/home/matias# cp copiaclave copiaclave2
+root@debian:/home/matias# chmod u=rx,g=r,o=- copiaclave2
+root@debian:/home/matias# ls -l copiaclave2
+-r-xr----- 1 root root 1534 sep 16 18:14 copiaclave2
+```
+### 8. Otorgue los mismos derechos del punto anterior al archivo copiaclave, pero utilice el modo numérico (octal).
+```
+root@debian:/home/matias# chmod 540 copiaclave
+root@debian:/home/matias# ls -l copiaclave
+-r-xr----- 1 root root 1534 sep 16 18:04 copiaclave
+```
+### 9.Cree un subdirectorio llamado "prueba". Compruebe los derechos que se le otorgaron.
+```
+matias@debian:~$ mkdir prueba
+matias@debian:~$ ls -l prueba
+total 0
+matias@debian:~$ ls -l | grep prueba
+drwxr-xr-x  2 matias matias    4096 sep 16 18:19 prueba
+```
+Por defecto el usuario dueño tiene todos los permisos, mientras que el resto de los usuario (grupo y demas) pueden leer y navegar el directorio.
+
+### 10. Modifique los permisos del directorio prueba de manera que se vean como: r- - r - - - - -, utilice cualquier método. Luego verifique los cambios con: ls -l
+```
+matias@debian:~$ chmod 440 prueba/
+matias@debian:~$ ls -l | grep prueba
+dr--r-----  2 matias matias    4096 sep 16 18:19 prueba
+```
+### 11. Cree un archivo llamado nuevo y otorgue permiso de ejecución con sus permisos como propietario a los demás usuarios, además de permisos de lectura para todos los usuarios (setuid). Verifique el cambio.
+```
+matias@debian:~$ vi nuevo
+matias@debian:~$ chmod 4444 nuevo 
+matias@debian:~$ ls -l | grep nuevo 
+-r-Sr--r--  1 matias matias       0 sep 16 18:34 nuevo
+```
+### 12. Otorgue al archivo nuevo derecho de lectura y modificación para todos los usuarios y privilegios de ejecución del grupo al que pertenece el archivo (segid).
+```
+matias@debian:~$ chmod 2666 nuevo
+matias@debian:~$ ls -l nuevo
+-rw-rwSrw- 1 matias matias 0 sep 16 18:34 nuevo
+```
+### 13. Modifique los atributos del archivo nuevo para que sólo se pueda abrir en modo escritura para añadir datos. ¿Qué usuario deberá realizar la operación? Verifique los cambios realizados.
+Usuario: root
+```
+matias@debian:~$ su -
+Contraseña:
+root@debian:~# chattr +a /home/matias/nuevo
+root@debian:~# lsattr /home/matias/nuevo
+-----a--------e---- /home/matias/nuevo
+```
+### 14. Cambie los atributos del archivo nuevo para que no se pueda modificar de ninguna forma. Visualice los cambios.
+```
+root@debian:~# chattr +i /home/matias/nuevo
+root@debian:~# lsattr /home/matias/nuevo
+----ia--------e---- /home/matias/nuevo
+```
+## Actividad 3
+### 3.Visualice los permisos otorgados a los siguientes archivos y explíquelos.
+- **/etc/crontab:** El usuario administrador (propietario) tiene permisos de lectoescritura, pero no de ejecución. El resto de los usuarios tiene solo permito de lectura.
+
+- **/bin/cat:** El usuario administrador tiene todos los permisos, mientras que el resto de los usuarios solamente de lectura y ejecución
+
+- **/usr/bin/yes:** idem el item anterior
+
+### 4.Copie el archivo /etc/crontab en copia y verifique los permisos de ambos. Explique.
+```
+matias@debian:~$ cp /etc/crontab copia
+matias@debian:~$ ls -l copia /etc/crontab
+-rw-r--r-- 1 matias matias 1042 sep 16 19:11 copia
+-rw-r--r-- 1 root   root   1042 oct 11  2019 /etc/crontab
+```
+Los permisos se mantienen 'iguales', teniendo en cuenta el cambio de propietario y grupo del archivo. Esto quiere decir que el archivo original solo tiene permisos de lectura para el grupo (root) y los demas usuarios, donde mi usuario (matias) podría solo leerlo; y permisos de lectoescritura para el propietario (root). Mientras que el archivo `copia` también tiene permisos de lectoescritura para el propietario (matias) y solo de lectura para el grupo y los demas usuarios, donde entraría el usuario `root`.
+
+### 5.Cambie los permisos del archivo copia usando el modo simbólico, otorgándole todos los permisos al propietario, permiso de lectura y ejecución al grupo y demás usuarios. Verifique los cambios realizados.
+```
+matias@debian:~$ chmod u+rwx,go+rx copia
+matias@debian:~$ ls -l copia
+-rwxr-xr-x 1 matias matias 1042 sep 16 19:11 copia
+```
+
+### 6. Cree un archivo llamado comandos que contenga los archivos de /bin, y verifique el contenido del archivo y los permisos que posee.
+```
+matias@debian:~$ ls /bin/ > comandos
+matias@debian:~$ more comandos 
+[
+2to3-2.7
+7z
+7za
+7zr
+aa-enabled
+aa-exec
+ab
+aconnect
+addpart
+addr2line
+alsabat
+alsaloop
+alsamixer
+alsatplg
+...
+matias@debian:~$ ls -l comandos 
+-rw-r--r-- 1 matias matias 12537 sep 16 19:17 comandos
+```
+
+### 7.Utilizando el modo absoluto modifique los permisos del archivo comandos otorgándole derechos de lectura y ejecución al propietario, solamente de lectura al grupo y al resto de los usuarios. Muestre los permisos modificados. Deberá obtener los siguientes permisos: r - x r - - r - - 
+```
+matias@debian:~$ chmod u=rx,g=r,o=r comandos
+matias@debian:~$ ls -l comandos
+-r-xr--r-- 1 matias matias 12537 sep 16 19:17 comandos
+```
+
+### 8. Otorgue los mismos derechos del punto 5 al archivo comandos, pero utilice el modo numérico (octal). Deberá obtener los siguientes permisos: r w x r - x r – x 
+```
+matias@debian:~$ chmod 0755 comandos
+matias@debian:~$ ls -l comandos
+-rwxr-xr-x 1 matias matias 12537 sep 16 19:17 comandos
+```
+
+### 9. Realice un enlace duro del archivo comandos como comandosln y verifique los permisos de ambos.
+```
+matias@debian:~$ ln comandos comandosln
+matias@debian:~$ ls -li comandos comandosln
+17956 -rwxr-xr-x 2 matias matias 12537 sep 16 19:17 comandos
+17956 -rwxr-xr-x 2 matias matias 12537 sep 16 19:17 comandosln
+```
+### 10. Modifique los permisos del archivo comandosln de manera que se vean como: r—r-----, utilice cualquier método. Luego verifique los cambio con: ls -l ¿Qué sucedió con los permisos de los archivos comandos y comandosln? ¿Por qué?
+```
+matias@debian:~$ chmod u=r,g=u,o=- comandosln
+matias@debian:~$ ls -li comandos comandosln
+17956 -r--r----- 2 matias matias 12537 sep 16 19:17 comandos
+17956 -r--r----- 2 matias matias 12537 sep 16 19:17 comandosln
+```
+### 11. Realice un enlace simbólico del archivo /etc/crontab como crono, verifique los permisos de ambos y otorgue a crono permiso de lectura, modificación y ejecución al propietario, lectura y ejecución para el grupo y de lectura para los demás usuarios. Utilice modo numérico. ¿Qué sucedió con los permisos de /etc/crontab y crono? ¿Por qué?
+```
+matias@debian:~$ ln -s /etc/crontab crono
+matias@debian:~$ ls -l /etc/crontab crono
+lrwxrwxrwx 1 matias matias   12 sep 16 19:29 crono -> /etc/crontab
+-rw-r--r-- 1 root   root   1042 oct 11  2019 /etc/crontab
+matias@debian:~$ chmod 0754 crono
+chmod: cambiando los permisos de 'crono': Operación no permitida
+matias@debian:~$ su -
+Contraseña:
+root@debian:~# cd /home/matias
+root@debian:/home/matias# chmod 0754 crono
+root@debian:/home/matias# ls -l /etc/crontab crono
+lrwxrwxrwx 1 matias matias   12 sep 16 19:29 crono -> /etc/crontab
+-rwxr-xr-- 1 root   root   1042 oct 11  2019 /etc/crontab
+```
+Para poder realizar el enlace lo tuve que hacer cómo `root` ya que es el dueño del archivo original. Al ser un enlace simbólico, los bits de permisos no se usan, sino que son predeterminados por el archivo a donde apunta, en este caso  `/etc/crontab`. Al aplicar el cambio de permisos, se aplicaron sobre este último archivo.
+
+### 12. Otorgue al archivo comandos derechos de lectura para todos los usuarios y privilegios de ejecución del grupo al que pertenece el archivo (segid).
+```
+matias@debian:~$ chmod 2444 comandos
+matias@debian:~$ ls -l comandos
+-r--r-Sr-- 2 matias matias 12537 sep 16 19:17 comandos
+```
+
+### 13. Modifique los atributos del archivo crono para que sólo se pueda abrir en modo escritura para añadir datos. Verifique los cambios realizados.
+El comando para lograr que solo pueda abrirse en modo escritura para añadir datos es `chattr +a crono`. Pero al ser un enlace simbólico, el sistema no permite realizar esta acción sobre symlinks
+
+### 14. Cambie los atributos del archivo crono para que no se pueda modificar de ninguna forma.Visualice los cambios.
+Idem punto anterior, pero el comando sería `chattr +i crono`
+ 
+

@@ -136,4 +136,99 @@ job 5 at Sat Sep 26 22:26:00 2020
 matias@debian:~$ more salidacron
 matias@debian:~$
 ```
+## Actividad 3
+### 2. Hacer un listado recursivo y paginado de su directorio de login.
+```
+matias@debian:~$ ls -lR | more
+.:
+total 9552
+-rw-r--r--  1 matias matias       0 sep  9 03:34 A
+-rw-r--r--  1 matias matias     438 sep  9 02:56 AA
+lrwxrwxrwx  1 matias matias       1 sep  9 03:31 AAA -> A
+drwxr-xr-x  2 matias matias    4096 sep  9 17:54 actividad_03
+drwxr-xr-x  2 matias matias    4096 sep  9 16:53 backup
+-rw-r--r--  1 matias matias   30720 sep  9 17:28 backup2.tar
+-rw-r--r--  1 matias matias 9007549 sep  9 16:55 backup.tgz
+...
+./tareas:
+total 24
+-rw-r--r-- 1 matias matias 7817 sep 15 18:56 dir1
+-rw-r--r-- 1 matias matias 7817 sep 15 18:56 dir2
+-rw-r--r-- 1 matias matias 1232 sep 16 14:44 listado_ordenado
+-rw-r--r-- 1 matias matias   82 sep 15 21:37 usuarios
+
+./Vídeos:
+total 0
+matias@debian:~$
+```
+### 3. Buscar los archivos cuyo nombre comience con lin, en todo el file system y redireccionar la salida al archivo listalin. Ejecutar en segundo plano.
+```
+root@debian:/home/matias# find / -name lin* > listalin&
+[1] 3598
+```
+### 4. Verificar en qué estado se encuentra el proceso anterior. ¿Está en ejecución? ¿Qué PID tiene asignado?
+```
+root@debian:/home/matias# jobs
+[1]+  Hecho                   find / -name lin* > listalin
+```
+### 5. Determinar si el proceso 1456 se está ejecutando en:
+#### a) Su sesión de trabajo: ps | grep 1456
+```
+matias@debian:~$ ps | grep 1456
+matias@debian:~$ 
+```
+#### b) En todo el sistema:
+```
+matias@debian:~$ ps -aux | grep 1456
+matias    3612  0.0  0.0   6088   884 pts/1    S+   22:54   0:00 grep 1456
+```
+En realidad no encuentra el proceso del PID 1465 sino que muestra el proceso de PID 3612 cuyo comando de lanzamiento fue `grep 1465`
+
+### 6. Lanzar en background un proceso que clasifique por número de i-nodo en orden ascendente los archivos.
+```
+matias@debian:~$ ls -i $HOME | sort -n&
+[1] 3616
+matias@debian:~$  3140 tareas
+ 3143 Escritorio
+ 3144 Descargas
+ 3145 Plantillas
+ 3146 Público
+ 3147 Documentos
+ 3148 Música
+ 3149 Imágenes
+ 3150 Vídeos
+ 3160 lista_usu
+ 3163 practico
+ 3207 listado_archivos
+ 3342 nuevo
+ 3390 link-apache
+ 3392 dir1
+ 3395 directorios
+```
+### 7. Usted es un encargado de área de una organización, ha ingresado al sistema como usuario10 y a las 20:00 horas termina su jornada de trabajo. Entonces decide programar 30 minutos después:
+#### a) Realizar una copia de los archivos que hay en su directorio de trabajo a un directorio de respaldo /home/”nombre_usuario”/respaldo
+#### b) Conocer los usuarios que estén conectados al Sistema en ese momento.
+at 20:30
+cp * .* /home/usuario10/respaldo
+who
+ctrl+d
+8.Mostrar por pantalla las tareas planificadas en el punto anterior.
+at –l
+9.Buscar en el File System el archivo at.deny. Realizar esta tarea en segundo plano y cuando
+la carga del sistema así lo permita (modo batch).
+batch
+find /
+ -name at.deny&
+ctrl+d
+10. Verificar la realización del comando anterior. ¿Qué comando utilizó?
+mail
+11. A causa de un factor externo, la tarea de copia del ejercicio 7-a se debe completar en forma
+urgente. Usted es supervisor. Asigarle la máxima prioridad de ejecución y tener en cuenta
+que el proceso ya se está ejecutando. ¿Qué pasos realizará?
+ps –l
+renice
+ -20
+ [pid obtenido]
+ps –l
+
 

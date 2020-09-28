@@ -208,27 +208,90 @@ matias@debian:~$  3140 tareas
 ### 7. Usted es un encargado de área de una organización, ha ingresado al sistema como usuario10 y a las 20:00 horas termina su jornada de trabajo. Entonces decide programar 30 minutos después:
 #### a) Realizar una copia de los archivos que hay en su directorio de trabajo a un directorio de respaldo /home/”nombre_usuario”/respaldo
 #### b) Conocer los usuarios que estén conectados al Sistema en ese momento.
-at 20:30
-cp * .* /home/usuario10/respaldo
-who
-ctrl+d
-8.Mostrar por pantalla las tareas planificadas en el punto anterior.
-at –l
-9.Buscar en el File System el archivo at.deny. Realizar esta tarea en segundo plano y cuando
-la carga del sistema así lo permita (modo batch).
-batch
-find /
- -name at.deny&
-ctrl+d
-10. Verificar la realización del comando anterior. ¿Qué comando utilizó?
-mail
-11. A causa de un factor externo, la tarea de copia del ejercicio 7-a se debe completar en forma
-urgente. Usted es supervisor. Asigarle la máxima prioridad de ejecución y tener en cuenta
-que el proceso ya se está ejecutando. ¿Qué pasos realizará?
-ps –l
-renice
- -20
- [pid obtenido]
-ps –l
+```
+matias@debian:~$ at 20:30
+warning: commands will be executed using /bin/sh
+at> cp $HOME/* ~/respaldo
+at> who
+at> <EOT>
+job 6 at Mon Sep 28 20:30:00 2020
+```
+### 8.Mostrar por pantalla las tareas planificadas en el punto anterior.
+```
+matias@debian:~$ atq
+6	Mon Sep 28 20:30:00 2020 a matias
+```
+### 9.Buscar en el File System el archivo at.deny. Realizar esta tarea en segundo plano y cuando la carga del sistema así lo permita (modo batch).
+```
+matias@debian:~$ batch
+warning: commands will be executed using /bin/sh
+at> find / -name at.deny&
+at> <EOT>
+job 7 at Sun Sep 27 21:41:00 2020
+```
+### 10. Verificar la realización del comando anterior. ¿Qué comando utilizó?
+```
+matias@debian:/var/mail$ mail
+"/var/mail/matias": 2 mensajes 2 nuevos
+>N   1 Mail Delivery Syst dom sep 27 21:42  52/1523  Mail delivery failed: ret
+ N   2 matias             dom sep 27 21:53 881/44252 Output from your job 
+```
+ó
+```
+matias@debian:/var/mail$ cat /var/mail/matias
+From matias@debian Sun Sep 27 21:53:53 2020
+Return-path: <matias@debian>
+Envelope-to: matias@debian
+Delivery-date: Sun, 27 Sep 2020 21:53:53 -0300
+Received: from matias by debian with local (Exim 4.92)
+	(envelope-from <matias@debian>)
+	id 1kMhQP-0000PN-BC
+	for matias@debian; Sun, 27 Sep 2020 21:53:53 -0300
+Subject: Output from your job        8
+To: matias@debian
+Message-Id: <E1kMhQP-0000PN-BC@debian>
+From: matias <matias@debian>
+Date: Sun, 27 Sep 2020 21:53:53 -0300
+X-IMAPbase: 1601254449 3
+Status: O
+X-UID: 2
 
+find: ‘/sys/kernel/debug’: Permiso denegado
+find: ‘/sys/fs/pstore’: Permiso denegado
+find: ‘/sys/fs/bpf’: Permiso denegado
+find: ‘/var/lib/private’: Permiso denegado
+find: ‘/var/lib/lightdm’: Permiso denegado
+...
+```
+### 11. A causa de un factor externo, la tarea de copia del ejercicio 7-a se debe completar en forma urgente. Usted es supervisor. Asigarle la máxima prioridad de ejecución y tener en cuenta que el proceso ya se está ejecutando. ¿Qué pasos realizará?
+```
+matias@debian:/var/mail$ ps -l
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+0 S  1000  1385  1381  0  80   0 -  2128 -      pts/0    00:00:00 bash
+0 R  1000  1613  1385  0  80   0 -  2637 -      pts/0    00:00:00 ps
+matias@debian:/var/mail$ renice -20 [PID del proceso si estuviese en ejecución] 
+```
+## Actividad 4
+### 1. Generar un archivo con información sobre los usuarios conectados al sistema pero no se incluya usted en ese informe.
+```
+matias@debian:~$ who | grep -v $LOGNAME > usuarios_conectados
+```
+### 2. Programar la siguiente tarea: generar un archivo con un informe sobre el desempeño del sistema cada 60 minutos (tiempo en el que el sistema lleva funcionando, usuarios conectados, etc).
+```
+matias@debian:~$ vi tareas_crontab
+matias@debian:~$ crontab tareas_crontab
+matias@debian:~$ crontab -l
+0 * * * * uptime >> reporte_$(date +"%y%m%d%H%M%S")
+```
+### 3. Realizar un informe de todos los procesos activos del usuario alumno90 y analizar su salida.
+```
+matias@debian:~$ ps -l -ualumno90
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S  1000  1137     1  0  80   0 -  5320 do_epo ?        00:00:00 systemd
+5 S  1000  1138  1137  0  80   0 - 26344 -      ?        00:00:00 (sd-pam)
+4 S  1000  1153  1132  0  80   0 -   597 -      ?        00:00:00 sh
+...
+```
+### 4. Indicar cuál es la función comando del renice.
+El comando permite modificar la prioridad (subir o bajar) de un proceso que se encuentra en ejecución. Mientras que un usuario común solo puede modificar la prioridad de los procesos de los que sea dueño, el superusuario podrá modificar las prioridades tanto de sus procesos como los de los demás.
 

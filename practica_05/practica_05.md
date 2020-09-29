@@ -295,3 +295,134 @@ F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
 ### 4. Indicar cuál es la función comando del renice.
 El comando permite modificar la prioridad (subir o bajar) de un proceso que se encuentra en ejecución. Mientras que un usuario común solo puede modificar la prioridad de los procesos de los que sea dueño, el superusuario podrá modificar las prioridades tanto de sus procesos como los de los demás.
 
+# Capitulo 9
+## Actividad 1
+### 1- Utilice el comando free para dar un informe sobre la memoria usada y libre, en Mbytes y cada 75 segundos.
+```
+matias@debian:~$ free -m --seconds=75
+              total        used        free      shared  buff/cache   available
+Mem:            987         260         198           4         528         576
+Swap:          1021           0        1021
+```
+### 2- Sin suspender el proceso anterior y con el objetivo de ejecutar procesos lo suficientemente grandes como para reflejar cambios en los datos del archivo meminfo, desde el entorno gráfico ejecute alguna aplicación (ej. Editor). Regrese a modo texto y analice los nuevos informes de free. Observe que los valores en Free y en Shared han cambiado. ¿Por qué? 
+aaa
+### 3- Genere con el comando utilizado en el punto 1, un archivo de informes y llámelo monitor. Luego de unos mitutos podemos ver su contenido y obtener un informe completo de cómo han ido cambiando los distintos espacios de memoria.
+```
+matias@debian:~$ free -m --seconds=75 > monitor
+^C
+matias@debian:~$ cat monitor
+              total        used        free      shared  buff/cache   available
+Mem:            987         474          69          30         443         339
+Swap:          1021           2        1019
+
+              total        used        free      shared  buff/cache   available
+Mem:            987         474          68          30         443         338
+Swap:          1021           2        1019
+
+              total        used        free      shared  buff/cache   available
+Mem:            987         474          68          30         443         338
+Swap:          1021           2        1019
+
+              total        used        free      shared  buff/cache   available
+Mem:            987         474          68          30         443         338
+Swap:          1021           2        1019
+matias@debian:~$
+```
+### 4- De un informe de los procesos que se están ejecutando en el sistema. ¿vmstat figura como proceso? ¿Por qué?
+```
+matias@debian:~$ vmstat 10 2
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0   2828 304236  27492 406888    0    2   371    28   93  540  0  0 98  1  0
+ 0  0   2828 303976  27492 406888    0    0     0     0  166  667  0  0 99  0  0
+```
+mientras corre chequeo en otra terminal:
+```
+matias@debian:~$ ps -le | grep vmstat
+0 S  1000  1828  1459  0  80   0 -  2472 hrtime pts/0    00:00:00 vmstat
+```
+Se verifica que figura como un proceso corriendo. En el apunte aclara que vmstat no se toma como un proceso así mismo, pero mientras corre si se considera cómo un proceso para el resto del sistema (`ps`, por ejemplo).
+### 5- Muestre por pantalla la salida del comando top y compare con el comando free.
+```
+matias@debian:~$ top
+
+top - 20:52:47 up 33 min,  1 user,  load average: 0,02, 0,02, 0,00
+Tasks: 120 total,   1 running, 119 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  1,1 us,  1,1 sy,  0,0 ni, 97,8 id,  0,0 wa,  0,0 hi,  0,0 si,  0,0 st
+MiB Mem :    987,4 total,    294,8 free,    268,1 used,    424,5 buff/cache
+MiB Swap:   1022,0 total,   1019,2 free,      2,8 used.    570,9 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 1143 root      20   0  239684  67296  32128 S   4,7   6,7   0:09.83 Xorg
+ 1455 matias    20   0  497860  39260  29640 S   3,0   3,9   0:04.85 xfce4-ter+
+ 1321 matias    20   0   68776  23980  19680 S   0,3   2,4   0:00.70 xfwm4
+ 1322 matias    20   0  366928  22768  17644 S   0,3   2,3   0:00.07 Thunar
+    1 root      20   0  104128  10288   7916 S   0,0   1,0   0:00.90 systemd  
+...
+```
+```
+matias@debian:~$ free
+              total        used        free      shared  buff/cache   available
+Mem:        1011060      272732      303652        5268      434676      586340
+Swap:       1046524        2828     1043696
+```
+
+## Actividad 2
+### 1 - Muestre por pantalla un informe sobre las particiones de swap, memoria swap utilizada y prioridades. Analice la información.
+```
+matias@debian:~$ cat /proc/swaps
+Filename				Type		Size	Used	Priority
+/dev/sda5                               partition	1046524	2828	-2
+```
+### 2 - Genere un archivo de control que contenga un informe completo sobre los procesos (listos, inactivos, etc), memoria utilizada y paginada. Realice la tarea cada 30 seg. y por el lapso de 5 minutos. Realice esta tarea en background.
+### 3- Luego de este lapso analice la información del archivo control.
+```
+matias@debian:~$ vmstat 30 10 > control&
+[1] 1855
+matias@debian:~$ more control
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0   2828 296696  27560 407172    0    1   255    19   89  449  0  0 99  1  0
+matias@debian:~$ more control
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0   2828 296696  27560 407172    0    1   255    19   89  449  0  0 99  1  0
+ 0  0   2828 296436  27584 407224    0    0     2     2  123  488  0  0 100  0  0
+ 0  0   2828 296436  27592 407224    0    0     0     2   56  106  0  0 100  0  0
+ 0  0   2828 296436  27600 407224    0    0     0     0   53   98  0  0 100  0  0
+ 0  0   2828 296436  27608 407224    0    0     0     1   54   97  0  0 100  0  0
+ 0  0   2828 296436  27616 407224    0    0     0     0   53   96  0  0 100  0  0
+ 0  0   2828 296436  27624 407224    0    0     0     1   54   96  0  0 100  0  0
+ 0  0   2828 296436  27632 407224    0    0     0     0   53   96  0  0 100  0  0
+ 0  0   2828 296436  27640 407224    0    0     0     1   54   97  0  0 100  0  0
+ 0  0   2828 296436  27648 407224    0    0     0     0   53   96  0  0 100  0  0
+[1]+  Hecho                   vmstat 30 10 > control
+```
+### 4- Genere un archivo en su directorio con el nombre intercambio, de tamaño 2Mbytes para swap que intercambie bloques de 2kB.
+```
+root@debian:/home/matias# dd if=/dev/zero of=intercambio bs=2048 count=1024
+1024+0 registros leídos
+1024+0 registros escritos
+2097152 bytes (2,1 MB, 2,0 MiB) copied, 0,00285558 s, 734 MB/s
+root@debian:/home/matias# sudo mkswap intercambio 1024
+mkswap: intercambio: permisos 0644 no seguros; se sugiere 0600.
+Configurando espacio de intercambio versión 1, tamaño = 1020 KiB (1044480 bytes)
+sin etiqueta, UUID=69b2ede4-04ea-47d5-862e-b0a6f01c009e
+root@debian:/home/matias# sync
+root@debian:/home/matias# sudo swapon intercambio
+swapon: /home/matias/intercambio: permisos 0644 no seguros; se sugiere 0600.
+```
+### 5- Repita el punto 1.
+```
+root@debian:/home/matias# more /proc/swaps
+Filename				Type		Size	Used	Priority
+/dev/sda5                               partition	1046524	2828	-2
+/home/matias/intercambio                file		1020	0	-3
+```
+### 6- Indique una nueva prioridad para el archivo de intercambio para que sea la última área en ser utilizada, por ejemplo si las prioridades de las áreas en uso, están entre -1 y -3 podría utilizar el valor 1.
+```
+root@debian:/home/matias# sudo swapoff intercambio
+root@debian:/home/matias# sudo swapon intercambio -p 1
+swapon: /home/matias/intercambio: permisos 0644 no seguros; se sugiere 0600.
+```
+

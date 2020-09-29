@@ -2,18 +2,25 @@
 ## Actividad 1
 ### 1. ¿Para qué se utiliza el PID de un proceso?
 Se utiliza para identificar unívocamente a un proceso y puede ser representado por un número entero entre 0 y 65564, comenzando en 0 al iniciarse el sistema y volviendo a 0 cuando se llega el máximo.
+
 ### 2. ¿Pueden existir dos PID iguales en un instante dado? ¿Por qué?
 No, porque es la manera en que el sistema identifica de manera única a cada proceso. También cada proceso es representado por un subdirectorio en la carpeta `/proc/` que lleva el nombre de su **PID** y no pueden existir dos archivos/directorios con el mismo nombre dentro de un espacio en común. 
+
 ### 3. ¿Puede un usuario modificar la prioridad de un proceso perteneciente a otro usuario? ¿Por qué? ¿En qué casos podría realizarlo?
 No, solamente puede modificar los procesos de los cuales sea dueños, salvo el superusuario que puede modificar la prioridad de sus procesos como los de los demás usuarios. El que solo el superusuario tenga el poder de hacer estas modificaciones para procesos que no le pertencen es otro escalón más en el sistema de seguridad y permisos de GNU/Linux. Podría darse el caso de que el usuario *X* le de al proceso *Y* más prioridad de la que necesite, de manera malintencionada o no, demorando el resto de las tareas, entonces el administrador de sistema puede cambiar la prioridad del mismo para traer balance al uso del CPU.
+
 ### 4. ¿Qué interpretación le da Ud. al caracter ‘?’ de la columna TTY en la salida del comando ps?
 Quiere decir que ese proceso en particular no está asociado a ninguna terminal (TTY) en particular.
+
 ### 5. Investigue qué información podemos visualizar sobre el proceso 1.
 Con el comando `top` podemos ver el usuario propietario (root), la prioridad que tiene asignada, la cantidad de memoria virtual utilizada, la cantidad de memoria física utilizada, la memoria compartida, el estado del mismo, los porcentajes de uso de CPU y Memoria, el tiemp ototal de CPU que utilizó desde que fue iniciado y el comando que se usó para iniciar el proceso (systemd).
 Chequeando el subdirectorio `/proc/1/` podemos encontrar más información en los archivos que allí se encuentran, como `status`.
+
 ### 6. ¿Cuál es el tamaño (size) de los archivos del subdirectorio /proc? ¿Por qué?
 El tamaño de la mayoría de los archivos dentro del directorio `/proc` es de ***0 bytes*** ya que son archivos virtuales, a pesar de que pueden contener mucha información.
+
 ## Actividad 2
+
 ### 2. Listar sus procesos activos.
 ```
 matias@debian:/proc/1$ ps
@@ -306,6 +313,7 @@ Swap:          1021           0        1021
 ```
 ### 2- Sin suspender el proceso anterior y con el objetivo de ejecutar procesos lo suficientemente grandes como para reflejar cambios en los datos del archivo meminfo, desde el entorno gráfico ejecute alguna aplicación (ej. Editor). Regrese a modo texto y analice los nuevos informes de free. Observe que los valores en Free y en Shared han cambiado. ¿Por qué? 
 aaa
+
 ### 3- Genere con el comando utilizado en el punto 1, un archivo de informes y llámelo monitor. Luego de unos mitutos podemos ver su contenido y obtener un informe completo de cómo han ido cambiando los distintos espacios de memoria.
 ```
 matias@debian:~$ free -m --seconds=75 > monitor
@@ -375,6 +383,7 @@ Filename				Type		Size	Used	Priority
 /dev/sda5                               partition	1046524	2828	-2
 ```
 ### 2 - Genere un archivo de control que contenga un informe completo sobre los procesos (listos, inactivos, etc), memoria utilizada y paginada. Realice la tarea cada 30 seg. y por el lapso de 5 minutos. Realice esta tarea en background.
+
 ### 3- Luego de este lapso analice la información del archivo control.
 ```
 matias@debian:~$ vmstat 30 10 > control&
@@ -425,4 +434,49 @@ root@debian:/home/matias# sudo swapoff intercambio
 root@debian:/home/matias# sudo swapon intercambio -p 1
 swapon: /home/matias/intercambio: permisos 0644 no seguros; se sugiere 0600.
 ```
+## Actividad 3
+### 1. Linux utiliza para la administración de la memoria:
+
+ a) **Intercambio <---**
+ b) Prepaginación
+ c) **Paginación por demanda <---**
+ d) Particiones fijas
+ e) Ninguna de las anteriores es correcta.
+
+### 2. El comando free nos muestra datos que los obtiene del archivo:
+
+ a) /proc/swap
+ b) **/proc/meminfo <---**
+ c) /dev/hda3
+ d) /proc/1276/mem
+ e) Ninguna de las anteriores es correcta.
+
+### 3. El área de swap de un sistema LINUX se utiliza como soporte en disco para:
+
+ a) Respaldo del file system
+ b) **Memoria virtual <---**
+ c) Tabla de i-nodos
+ d) Boot del sistema
+ e) Ninguna de las anteriores es correcta.
+
+### 4. ¿Qué comando o utilidad usaría si deseara conocer información estadística del uso de la memoria, paginación, etc.?
+Se puede usar el comando `vmstat` con sus distintas opciones o ver el contenido del archivo `/proc/meminfo`.
+
+### 5. Genere un archivo llamado control en el que se genere un informe sobre la memoria usada y libre cada 90 segundos. Luego analice la información obtenida.
+```
+matias@debian:~$ vmstat 90 2 > control
+matias@debian:~$ more control
+procs -----------memory---------- ---swap-- -----io---- -system-- ------cpu-----
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st
+ 0  0   2608 240944  28132 454812    0    1   169    13   82  344  0  0 99  0  0
+ 0  0   2608 240944  28156 454812    0    0     0     1   61  143  0  0 100  0  0
+```
+
+### 6.La memoria virtual en Linux, es:
+ 
+ a) Respaldo del sistema de archivos.
+ b) El área de disco donde se almacena el superblock.
+ c) Necesariamente una partición de disco.
+ d) **El área de intercambio (swap) en el disco. <---**
+ e) E. Ninguna de las anteriores es correcta.
 

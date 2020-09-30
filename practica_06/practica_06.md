@@ -265,46 +265,181 @@ Por algun motivo no me deja cambiar el propietario estando logueado como el usua
 ### 14. Vuelva a cambiar el propietario del archivo anterior para dejarlo como antes, es decir que el propietario sea usted.
 Efectivamente no se puede cambiar el propietario de un archivo sin ser el dueño del mismo.
 
-##Actividad 2
-1. Inicie su sesión como supervisor o administrador.
-Login: root
-Password:
+##Actividad 2:
 2. Muestre el archivo /etc/group y analice su información.
-cat /etc/group
-3. ¿Quién es el propietario del archivo /dev/hda1? ¿A qué grupo pertenece?
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-ls –l
-4. Muestre los permisos que posee el archivo y explique.
-ls –l
-5. Copie el archivo anterior (/dev/hda1) en su directorio de login. ¿Quién es el propietario ahora? ¿Los
-permisos son los mismos? ¿Por qué?
-cp /dev/hda1 .
-ls –l hda1
-6. Cree el grupo Docentes y los usuarios docente1, docente2 y docente3 que pertenezcan al grupo
-creado. Verifique en el archivo que corresponda que los nuevos usuarios y grupos existan.
-addgroup Docentes
-adduser -G Docentes docente1
-adduser -G Docentes docente2
-adduser -G Docentes docente3
-cat /etc/passwd
-cat /etc/group
-7. Abrir en otra terminal una sesión del docente1 y crear el archivo datos con sus datos personales.
-Login: docente1
-Password:
-cat > datos
-nombre, apellido, domicilio, etc
-Ctrl. d
-8. Cambiar el propietario del archivo /home/docente1/datos, de tal manera que el dueño sea el
-docente2. Verificar el cambio.
-chown docente2 /home/docente1/datos
-ls –l
-9. Como supervisor modifique el shell que utilizará el usuario alumnoB.
-usermod –s /bin/ash alumnoB
-10. Muestre por pantalla los grupos a los que pertenece el docente2.
-groups docente2
-11. Borrar el usuario docente1 y docente2
-userdel docente1
-userdel docente2
-12. Ejecute el comando who seguido de su nombre de usuario: ¿Cómo se visualiza la salida de
-dicho comando?
+```
+root@debian:~# cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:matias
+floppy:x:25:matias
+tape:x:26:
+sudo:x:27:
+audio:x:29:pulse,matias
+dip:x:30:matias
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+gnats:x:41:
+shadow:x:42:
+utmp:x:43:
+video:x:44:matias
+sasl:x:45:
+plugdev:x:46:matias
+staff:x:50:
+games:x:60:
+users:x:100:
+nogroup:x:65534:
+systemd-journal:x:101:
+systemd-timesync:x:102:
+systemd-network:x:103:
+systemd-resolve:x:104:
+input:x:105:
+kvm:x:106:
+render:x:107:
+crontab:x:108:
+netdev:x:109:matias
+messagebus:x:110:
+ssl-cert:x:111:
+rtkit:x:112:
+ssh:x:113:
+scanner:x:114:saned,matias
+pulse:x:115:
+pulse-access:x:116:
+lpadmin:x:117:matias
+avahi:x:118:
+saned:x:119:
+lightdm:x:120:
+matias:x:1000:
+systemd-coredump:x:999:
+matias_01:x:1001:
+matias_001:x:1002:
+matias_002:x:1003:
+vboxsf:x:998:
+matias_003:x:1004:
+matias_004:x:1005:
+Debian-exim:x:121:
+Alumnos:x:1006:alumnoA
+alumnoA:x:1007:
+```
 
+### 3. ¿Quién es el propietario del archivo /dev/hda1? ¿A qué grupo pertenece?
+### 4. Muestre los permisos que posee el archivo y explique.
+
+En este sistema no existe el archivo `hda1`, por eso voy a usar el archivo `sda1`
+```
+root@debian:~# ls -l /dev/sda1
+brw-rw---- 1 root disk 8, 1 sep 30 15:22 /dev/sda1
+```
+El propietario del mismo es el usuario root, pero pertenece al grupo disk. Y los permisos del mismo son de lectoescritura tanto para el usuario root (propietario del mismo) como para el grupo disk, el resto de los usuarios no tienen permisos en absoluto. También nos muestra que es un archivo especial de bloque en el primer tramo de los permisos: **b**rw-rw----
+
+### 5. Copie el archivo anterior (/dev/hda1) en su directorio de login. ¿Quién es el propietario ahora? ¿Los permisos son los mismos? ¿Por qué?
+```
+root@debian:~# cp /dev/sda1 .
+cp: error al escribir en './sda1': No queda espacio en el dispositivo
+```
+Obtengo el anterior error, pero asumo que haría una copia del archivo en el directorio de conexión de root, con las mismas caracteristicas salvo que pertenecería al grupo `root` en lugar de `disk`.
+
+### 6. Cree el grupo Docentes y los usuarios docente1, docente2 y docente3 que pertenezcan al grupo creado. Verifique en el archivo que corresponda que los nuevos usuarios y grupos existan.
+```
+root@debian:~# addgroup Docentes
+addgroup: Introduzca un nombre de usuario que se ajuste a la expresión regular
+configurada en la variable de configuración NAME_REGEX. Utilice la opción
+«--force-badname» para relajar esta comprobación o reconfigure NAME_REGEX.
+root@debian:~# addgroup Docentes --force-badname
+Permitiendo el uso de un nombre de usuario dudoso.
+Añadiendo el grupo `Docentes' (GID 1008) ...
+Hecho.
+...
+root@debian:~# adduser docente2
+Añadiendo el usuario `docente2' ...
+Añadiendo el nuevo grupo `docente2' (1010) ...
+Añadiendo el nuevo usuario `docente2' (1007) con grupo `docente2' ...
+Creando el directorio personal `/home/docente2' ...
+Copiando los ficheros desde `/etc/skel' ...
+Nueva contraseña:
+Vuelva a escribir la nueva contraseña:
+passwd: contraseña actualizada correctamente
+Cambiando la información de usuario para docente2
+Introduzca el nuevo valor, o pulse INTRO para usar el valor predeterminado
+	Nombre completo []:
+	Número de habitación []:
+	Teléfono del trabajo []:
+	Teléfono de casa []:
+	Otro []:
+¿Es correcta la información? [S/n] s
+...
+root@debian:~# usermod docente1 -g Docentes
+root@debian:~# usermod docente2 -g Docentes
+root@debian:~# usermod docente3 -g Docentes
+root@debian:~# cat /etc/passwd | grep docente*
+docente1:x:1006:1008:,,,:/home/docente1:/bin/bash
+docente2:x:1007:1008:,,,:/home/docente2:/bin/bash
+docente3:x:1008:1008:,,,:/home/docente3:/bin/bash
+root@debian:~#
+```
+
+### 7. Abrir en otra terminal una sesión del docente1 y crear el archivo datos con sus datos personales.
+```
+docente1@debian:~$ cat > datos
+docente, uno, calle uno, telefono: 111-1111111    
+```
+### 8. Cambiar el propietario del archivo /home/docente1/datos, de tal manera que el dueño sea el docente2. Verificar el cambio.
+Persisto con el mismo inconveniente que no me permite cambiar el propietario de un archivo.
+```
+docente1@debian:~$ cat > datos
+docente, uno, calle uno, telefono: 111-1111111
+docente1@debian:~$ chown docente2 datos
+chown: cambiando el propietario de 'datos': Operación no permitida
+docente1@debian:~$ chown docente2 /home/docente1/datos
+chown: cambiando el propietario de '/home/docente1/datos': Operación no permitida
+docente1@debian:~$ lsattr datos
+--------------e---- datos
+docente1@debian:~$ chown docente2:1008 /home/docente1/datos
+chown: cambiando el propietario de '/home/docente1/datos': Operación no permitida
+```
+### 9. Como supervisor modifique el shell que utilizará el usuario alumnoB.
+Utilizo el alumnoA ya que el otro fue eliminado en un ejercicio anterior
+```
+root@debian:~# usermod -s /bin/csh alumnoA
+```
+### 10. Muestre por pantalla los grupos a los que pertenece el docente2.}
+```
+root@debian:~# groups docente2
+docente2 : Docentes
+```
+### 11. Borrar el usuario docente1 y docente2
+```
+root@debian:~# userdel docente1
+userdel: group docente1 not removed because it is not the primary group of user docente1.
+root@debian:~# userdel docente2
+userdel: group docente2 not removed because it is not the primary group of user docente2.
+```
+
+### 12. Ejecute el comando who seguido de su nombre de usuario: ¿Cómo se visualiza la salida de dicho comando?
+Poniendo el nombre del usuario a continuación hace que la salida sea vacia.
+```
+root@debian:~# who root
+root@debian:~# who
+root     tty7         2020-09-30 17:50 (:0)
+root@debian:~# who $LOGNAME
+root@debian:~# 
+```

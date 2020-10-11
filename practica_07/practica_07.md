@@ -84,5 +84,40 @@ Tres
 ### 2. Dado el siguiente programa, determine
 #### a. Sin ejecutar el proceso, cuántas líneas con la palabra “Proceso” aparecen al final de la ejecución de este programa? El número de líneas es el número de procesos que han estado en ejecución.
 
+Por la cantidad de veces que se ejecuta la instrucción `fork()`, o sea 3 iteraciones, que crearían procesos de manera exponencial, intuyo que la cantidad de proesos creados es de 8.
+
 #### b. Ejecute el programa y compruebe si su respuesta es correcta, Modifique el valor del bucle for y compruebe los nuevos resultados.
+
+Efectivamente, la cantidad de procesos creados para 3 iteraciones fueron 8:
+```
+Comienzo.:
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+```
+Agregando una iteración más (4) podemos ver como la cantidad de procesos se duplica:
+```
+Comienzo.:
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+Proceso
+```
 

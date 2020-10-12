@@ -126,3 +126,9 @@ Proceso
 #### b. Qué pasaría si el proceso padre no esperará a los hijos?. Pruebe esto varias veces, aumentando el número de hijos y compruebe los resultados. Asegúrese que todos los PID y PPID mostrados son correctos.
 
 Lo que sucede es que algunos de los procesos hijos terminan luego de que termina el proceso padre, entonces en lugar de mostrar el pid del proceso padre cómo no existen procesos huerfanos en GNU/Linux se asignan como hijos de `init` o `systemd` (este último en Ubuntu 20.04), y retornan este PID en lugar de el del proceso que los creó.
+
+### 4. El siguiente programa recibe como parámetro de entrada un número entero y muestra como resultado su factorial.
+#### a. Escríbelo, compílalo y ejecútalo para comprobar su funcionamiento.
+#### b. Escribe un nuevo programa que reciba dos números enteros como parámetros de entrada y cree dos procesos de manera que cada uno calcule el factorial de uno de los números, de forma concurrente, y utilizando el programa ejecutable obtenido en el apartado anterior.
+#### c. Haz que el proceso padre sea el último en terminar, es decir, que espere a la terminación de sus procesos hijos.
+

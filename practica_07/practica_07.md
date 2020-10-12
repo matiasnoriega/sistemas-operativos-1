@@ -120,4 +120,9 @@ Proceso
 Proceso
 Proceso
 ```
+### 3. Padres e hijos.
+#### a. Escriba un programa que lance tres nuevos procesos hijos. Estos procesos mostrarán su identificador de proceso (PID) y el identificador de proceso de su padre (PPID) y, después, terminarán. El proceso padre debe esperar a que los procesos hijos terminen antes de finalizar.
 
+#### b. Qué pasaría si el proceso padre no esperará a los hijos?. Pruebe esto varias veces, aumentando el número de hijos y compruebe los resultados. Asegúrese que todos los PID y PPID mostrados son correctos.
+
+Lo que sucede es que algunos de los procesos hijos terminan luego de que termina el proceso padre, entonces en lugar de mostrar el pid del proceso padre cómo no existen procesos huerfanos en GNU/Linux se asignan como hijos de `init` o `systemd` (este último en Ubuntu 20.04), y retornan este PID en lugar de el del proceso que los creó.

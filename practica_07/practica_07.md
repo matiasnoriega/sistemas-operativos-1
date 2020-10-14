@@ -132,3 +132,31 @@ Lo que sucede es que algunos de los procesos hijos terminan luego de que termina
 #### b. Escribe un nuevo programa que reciba dos números enteros como parámetros de entrada y cree dos procesos de manera que cada uno calcule el factorial de uno de los números, de forma concurrente, y utilizando el programa ejecutable obtenido en el apartado anterior.
 #### c. Haz que el proceso padre sea el último en terminar, es decir, que espere a la terminación de sus procesos hijos.
 
+Ver ejercicio_4.c adjunto. Ejemplo de salida:
+
+```
+ 🇹🇭   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_4   master ●  ./ejercicio_4 9 8
+Factorial de 9, resultado parcial 2
+Factorial de 8, resultado parcial 2
+Factorial de 9, resultado parcial 6
+Factorial de 8, resultado parcial 6
+Factorial de 8, resultado parcial 24
+Factorial de 9, resultado parcial 24
+Factorial de 8, resultado parcial 120
+Factorial de 9, resultado parcial 120
+Factorial de 8, resultado parcial 720
+Factorial de 9, resultado parcial 720
+Factorial de 8, resultado parcial 5040
+Factorial de 9, resultado parcial 5040
+Factorial de 8, resultado parcial 40320
+Factorial de 9, resultado parcial 40320
+El factorial de 8 es 40320
+Factorial de 9, resultado parcial 362880
+El factorial de 9 es 362880
+Proceso Padre PID: 148724 Terminado
+```
+
+### 5. Contar señales.
+#### a. Escriba un programa que cuente las señales USR1 y USR2 que recibe. Cuando este programa reciba la señal TERM, mostrará el número de señales USR1 y USR2 recibidas y terminará.
+
+#### b. Una variante de este ejercicio, si ha utilizado un manejador distinto para cada señal, es escribir una nueva versión utilizando una única función como manejador para ambas señales.

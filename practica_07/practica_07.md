@@ -160,3 +160,24 @@ Proceso Padre PID: 148724 Terminado
 #### a. Escriba un programa que cuente las señales USR1 y USR2 que recibe. Cuando este programa reciba la señal TERM, mostrará el número de señales USR1 y USR2 recibidas y terminará.
 
 #### b. Una variante de este ejercicio, si ha utilizado un manejador distinto para cada señal, es escribir una nueva versión utilizando una única función como manejador para ambas señales.
+
+Ejemplo de salida, se manejó las señales desde un principio con un solo handler:
+
+```
+Proceso 173298 esperando señales... 
+
+Señal 10(USR1) recibida. Contador: 1
+Señal 10(USR1) recibida. Contador: 2
+Señal 10(USR1) recibida. Contador: 3
+Señal 10(USR1) recibida. Contador: 4
+Señal 10(USR1) recibida. Contador: 5
+Señal 12(USR2) recibida. Contador: 1
+Señal 12(USR2) recibida. Contador: 2
+Señal 12(USR2) recibida. Contador: 3
+Señal 12(USR2) recibida. Contador: 4
+Señal 12(USR2) recibida. Contador: 5
+Señal 12(USR2) recibida. Contador: 6
+Se recibieron 5 Señales USR1 y 6 Señales USR2
+Se procede a finalizar el programa.
+ 🔥   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_5   master  
+```

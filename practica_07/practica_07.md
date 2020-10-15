@@ -181,3 +181,17 @@ Se recibieron 5 Señales USR1 y 6 Señales USR2
 Se procede a finalizar el programa.
  🔥   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_5   master  
 ```
+### 6. Pipes
+#### a. Escribe un programa que genere tres procesos en paralelo que colaboran para realizar las siguientes tareas:
+##### El primer proceso, utilizando la orden grep, encontrará las líneas de un fichero (fich1) que contienen una palabra (ambos dados como parámetros en la línea de comandos) y las escribirá en una tubería.
+##### El segundo proceso, utilizando la orden grep, encontrará las líneas de un fichero (fich2) que contienen la misma palabra (ambos dados como parámetros en la línea de comandos) y las escribirá en la misma tubería.
+##### El tercer proceso, utilizando la orden wc, leerá de la tubería las líneas producidas por los otros dos, las contará(-l) y escribirá el resultado en un nuevo fichero (fich3) pasado como parámetro en la línea de comandos. Así, el programa se utilizará en la línea de comandos de la siguiente forma: `$ programa palabra arch1 arch2 arch3`
+Ejemplo de salida:
+```
+ 🇹🇭   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_6   master ●  ./ejercicio_6 algo a1 a2 a3
+ 🇹🇭   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_6   master ●  cat a3
+3
+ 🇹🇭   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_6   master ● 
+
+```
+Efectivamente en los archivos a1 y a2 hay 3 líneas que contienen la palabra `algo`

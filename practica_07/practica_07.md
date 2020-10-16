@@ -195,3 +195,19 @@ Ejemplo de salida:
 
 ```
 Efectivamente en los archivos a1 y a2 hay 3 líneas que contienen la palabra `algo`
+
+#### b. Re-programar el ejemplo de “ls|sort” de la practica con named pipes.
+
+Ejemplo de salida del nuevo programa usando **FIFO/named pipes**:
+```
+ 🔥   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_6   master  ./nuevo_lssort
+nuevo_lssort.c
+nuevo_lssort
+fifo
+ejercicio_6.c
+ejercicio_6
+a3
+a2
+a1
+```
+

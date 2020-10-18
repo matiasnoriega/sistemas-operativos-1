@@ -210,4 +210,49 @@ a3
 a2
 a1
 ```
+### Memoria compartida
+#### a. Crear un proceso padre que escribe mensajes en una variable(shared memory) mensajes y el hijo los lee e imprime cuando recibe del padre la señal SIGUSR1.
+
+Ejemplo de salída del código:
+
+```
+ 🐸   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_7   master  ./ejercicio_7
+Se creó el segmento de memoria compartida 98341
+
+---- Segmentos memoria compartida ----
+key        shmid      propietario perms      bytes      nattch     estado
+0x0052e2c1 0          postgres   600        56         6
+0x00000000 98306      matias     600        4194304    2          dest
+0x00000000 32778      matias     600        524288     2          dest
+0x00000000 32779      matias     600        4194304    2          dest
+0x00000000 32780      matias     600        524288     2          dest
+0x00000000 23         matias     600        524288     2          dest
+0x00000000 98341      matias     660        100        0
+0x00000000 44         matias     600        524288     2          dest
+0x00000000 47         matias     600        524288     2          dest
+0x00000000 48         matias     600        524288     2          dest
+0x00000000 49         matias     600        524288     2          dest
+
+Padre terminado
+
+---------------------------
+Mensaje Compartido en Memoria Compartida
+---------------------------
+Se elimina el segmento de memoria compartida 98341
+
+---- Segmentos memoria compartida ----
+key        shmid      propietario perms      bytes      nattch     estado
+0x0052e2c1 0          postgres   600        56         6
+0x00000000 98306      matias     600        4194304    2          dest
+0x00000000 32778      matias     600        524288     2          dest
+0x00000000 32779      matias     600        4194304    2          dest
+0x00000000 32780      matias     600        524288     2          dest
+0x00000000 23         matias     600        524288     2          dest
+0x00000000 98341      matias     660        100        1          dest
+0x00000000 44         matias     600        524288     2          dest
+0x00000000 47         matias     600        524288     2          dest
+0x00000000 48         matias     600        524288     2          dest
+0x00000000 49         matias     600        524288     2          dest
+
+```
 

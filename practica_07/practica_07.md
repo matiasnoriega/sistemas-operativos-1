@@ -255,4 +255,6 @@ key        shmid      propietario perms      bytes      nattch     estado
 0x00000000 49         matias     600        524288     2          dest
 
 ```
+### 8. Semáforos
 
+`Aclaración: Los ejercicios a continuación fueron realizados utilizando la interfáz System V en lugar de POSIX para fines de práctica.`

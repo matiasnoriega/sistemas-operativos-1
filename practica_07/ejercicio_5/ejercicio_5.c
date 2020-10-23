@@ -8,18 +8,25 @@ int contador_usr2 = 0;
 	
 void handler_usr(int signal){
 	
-	if(signal == SIGUSR1){
-		contador_usr1++;
-		printf("Señal %d(USR1) recibida. Contador: %d\n", signal, contador_usr1);
-	}
-	if(signal == SIGUSR2){
-		contador_usr2++;
-		printf("Señal %d(USR2) recibida. Contador: %d\n", signal, contador_usr2);
-	}
-	if(signal == SIGTERM){
-		printf("Se recibieron %d Señales USR1 y %d Señales USR2\n", contador_usr1, contador_usr2);
-		printf("Se procede a finalizar el programa.\n");
-		exit(EXIT_SUCCESS);
+	switch(signal){
+
+		case SIGUSR1:
+			contador_usr1++;
+			printf("Señal %d(USR1) recibida. Contador: %d\n", signal, contador_usr1);
+			break;
+		case SIGUSR2:
+			contador_usr2++;
+			printf("Señal %d(USR2) recibida. Contador: %d\n", signal, contador_usr2);
+			break;
+		case SIGTERM:
+			printf("Se recibieron %d Señales USR1 y %d Señales USR2\n", contador_usr1, contador_usr2);
+			printf("Se procede a finalizar el programa.\n");
+			exit(EXIT_SUCCESS);
+		default:
+			printf("Se recibieron %d Señales USR1 y %d Señales USR2\n", contador_usr1, contador_usr2);
+			printf("Se procede a finalizar el programa.\n");
+			exit(EXIT_SUCCESS);
+
 	}
 }
 

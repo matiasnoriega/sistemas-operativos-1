@@ -210,7 +210,7 @@ a3
 a2
 a1
 ```
-### Memoria compartida
+### 7. Memoria compartida
 #### a. Crear un proceso padre que escribe mensajes en una variable(shared memory) mensajes y el hijo los lee e imprime cuando recibe del padre la señal SIGUSR1.
 
 Ejemplo de salída del código:
@@ -257,4 +257,46 @@ key        shmid      propietario perms      bytes      nattch     estado
 ```
 ### 8. Semáforos
 
-`Aclaración: Los ejercicios a continuación fueron realizados utilizando la interfáz System V en lugar de POSIX para fines de práctica.`
+`Aclaración: Los programas de este ejercicio fueron realizados utilizando la interfáz System V en lugar de POSIX para fines de práctica.`
+
+#### b. Se deben crear tres procesos de manera que uno ejecuta una función escribirA, otro escribirB y el tercero escribirC. Introduce los semáforos oportunos para que la salida sea ABCABCABCABCABCABC.
+
+Ejemplo de salida del programa:
+
+```
+🚦   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_8   master ±  ./ejercicio_8b
+
+
+Se crea el semáforo: 29
+
+------ Matrices semáforo -------
+key        semid      propietario perms      nsems     
+0x00000000 1          www-data   600        1         
+0x51052bb3 3          matias     600        1         
+0x00000000 29         matias     600        3         
+
+ABCABCABCABCABCABC
+
+Se elimina el semáforo: 29
+
+------ Matrices semáforo -------
+key        semid      propietario perms      nsems     
+0x00000000 1          www-data   600        1         
+0x51052bb3 3          matias     600        1         
+
+ 🚦   ~/Documentos/Facultad/Sistemas Operativos I/sistemas-operativos-1/practica_07/ejercicio_8   master ±  
+
+```
+
+## Recursos
+
+En el zip correspondiente se adjuntan tanto la versión en PDF de este trabajo práctico cómo el original en markdown. También se puede encontrar el repositorio GIT de la guía de TPs (este trabajo incluido) en [mi repositorio de Github.](https://github.com/matiasnoriega/sistemas-operativos-1)
+
+## Herramientas
+
+Para realizar este TP se utilizaron las siguientes herramientas open-source:
+
+* **GIT:** Sistema de control de versiones para versionado y backup del trabajo.
+* **Pandoc:** Herramienta para convertir de formato *markdown* a *PDF*
+* **VIM:** Editor de Textos para escribir los trabajos prácticos y los programas relacionados
+* **gcc:** Sistema de compilación hecho por el Proyecto GNU

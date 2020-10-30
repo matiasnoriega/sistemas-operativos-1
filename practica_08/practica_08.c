@@ -10,9 +10,8 @@
 #include <fcntl.h>
 #include <sys/sem.h>
 
-int semid;
-
-void reservar(int semaforo){
+/* Creo las funciones para reservar y liberar el semáforo system V*/
+void reservar(int semid, int semaforo){
 	struct sembuf buf;
 	buf.sem_num = semaforo;
 	buf.sem_op = -1;
@@ -21,7 +20,7 @@ void reservar(int semaforo){
 	semop(semid, &buf, 1);
 }
 
-void liberar(int semaforo){
+void liberar(int semid, int semaforo){
 	struct sembuf buf;
 	buf.sem_num = semaforo;
 	buf.sem_op = 1;
@@ -33,40 +32,41 @@ void liberar(int semaforo){
 int main(int argc, char *argv[]){
 	
 	pid_t pid = getpid();
-	int cantidad_procesos_hijos = argc - 2;
 	char caracter_leido;
 	void *memoria_compartida = (void *)0;
-	int estado, shmid;
-	int *contador_compartido;
-	/* Creamos el semaforo sin nombre compartido y lo inicializamos en 1 (abierto)
-	if(sem_init(&sem_compartido, 1, 0) < 0){
-		perror("creacion semaforo");
-		exit(EXIT_FAILURE);
-	}*/
-
+	/* La cantidad de procesos hijos la calculamos teniendo en cuenta la cantidad de archivos a leer (la cantidad de argumentos menos los 2 iniciales) */
+	int estado, shmid, semid, *contador_compartido, cantidad_procesos_hijos = argc -2;
+	
+	printf("Creamos la matríz de semáforos y el espacio de memoria compartida...\n\n");	
+	/* Obtenemos una matriz de semáforos como tantos forks vayamos a crear */
 	if((semid = semget(IPC_PRIVATE, cantidad_procesos_hijos, 0600)) < 0){
 		perror("semget");
 		exit(EXIT_FAILURE);
 	}
-	/*Inicializamos los semaforos, el primero en 1 y el resto en 0*/
+
+	/* Inicializamos los semaforos, el primero en 1 y el resto en 0 */
 	semctl(semid, 0, SETVAL, 1);
 	for(int i = 1; i < cantidad_procesos_hijos; i++){
 		semctl(semid, i, SETVAL, 0);
 	}
 	
-	/* Creamos el segmento de memoria compartida */	
+	/* Creamos el segmento de memoria compartida del tamaño de un entero */	
 	if((shmid = shmget(IPC_PRIVATE, sizeof(int), 0666)) < 0){
 		perror("shmget");
 		exit(EXIT_FAILURE);
 	}
-	printf("ARGC: %d\n", argc);	
+	
+	/* Conectamos al espacio de memoria compartida y referenciamos ese espacio (casteandolo como puntero int)
+	 * con el puntero contador_compartido declarado en el inicio. Una vez que el puntero apunta al espacio
+	 * de memoria compartida, se llena ese espacio con un 0
+	 */
 	memoria_compartida = shmat(shmid, 0, 0);
 	contador_compartido = (int *)memoria_compartida;
 	*contador_compartido = 0;
 	system("ipcs -sm");
 	
 	/* Iteramos por cada archivo que se haya pasado como argumento en la linea de comandos.
-	 * La iteración empieza en k = 2 porque la posición 0 es el nombre del progra,a y la posición
+	 * La iteración empieza en k = 2 porque la posición 0 es el nombre del programa y la posición
 	 * 1 es la letra a comparar
 	*/
 	for(int k = 0; k < cantidad_procesos_hijos; k++){
@@ -74,68 +74,41 @@ int main(int argc, char *argv[]){
 		 * el proceso padre el que cree los forks
 		 */
 		if(pid != 0){
-			printf("padre fork %d\n",k);
+			
 			if((pid = fork()) < 0){
 				perror("fork");
 				exit(EXIT_FAILURE);
 			}
 				
 			if(pid == 0){
-				printf("Hijo\n");
-				int valor,fd;
-				/*sem_getvalue(&sem_compartido, &valor);
-				printf("sem compartido %d\n", valor);*/
-				/* Proceso Hijo: Se conecta al sector de memoria compartida */
-				/*if((contador_compartido = shmat(shmid, 0, 0)) < (int *)0){
-					perror("shmat");
-					exit(EXIT_FAILURE);
-				}*/
+				/* Los procesos hijos van abriendo los archivos correspondientes */
+				int fd;
 
-				/*if((contador_local = malloc(sizeof(int))) == NULL){
-					perror("malloc");
-					exit(EXIT_FAILURE);
-				}*/
-
-				/* Los procesos hijos van abriendo los archivos */
 				if((fd = open(argv[k+2], O_RDONLY)) < 0){
 					perror("open");
 					exit(EXIT_FAILURE);
 				}
+
 				/* Leemos el archivo y comparamos cada caracter con el que
 				 * se paso por la linea de comandos, en caso de que se encuentre
 				 * uno se accede a la sección crítica utilizando el semáforo
-				 * compartido y aumentamos el contador en 1 */	
+				 * y aumentamos el contador en 1 */
+
 				while(read(fd,&caracter_leido,1)){
-					printf("caracter leido %c\n",(char)caracter_leido);
-
-					if(strncmp(argv[1], &caracter_leido,1) == 0){
-						/*
-						if(sem_wait(&sem_compartido) == -1){
-							perror("sem_wait");
-							exit(EXIT_FAILURE);
-						}
+					printf("El caracter leido en archivo %s, por fork %d es: %c\n", argv[k+2],k,(char)caracter_leido);
 							
-						*contador_compartido = *contador_compartido + 1;
-
-						printf("contador compartido %d\n", *contador_compartido);
-						if(sem_post(&sem_compartido) == -1){
-							perror("sem_post");
-							exit(EXIT_FAILURE);
-						}*/
-						//printf("antes de reservar\n");
-						reservar(k);
-						//printf("despues de reservar\n");
-
-						*contador_compartido = *contador_compartido + 1;
+					if(strncmp(argv[1], &caracter_leido,1) == 0){
+						reservar(semid, k);
+						*contador_compartido += 1;
 						
+						/* Una vez realizada la escritura del entero en el espacio de memoria compartida
+						 * chequeamos si la proxima posicion de K excede el número de procesos hijos (o archivos abiertos)
+						 * y en el caso de que sea el último archivo, liberará el primer semáforo del conjunto */
 						if((k+1) < cantidad_procesos_hijos){
-							//printf("se libera k+1: %d\n", k+1);
-							liberar(k+1);
+							liberar(semid, k+1);
 						}else{
-							//printf("no se libera k+1\n: %d", k+1);
-							liberar(k);
+							liberar(semid, 0);
 						}
-						//printf("aca llega despues de liberar\n");
 					}
 				}
 				/* Cerramos el archivo */
@@ -155,10 +128,12 @@ int main(int argc, char *argv[]){
 
 	/* El proceso padre espera a que finalicen los hijos y elimina el Semáforo y la Memoria Compartida*/
 	if(pid != 0){
-		//sem_post(&sem_compartido);		
+		
 		while(wait(&estado) > 0);
-		printf("Se encontraron %d ocurrencias del caracter %s\n", *contador_compartido, argv[1]);
-		printf("Eliminamos el semáforo y la memoria compartida\n");
+		printf("|-------------------------------------------------|\n");
+		printf("  Se encontraron %d ocurrencias del caracter '%s' \n", *contador_compartido, argv[1]);
+		printf("|-------------------------------------------------|\n");
+		printf("\nEliminamos el semáforo y la memoria compartida...\n");
 		shmdt(memoria_compartida);
 		if(shmctl(shmid, IPC_RMID, 0) < 0){
 			perror("shmctl");
@@ -168,11 +143,7 @@ int main(int argc, char *argv[]){
 		if(semctl(semid, 0, IPC_RMID) < 0){
 			perror("sem_destroy");
 			exit(EXIT_FAILURE);
-		}/*
-		if(sem_destroy(&sem_compartido)){
-			perror("sem_destroy");
-			exit(EXIT_FAILURE);
-		}*/
+		}
 
 		system("ipcs -ms");
 

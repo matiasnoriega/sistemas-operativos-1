@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <semaphore.h>
+#include <pthread.h>
 
 sem_t sem;
 
@@ -18,10 +19,10 @@ int main(int argc, char *argv[]){
 	char caracter_leido;
 	void *memoria_compartida = (void *)0;
 	/* La cantidad de procesos hijos la calculamos teniendo en cuenta la cantidad de archivos a leer (la cantidad de argumentos menos los 2 iniciales) */
-	int estado, shmid, semid, *contador_compartido, cantidad_procesos_hijos = argc -2;
+	int estado, shmid, *contador_compartido, cantidad_procesos_hijos = argc -2;
 	
 	printf("Creamos el semaforo sin nombre...\n\n");	
-	/* Obtenemos una matriz de semáforos como tantos forks vayamos a crear */
+	/* Obtenemos un semaforo sin nombre */
 	if(sem_init(&sem, 0, 1) < 0){
 		perror("sem_init");
 		exit(EXIT_FAILURE);

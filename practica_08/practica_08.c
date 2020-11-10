@@ -111,6 +111,12 @@ int main(int argc, char *argv[]){
 						}
 					}
 				}
+				
+				if((k+1) < cantidad_procesos_hijos){
+					liberar(semid, k+1);
+				}else{
+					liberar(semid, 0);
+				}
 				/* Cerramos el archivo */
 				if(close(fd) < 0){
 					perror("close");
